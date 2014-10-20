@@ -5,3 +5,4 @@ testdb/
 .gradle/
 .classpath
 build/
+db/

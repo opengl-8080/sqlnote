@@ -10,17 +10,17 @@ $(function() {
         }
     });
     
-    $('#send').on('click', function() {
+    $('#form').on('submit', function() {
         var path = $('#path').val();
         var body = $('#body').val();
         var method = $('#method').val();
         
         $.ajax({
-            url: 'http://localhost:48123/api/' + path,
+            url: 'http://localhost:48123/sqlnote/api/' + path,
             type: method,
             data: body,
             success: function(data) {
-                console.dir(data);
+                console.log(data[0].title);
             },
             error: function(xhr, status, error) {
                 console.dir({
@@ -30,5 +30,7 @@ $(function() {
                 });
             }
         });
+        
+        return false;
     });
 });

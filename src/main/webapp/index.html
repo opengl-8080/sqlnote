@@ -10,10 +10,12 @@
     </style>
   </head>
   <body>
-    method : <input id="method" value="GET" /><br>
-    http://localhost:48123/api/<input id="path" /><br>
-    <textarea id="body"></textarea><br>
-    <button id="send">send</button>
+    <form id="form">
+      method : <input id="method" value="GET" /><br>
+      http://localhost:48123/sqlnote/api/<input id="path" /><button id="send" type="submit">send</button>
+      <br>
+      <textarea id="body"></textarea><br>
+    </form>
   </body>
 </html>
 <script src="js/jquery.min.js"></script>

@@ -4,16 +4,19 @@ import groovy.sql.Sql
 
 public class DatabaseAccess {
     private static Sql sql;
+    public static final String URL = 'jdbc:hsqldb:file:db/sqlnote;shutdown=true'
+    public static final String USER = 'SA'
+    public static final String PASS = ''
     
     public synchronized static void init(url) {
         if (!sql) {
-            sql = Sql.newInstance(url, 'SA', '', 'org.hsqldb.jdbc.JDBCDriver');
+            sql = Sql.newInstance(url, USER, PASS, 'org.hsqldb.jdbc.JDBCDriver');
         }
     }
     
     public synchronized static void init() {
         if (!sql) {
-            sql = Sql.newInstance('jdbc:hsqldb:file:db/sqlnote;shutdown=true', 'SA', '', 'org.hsqldb.jdbc.JDBCDriver');
+            sql = Sql.newInstance(URL, USER, PASS, 'org.hsqldb.jdbc.JDBCDriver');
         }
     }
     
