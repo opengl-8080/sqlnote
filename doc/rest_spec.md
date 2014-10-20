@@ -13,7 +13,7 @@
 `GET`
 
 ###Path
-`/sql`
+`/api/sql`
 
 ###Response
 ```json
@@ -21,12 +21,12 @@
 	{
 		"id": 1,
 		"title": "～～を検索する",
-		"url": "http://localhots:1234/sqlnote/sql/1"
+		"url": "http://localhots:1234/sqlnote/api/sql/1"
 	},
 	{
 		"id": 2,
 		"title": "～～を検索する",
-		"url": "http://localhots:1234/sqlnote/sql/2"
+		"url": "http://localhots:1234/sqlnote/api/sql/2"
 	}
 ]
 ```
@@ -37,7 +37,7 @@
 `POST`
 
 ###Path
-`/sql`
+`/api/sql`
 
 
 -----------------------------------------------------------------------------------------------
@@ -46,7 +46,7 @@
 `DELETE`
 
 ###Path
-`/sql/{id}`
+`/api/sql/{id}`
 
 -----------------------------------------------------------------------------------------------
 ##ID を指定して SQL メモの情報を取得する
@@ -54,7 +54,7 @@
 `GET`
 
 ###Path
-`/sql/{id}`
+`/api/sql/{id}`
 
 ###Response
 ```json
@@ -63,7 +63,7 @@
 	"title": "～～を検索する",
 	"sql": "SELECT *\n FROM TEST_TABLE",
 	"parameterNames": ["CODE", "NAME"],
-	"executeSqlUrl": "http://localhost:1234/sqlnote/sql/5/result"
+	"executeSqlUrl": "http://localhost:1234/sqlnote/api/sql/5/result"
 }
 ```
 
@@ -73,7 +73,7 @@
 `PUT`
 
 ###Path
-`/sql/{id}`
+`/api/sql/{id}`
 
 ###Request Body
 ```json
@@ -90,7 +90,7 @@
 `GET`
 
 ###Path
-`/sql/{id}/result`
+`/api/sql/{id}/result`
 
 ###Request Body
 ```json
@@ -119,7 +119,7 @@
 ```json
 {
 	"recordCount": 1500,
-	"url": "http://localhost:1234/sqlnote/sql/5/result?type=csv"
+	"url": "http://localhost:1234/sqlnote/api/sql/5/result?type=csv"
 }
 ```
 
