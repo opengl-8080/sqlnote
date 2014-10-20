@@ -1,0 +1,22 @@
+NODE:
+-
+    ID: 1
+    PARENT_NODE: NULL
+    IS_CATEGORY: 1
+    CATEGORY_ID: 1
+    SQL_ID: NULL
+-
+    ID: 2
+    PARENT_NODE: 1
+    IS_CATEGORY: 1
+    CATEGORY_ID: 2
+    SQL_ID: NULL
+
+CATEGORY_NODE:
+-
+    ID: 1
+    TITLE: TEST_A
+-
+    ID: 2
+    TITLE: TEST_B
+
