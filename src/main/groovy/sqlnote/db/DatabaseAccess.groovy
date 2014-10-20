@@ -17,11 +17,27 @@ public class DatabaseAccess {
         }
     }
     
-    static void execute(closure) {
-        closure(sql)
+    static void withTransaction(closure) {
+        sql.withTransaction(closure)
     }
     
-    static void query(closure) {
-        closure(sql)
+    static Long insertSingle(sqlText) {
+        def generated = sql.executeInsert(sqlText)
+        
+        if (generated[0]) {
+            generated[0][0]
+        }
+    }
+    
+    static void delete(sqlText) {
+        sql.executeUpdate(sqlText)
+    }
+    
+    static Object firstRow(sqlText, Closure closure) {
+        closure(sql.firstRow(sqlText))
+    }
+    
+    static List collect(sqlText, Closure mapper) {
+        sql.rows(sqlText).collect(mapper)
     }
 }

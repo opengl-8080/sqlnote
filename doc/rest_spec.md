@@ -1,17 +1,13 @@
 #REST Spec
 ##リクエスト一覧
 - 全 SQL メモのタイトルと ID を問い合わせる
+- SQL メモを新規に登録する
+- SQL メモを削除する
 - ID を指定して SQL メモの情報を取得する
 - SQL メモの情報を更新する
-- SQL メモを新規に登録する
-- SQL メモの格納場所を変更する
-- SQL メモを削除する
 - SQL を実行し、結果を取得する
-- カテゴリを追加する
-- カテゴリを移動する
-- カテゴリを削除する
-- カテゴリの名前を変更する
 
+-----------------------------------------------------------------------------------------------
 ##全 SQL メモのタイトルと ID を問い合わせる
 ###Method
 `GET`
@@ -21,30 +17,21 @@
 
 ###Response
 ```json
-{
-	"id": 1,
-	"title": "/",
-	"children": [
-		{
-			"id": 2,
-			"title": "～～関連",
-			"children": [
-				{
-					"id": 5,
-					"title": "～～を検索する",
-					"url": "http://localhots:1234/sqlnote/sql/5"
-				}
-			]
-		},
-		{
-			"id": 3,
-			"title": "～～と～～を検索する",
-			"url": "http://localhost:1234/sqlinote/sql/3"
-		}
-	]
-}
+[
+	{
+		"id": 1,
+		"title": "～～を検索する",
+		"url": "http://localhots:1234/sqlnote/sql/1"
+	},
+	{
+		"id": 2,
+		"title": "～～を検索する",
+		"url": "http://localhots:1234/sqlnote/sql/2"
+	}
+]
 ```
 
+-----------------------------------------------------------------------------------------------
 ##SQL メモを新規に登録する
 ###Method
 `POST`
@@ -52,15 +39,16 @@
 ###Path
 `/sql`
 
-###Request Body
-```json
-{
-	"appendTo": 1
-}
-```
 
-- appendTo = categoryId
+-----------------------------------------------------------------------------------------------
+##SQL メモを削除する
+###Method
+`DELETE`
 
+###Path
+`/sql/{id}`
+
+-----------------------------------------------------------------------------------------------
 ##ID を指定して SQL メモの情報を取得する
 ###Method
 `GET`
@@ -79,6 +67,7 @@
 }
 ```
 
+-----------------------------------------------------------------------------------------------
 ##SQL メモの情報を更新する
 ###Method
 `PUT`
@@ -95,20 +84,7 @@
 }
 ```
 
-##SQL メモを削除する
-###Method
-`DELETE`
-
-###Path
-`/sql/{id}`
-
-##SQL メモの格納場所を変更する
-###Method
-`PUT`
-
-###Path
-`/sql/{id}?moveTo={categoryId}`
-
+-----------------------------------------------------------------------------------------------
 ##SQL を実行し、結果を取得する
 ###Method
 `GET`
@@ -126,47 +102,26 @@
 
 - Search Parameters.
 
-##カテゴリを追加する
-###Method
-`POST`
+###Response Body
+####200 OK
+```json
+[
+	{
+		"CODE": "AAA",
+		"NAME": "BBB",
+		"CREATE_DATE": "2012-01-01T12:00+09:00"
+	},
+	...
+]
+```
 
-###Path
-`/category`
-
-###Request Body
+####303 See Other
 ```json
 {
-	"appendTo": 10,
-	"title": "～～について"
+	"recordCount": 1500,
+	"url": "http://localhost:1234/sqlnote/sql/5/result?type=csv"
 }
 ```
 
-- appendTo = categoryId
+- 検索結果が 1,000 より大きい場合、 CSV 出力を促す。
 
-##カテゴリを移動する
-###Method
-`PUT`
-
-###Path
-`/category/{id}?moveTo={cagegoryId}`
-
-##カテゴリを削除する
-###Method
-`DELETE`
-
-###Path
-`/category/{id}`
-
-##カテゴリの名前を変更する
-###Method
-`PUT`
-
-###Path
-`/category/{id}`
-
-###Request Body
-```json
-{
-	"title": "～～関連"
-}
-```

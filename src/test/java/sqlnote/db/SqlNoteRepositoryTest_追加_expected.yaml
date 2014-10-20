@@ -1,0 +1,31 @@
+SQL_NOTE:
+-
+    ID: 1
+    TITLE: title1
+    SQL_TEMPLATE: sql1
+-
+    ID: 2
+    TITLE: title2
+    SQL_TEMPLATE: sql2
+-
+    ID: 3
+    TITLE: 新規追加
+    SQL_TEMPLATE: SQL Template
+
+SQL_PARAMETERS:
+-
+    SQL_ID: 2
+    NAME: param2
+    SORT_ORDER: 2
+-
+    SQL_ID: 2
+    NAME: param1
+    SORT_ORDER: 1
+-
+    SQL_ID: 3
+    NAME: aaa
+    SORT_ORDER: 1
+-
+    SQL_ID: 3
+    NAME: bbb
+    SORT_ORDER: 2
