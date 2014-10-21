@@ -43,4 +43,8 @@ public class DatabaseAccess {
     static List collect(sqlText, Closure mapper) {
         sql.rows(sqlText).collect(mapper)
     }
+    
+    static void update(sqlText) {
+        sql.executeUpdate(sqlText)
+    }
 }

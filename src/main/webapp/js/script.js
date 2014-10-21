@@ -20,14 +20,11 @@ $(function() {
             type: method,
             data: body,
             success: function(data) {
-                console.log(data[0].title);
+                $('#response').text(JSON.stringify(data, null, 4));
             },
             error: function(xhr, status, error) {
-                console.dir({
-                    xhr: xhr,
-                    status: status,
-                    error: error
-                });
+                var json = JSON.parse(xhr.responseText)
+                $('#response').text(JSON.stringify(json, null, 4));
             }
         });
         

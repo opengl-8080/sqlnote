@@ -1,15 +1,17 @@
 package sqlnote.db
 
-import java.util.List;
-
-import groovy.sql.Sql
+import sqlnote.SqlNotFoundException
 import sqlnote.SqlNote
 
 class SqlNoteRepository {
 
     public SqlNote findById(long id) {
         DatabaseAccess.firstRow("SELECT * FROM SQL_NOTE WHERE ID=${id}") { row ->
-            this.buildSqlNote(row)
+            if (row) {
+                this.buildSqlNote(row)
+            } else {
+                throw new SqlNotFoundException(id)
+            }
         }
     }
     
@@ -51,4 +53,18 @@ class SqlNoteRepository {
             DatabaseAccess.delete("DELETE FROM SQL_NOTE WHERE ID=${id}")
         }
     }
+
+    public void modify(SqlNote note) {
+        DatabaseAccess.withTransaction {
+            DatabaseAccess.delete("DELETE FROM SQL_PARAMETERS WHERE SQL_ID=${note.id}")
+            DatabaseAccess.update("UPDATE SQL_NOTE SET TITLE=${note.title}, SQL_TEMPLATE=${note.sqlTemplate} WHERE ID=${note.id}")
+            
+            println note.parameterNames
+            
+            note.parameterNames.eachWithIndex { name, i ->
+                DatabaseAccess.insertSingle("INSERT INTO SQL_PARAMETERS VALUES (${note.id}, ${name}, ${i+1})")
+            }
+        }
+    }
+    
 }

@@ -9,6 +9,10 @@ SQL_NOTE:
     SQL_TEMPLATE: sql2
 -
     ID: 3
+    TITLE: title3
+    SQL_TEMPLATE: sql3
+-
+    ID: 4
     TITLE: 新規追加
     SQL_TEMPLATE: SQL Template
 
@@ -23,9 +27,13 @@ SQL_PARAMETERS:
     SORT_ORDER: 1
 -
     SQL_ID: 3
+    NAME: param3
+    SORT_ORDER: 1
+-
+    SQL_ID: 4
     NAME: aaa
     SORT_ORDER: 1
 -
-    SQL_ID: 3
+    SQL_ID: 4
     NAME: bbb
     SORT_ORDER: 2

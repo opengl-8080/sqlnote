@@ -8,11 +8,14 @@ import java.util.List;
 
 import jp.classmethod.testing.database.Fixture;
 
+import org.dbunit.Assertion;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import sqlnote.SqlNotFoundException;
 import sqlnote.SqlNote;
 import test.db.MyDBTester;
 
@@ -39,6 +42,12 @@ public class SqlNoteRepositoryTest {
         assertThat(actual.getTitle(), is("title2"));
         assertThat(actual.getSqlTemplate(), is("sql2"));
         assertThat(actual.getParameterNames(), is(contains("param1", "param2")));
+    }
+    
+    @Test(expected=SqlNotFoundException.class)
+    public void 検索_該当なしの場合は例外をスロー() throws Exception {
+        // exercise
+        repository.findById(99L);
     }
     
     @Test
@@ -86,5 +95,27 @@ public class SqlNoteRepositoryTest {
         IDataSet expected = dbTester.loadDataSet("SqlNoteRepositoryTest_削除_expected.yaml");
         dbTester.verifyTable("SQL_NOTE", expected);
         dbTester.verifyTable("SQL_PARAMETERS", expected);
+    }
+    
+    @Test
+    public void 更新() throws Exception {
+        // setup
+        SqlNote note = repository.findById(2L);
+        
+        note.setTitle("タイトル更新");
+        note.setSqlTemplate("SQL更新");
+        note.setParameterNames(Arrays.asList("param1_update", "param2_update", "param3_update"));
+        
+        // exercise
+        repository.modify(note);
+        
+        // verify
+        IDataSet expected = dbTester.loadDataSet("SqlNoteRepositoryTest_更新_expected.yaml");
+        dbTester.verifyTable("SQL_NOTE", expected);
+        
+        ITable actualSqlParameters = dbTester.getConnection().createQueryTable("SQL_PARAMETERS", "SELECT * FROM SQL_PARAMETERS ORDER BY SQL_ID ASC, SORT_ORDER ASC");
+        ITable expectedSqlParameters = expected.getTable("SQL_PARAMETERS");
+        
+        Assertion.assertEquals(expectedSqlParameters, actualSqlParameters);
     }
 }

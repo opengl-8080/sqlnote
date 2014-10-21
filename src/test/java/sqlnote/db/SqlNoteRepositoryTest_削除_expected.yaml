@@ -3,5 +3,13 @@ SQL_NOTE:
     ID: 1
     TITLE: title1
     SQL_TEMPLATE: sql1
+-
+    ID: 3
+    TITLE: title3
+    SQL_TEMPLATE: sql3
 
-SQL_PARAMETERS: []
+SQL_PARAMETERS: 
+-
+    SQL_ID: 3
+    NAME: param3
+    SORT_ORDER: 1

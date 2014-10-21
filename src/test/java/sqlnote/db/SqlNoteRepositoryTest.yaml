@@ -7,6 +7,10 @@ SQL_NOTE:
     ID: 2
     TITLE: title2
     SQL_TEMPLATE: sql2
+-
+    ID: 3
+    TITLE: title3
+    SQL_TEMPLATE: sql3
 
 SQL_PARAMETERS:
 -
@@ -16,4 +20,8 @@ SQL_PARAMETERS:
 -
     SQL_ID: 2
     NAME: param1
+    SORT_ORDER: 1
+-
+    SQL_ID: 3
+    NAME: param3
     SORT_ORDER: 1

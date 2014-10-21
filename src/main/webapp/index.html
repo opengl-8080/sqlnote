@@ -3,9 +3,12 @@
   <head>
     <style>
       textarea {
-        width: 500px;
-        height: 500px;
+        min-width: 300px;
+        max-width: 300px;
+        min-height: 300px;
         font-family: Consolas, 'Courier New', Courier, Monaco, monospace;
+        float: left;
+        margin-right: 50px;
       }
     </style>
   </head>
@@ -14,10 +17,13 @@
       method : <input id="method" value="GET" /><br>
       http://localhost:48123/sqlnote/api/<input id="path" /><button id="send" type="submit">send</button>
       <br>
-      <textarea id="body"></textarea><br>
+      <textarea id="body"></textarea>
+      <pre id="response"></pre>
+      <br>
     </form>
+    
+    <script src="js/jquery.min.js"></script>
+    <script src="js/underscore-min.js"></script>
+    <script src="js/script.js"></script>
   </body>
 </html>
-<script src="js/jquery.min.js"></script>
-<script src="js/underscore-min.js"></script>
-<script src="js/script.js"></script>
