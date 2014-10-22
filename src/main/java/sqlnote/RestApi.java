@@ -83,6 +83,7 @@ public class RestApi {
         Flyway flyway = new Flyway();
         flyway.setDataSource(DatabaseAccess.URL, DatabaseAccess.USER, DatabaseAccess.PASS);
         flyway.setPlaceholderPrefix("#{");
+//        flyway.clean();
         flyway.migrate();
         
         System.out.println("migrate test database");

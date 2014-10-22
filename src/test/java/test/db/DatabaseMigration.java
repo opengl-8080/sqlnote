@@ -7,6 +7,7 @@ public class DatabaseMigration {
     public static void main(String[] args) {
         Flyway flyway = new Flyway();
         flyway.setDataSource("jdbc:hsqldb:file:testdb/sqlnote;shutdown=true", "SA", "");
+        flyway.setPlaceholderPrefix("#{");
         flyway.clean();
         flyway.migrate();
         

@@ -2,6 +2,8 @@ package sqlnote.db
 
 import groovy.sql.Sql
 
+import java.sql.ResultSet
+
 public class DatabaseAccess {
     private static Sql sql;
     public static final String URL = 'jdbc:hsqldb:file:db/sqlnote;shutdown=true'
@@ -46,5 +48,9 @@ public class DatabaseAccess {
     
     static void update(sqlText) {
         sql.executeUpdate(sqlText)
+    }
+    
+    static void withResultSet(sqlText, closure) {
+        closure(sql.executeQuery(sqlText))
     }
 }

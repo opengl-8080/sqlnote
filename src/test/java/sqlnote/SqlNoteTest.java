@@ -2,9 +2,11 @@ package sqlnote;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
+import static test.db.TestHelper.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -80,7 +82,11 @@ public class SqlNoteTest {
         exception.expectMessage("パラメータ名が重複しています。");
         
         // exercise
-        new SqlNote().setParameterNames(new ArrayList<>(Arrays.asList("aaa", "bbb", "aaa")));
+        new SqlNote().setParameterNames(parameters(stringParameter("aaa"), stringParameter("bbb"), numberParameter("aaa")));
+    }
+    
+    private List<SqlParameter> parameters(SqlParameter... parameters) {
+        return new ArrayList<>(Arrays.asList(parameters));
     }
     
     @Test
@@ -90,7 +96,7 @@ public class SqlNoteTest {
         exception.expectMessage("パラメータ名に $, {, } は使用できません。");
         
         // exercise
-        new SqlNote().setParameterNames(new ArrayList<>(Arrays.asList("aaa$", "bbb")));
+        new SqlNote().setParameterNames(parameters(stringParameter("aaa$"), stringParameter("bbb")));
     }
     
     @Test
@@ -100,7 +106,7 @@ public class SqlNoteTest {
         exception.expectMessage("パラメータ名に $, {, } は使用できません。");
         
         // exercise
-        new SqlNote().setParameterNames(new ArrayList<>(Arrays.asList("aaa", "b{bb")));
+        new SqlNote().setParameterNames(parameters(stringParameter("aaa$"), stringParameter("b{bb")));
     }
     
     @Test
@@ -110,6 +116,8 @@ public class SqlNoteTest {
         exception.expectMessage("パラメータ名に $, {, } は使用できません。");
         
         // exercise
-        new SqlNote().setParameterNames(new ArrayList<>(Arrays.asList("a}aa", "bbb")));
+        new SqlNote().setParameterNames(parameters(stringParameter("a}aa"), stringParameter("b{bb")));
     }
+    
+//    public void パラメータのバインド
 }

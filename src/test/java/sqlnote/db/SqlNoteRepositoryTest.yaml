@@ -16,12 +16,15 @@ SQL_PARAMETERS:
 -
     SQL_ID: 2
     NAME: param2
+    DATA_TYPE: STRING
     SORT_ORDER: 2
 -
     SQL_ID: 2
     NAME: param1
+    DATA_TYPE: DATE
     SORT_ORDER: 1
 -
     SQL_ID: 3
     NAME: param3
+    DATA_TYPE: NUMBER
     SORT_ORDER: 1

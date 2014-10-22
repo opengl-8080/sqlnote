@@ -12,6 +12,7 @@ class UrlBuilder {
     public static final String DELETE_SQL_PATH = "${GET_ALL_SQL_PATH}/:id";
     public static final String GET_SQL_DETAIL = DELETE_SQL_PATH;
     public static final String PUT_SQL = DELETE_SQL_PATH;
+    public static final String EXECUTE_SQL = "${DELETE_SQL_PATH}/result";
 
     public static String buildSqlDetailUrl(long id) {
         "${URL_BASE}${GET_ALL_SQL_PATH}/${id}"

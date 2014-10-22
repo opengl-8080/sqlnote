@@ -54,6 +54,11 @@ public class UrlBuilderTest {
     }
     
     @Test
+    public void executeSql() throws Exception {
+        assertThat(UrlBuilder.EXECUTE_SQL, is(DELETE_SQL_PATH + "/result"));
+    }
+    
+    @Test
     public void buildExecuteSqlUrl() throws Exception {
         assertThat(UrlBuilder.buildExecuteSqlUrl(21), is(UrlBuilder.buildSqlDetailUrl(21) + "/result"));
     }

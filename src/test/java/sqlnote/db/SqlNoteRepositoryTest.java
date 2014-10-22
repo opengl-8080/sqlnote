@@ -2,6 +2,7 @@ package sqlnote.db;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
+import static test.db.TestHelper.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -41,7 +42,7 @@ public class SqlNoteRepositoryTest {
         assertThat(actual.getId(), is(2L));
         assertThat(actual.getTitle(), is("title2"));
         assertThat(actual.getSqlTemplate(), is("sql2"));
-        assertThat(actual.getParameterNames(), is(contains("param1", "param2")));
+        assertThat(actual.getParameterNames(), is(contains(dateParameter("param1"), stringParameter("param2"))));
     }
     
     @Test(expected=SqlNotFoundException.class)
@@ -56,6 +57,8 @@ public class SqlNoteRepositoryTest {
         List<SqlNote> actual = repository.findAll();
         
         // verify
+        assertThat(actual.size(), is(3));
+        
         assertThat(actual.get(0).getId(), is(1L));
         assertThat(actual.get(0).getTitle(), is("title1"));
         assertThat(actual.get(0).getSqlTemplate(), is("sql1"));
@@ -64,7 +67,12 @@ public class SqlNoteRepositoryTest {
         assertThat(actual.get(1).getId(), is(2L));
         assertThat(actual.get(1).getTitle(), is("title2"));
         assertThat(actual.get(1).getSqlTemplate(), is("sql2"));
-        assertThat(actual.get(1).getParameterNames(), is(contains("param1", "param2")));
+        assertThat(actual.get(1).getParameterNames(), is(contains(dateParameter("param1"), stringParameter("param2"))));
+
+        assertThat(actual.get(2).getId(), is(3L));
+        assertThat(actual.get(2).getTitle(), is("title3"));
+        assertThat(actual.get(2).getSqlTemplate(), is("sql3"));
+        assertThat(actual.get(2).getParameterNames(), is(contains(numberParameter("param3"))));
     }
     
     @Test
@@ -73,7 +81,7 @@ public class SqlNoteRepositoryTest {
         SqlNote note = new SqlNote();
         note.setTitle("新規追加");
         note.setSqlTemplate("SQL Template");
-        note.setParameterNames(Arrays.asList("aaa", "bbb"));
+        note.setParameterNames(Arrays.asList(stringParameter("aaa"), numberParameter("bbb")));
         
         // exercise
         repository.register(note);
@@ -104,7 +112,7 @@ public class SqlNoteRepositoryTest {
         
         note.setTitle("タイトル更新");
         note.setSqlTemplate("SQL更新");
-        note.setParameterNames(Arrays.asList("param1_update", "param2_update", "param3_update"));
+        note.setParameterNames(Arrays.asList(stringParameter("param1_update"), dateParameter("param2_update"), numberParameter("param3_update")));
         
         // exercise
         repository.modify(note);

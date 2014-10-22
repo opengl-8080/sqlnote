@@ -12,4 +12,5 @@ SQL_PARAMETERS:
 -
     SQL_ID: 3
     NAME: param3
+    DATA_TYPE: NUMBER
     SORT_ORDER: 1

@@ -4,7 +4,7 @@ class SqlNote {
     Long id
     String title = '新規SQL'
     String sqlTemplate = '-- SQL を入力してください'
-    List<String> parameterNames
+    List<SqlParameter> parameterNames
     
     void setTitle(title) {
         if (!title) {
@@ -20,18 +20,18 @@ class SqlNote {
         this.sqlTemplate = sqlTemplate;
     }
 
-    public void setParameterNames(List<String> parameterNames) {
-        def unique = parameterNames.unique(false)
-        if (unique != parameterNames) {
+    public void setParameterNames(List<SqlParameter> parameters) {
+        def unique = parameters.unique(false) {it.name}
+        if (unique != parameters) {
             throw new IllegalParameterException('パラメータ名が重複しています。')
         }
         
-        parameterNames.each {
-            if (it =~ /[\$\{\}]/) {
+        parameters.each {
+            if (it.name =~ /[\$\{\}]/) {
                 throw new IllegalParameterException('パラメータ名に $, {, } は使用できません。')
             }
         }
         
-        this.parameterNames = parameterNames;
+        this.parameterNames = parameters;
     }
 }

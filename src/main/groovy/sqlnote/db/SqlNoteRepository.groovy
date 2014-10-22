@@ -1,7 +1,9 @@
 package sqlnote.db
 
+import sqlnote.DataType;
 import sqlnote.SqlNotFoundException
 import sqlnote.SqlNote
+import sqlnote.SqlParameter
 
 class SqlNoteRepository {
 
@@ -26,8 +28,10 @@ class SqlNoteRepository {
         note
     }
     
-    private List<String> queryParameterNames(long sqlId) {
-        DatabaseAccess.collect("SELECT * FROM SQL_PARAMETERS WHERE SQL_ID=${sqlId} ORDER BY SORT_ORDER ASC") { it.NAME }
+    private List<SqlParameter> queryParameterNames(long sqlId) {
+        DatabaseAccess.collect("SELECT * FROM SQL_PARAMETERS WHERE SQL_ID=${sqlId} ORDER BY SORT_ORDER ASC") {
+            new SqlParameter(it.NAME, DataType.valueOf(it.DATA_TYPE))
+        }
     }
 
     public List<SqlNote> findAll() {
@@ -41,9 +45,7 @@ class SqlNoteRepository {
             long id = DatabaseAccess.insertSingle("INSERT INTO SQL_NOTE (TITLE, SQL_TEMPLATE) VALUES (${note.title}, ${note.sqlTemplate})")
             note.id = id
             
-            note.parameterNames.eachWithIndex { name, i ->
-                DatabaseAccess.insertSingle("INSERT INTO SQL_PARAMETERS VALUES (${id}, ${name}, ${i+1})")
-            }
+            insertSqlParameters(note.id, note.parameterNames);
         }
     }
 
@@ -59,12 +61,17 @@ class SqlNoteRepository {
             DatabaseAccess.delete("DELETE FROM SQL_PARAMETERS WHERE SQL_ID=${note.id}")
             DatabaseAccess.update("UPDATE SQL_NOTE SET TITLE=${note.title}, SQL_TEMPLATE=${note.sqlTemplate} WHERE ID=${note.id}")
             
-            println note.parameterNames
-            
-            note.parameterNames.eachWithIndex { name, i ->
-                DatabaseAccess.insertSingle("INSERT INTO SQL_PARAMETERS VALUES (${note.id}, ${name}, ${i+1})")
-            }
+            insertSqlParameters(note.id, note.parameterNames);
         }
     }
     
+    private void insertSqlParameters(long sqlId, List<SqlParameter> sqlParameters) {
+        sqlParameters.eachWithIndex { param, i ->
+            DatabaseAccess.insertSingle("INSERT INTO SQL_PARAMETERS VALUES (${sqlId}, ${param.name}, ${param.dataType.toString()}, ${i+1})")
+        }
+    }
+    
+    public void getRecord(SqlNote note) {
+//        DatabaseAccess.withResultSet(, this)
+    }
 }

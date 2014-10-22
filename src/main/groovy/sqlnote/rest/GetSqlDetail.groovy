@@ -15,7 +15,12 @@ class GetSqlDetail {
             id note.id
             title note.title
             sql note.sqlTemplate
-            parameterNames note.parameterNames
+            parameterNames note.parameterNames.collect {
+                [
+                    name: it.name,
+                    type: it.dataType
+                ]
+            }
             executeSqlUrl UrlBuilder.buildExecuteSqlUrl(note.id)
         }
         
