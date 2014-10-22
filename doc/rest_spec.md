@@ -90,7 +90,7 @@
 	"id": 5,
 	"title": "～～を検索する",
 	"sql": "SELECT *\n FROM TEST_TABLE",
-	"parameterNames": [
+	"parameters": [
 		{
 			"name": "CODE",
 			"type": "string"
@@ -117,7 +117,7 @@
 {
 	"title": "～～を検索する",
 	"sql": "SELECT *\n FROM TEST_TABLE",
-	"parameterNames": [
+	"parameters": [
 		{
 			"name": "CODE",
 			"type": "string"

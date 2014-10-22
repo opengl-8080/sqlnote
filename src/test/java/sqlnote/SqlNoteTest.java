@@ -82,7 +82,7 @@ public class SqlNoteTest {
         exception.expectMessage("パラメータ名が重複しています。");
         
         // exercise
-        new SqlNote().setParameterNames(parameters(stringParameter("aaa"), stringParameter("bbb"), numberParameter("aaa")));
+        new SqlNote().setParameters(parameters(stringParameter("aaa"), stringParameter("bbb"), numberParameter("aaa")));
     }
     
     private List<SqlParameter> parameters(SqlParameter... parameters) {
@@ -96,7 +96,7 @@ public class SqlNoteTest {
         exception.expectMessage("パラメータ名に $, {, } は使用できません。");
         
         // exercise
-        new SqlNote().setParameterNames(parameters(stringParameter("aaa$"), stringParameter("bbb")));
+        new SqlNote().setParameters(parameters(stringParameter("aaa$"), stringParameter("bbb")));
     }
     
     @Test
@@ -106,7 +106,7 @@ public class SqlNoteTest {
         exception.expectMessage("パラメータ名に $, {, } は使用できません。");
         
         // exercise
-        new SqlNote().setParameterNames(parameters(stringParameter("aaa$"), stringParameter("b{bb")));
+        new SqlNote().setParameters(parameters(stringParameter("aaa$"), stringParameter("b{bb")));
     }
     
     @Test
@@ -116,8 +116,34 @@ public class SqlNoteTest {
         exception.expectMessage("パラメータ名に $, {, } は使用できません。");
         
         // exercise
-        new SqlNote().setParameterNames(parameters(stringParameter("a}aa"), stringParameter("b{bb")));
+        new SqlNote().setParameters(parameters(stringParameter("a}aa"), stringParameter("b{bb")));
     }
     
-//    public void パラメータのバインド
+    @Test
+    public void SQLテンプレートで未定義のパラメータが使用されていた場合_例外がスローされる() throws Exception {
+        // setup
+        exception.expect(IllegalParameterException.class);
+        exception.expectMessage("notExists はパラメータに定義されていません。");
+        
+        SqlNote note = new SqlNote();
+        note.setSqlTemplate("${exists} ${notExists}");
+        note.setParameters(parameters(stringParameter("exists")));
+        
+        // exercise
+        note.verify();
+    }
+    
+    @Test
+    public void SQLテンプレートに使用されていないパラメータが定義されている場合_例外がスローされる() throws Exception {
+        // setup
+        exception.expect(IllegalParameterException.class);
+        exception.expectMessage("noUsed は SQL で使用されていません。");
+        
+        SqlNote note = new SqlNote();
+        note.setSqlTemplate("${used}");
+        note.setParameters(parameters(stringParameter("used"), numberParameter("noUsed")));
+        
+        // exercise
+        note.verify();
+    }
 }

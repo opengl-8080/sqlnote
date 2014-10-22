@@ -12,6 +12,10 @@ SQL_NOTE:
     TITLE: title3
     SQL_TEMPLATE: sql3
 -
+    ID: 90
+    TITLE: title90
+    SQL_TEMPLATE: sql90
+-
     ID: 4
     TITLE: 新規追加
     SQL_TEMPLATE: SQL Template

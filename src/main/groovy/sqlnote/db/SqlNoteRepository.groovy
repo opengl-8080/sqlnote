@@ -23,13 +23,14 @@ class SqlNoteRepository {
         note.id = row.ID
         note.title = row.TITLE
         note.sqlTemplate = row.SQL_TEMPLATE
-        note.parameterNames = this.queryParameterNames(row.ID)
+        note.parameters = this.queryParameterNames(row.ID)
         
         note
     }
     
     private List<SqlParameter> queryParameterNames(long sqlId) {
         DatabaseAccess.collect("SELECT * FROM SQL_PARAMETERS WHERE SQL_ID=${sqlId} ORDER BY SORT_ORDER ASC") {
+            println "${it.NAME}, ${it.DATA_TYPE}"
             new SqlParameter(it.NAME, DataType.valueOf(it.DATA_TYPE))
         }
     }
@@ -45,7 +46,7 @@ class SqlNoteRepository {
             long id = DatabaseAccess.insertSingle("INSERT INTO SQL_NOTE (TITLE, SQL_TEMPLATE) VALUES (${note.title}, ${note.sqlTemplate})")
             note.id = id
             
-            insertSqlParameters(note.id, note.parameterNames);
+            insertSqlParameters(note.id, note.parameters);
         }
     }
 
@@ -57,11 +58,13 @@ class SqlNoteRepository {
     }
 
     public void modify(SqlNote note) {
+        note.verify()
+        
         DatabaseAccess.withTransaction {
             DatabaseAccess.delete("DELETE FROM SQL_PARAMETERS WHERE SQL_ID=${note.id}")
             DatabaseAccess.update("UPDATE SQL_NOTE SET TITLE=${note.title}, SQL_TEMPLATE=${note.sqlTemplate} WHERE ID=${note.id}")
             
-            insertSqlParameters(note.id, note.parameterNames);
+            insertSqlParameters(note.id, note.parameters);
         }
     }
     

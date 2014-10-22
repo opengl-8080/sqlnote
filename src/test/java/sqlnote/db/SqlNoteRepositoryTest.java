@@ -42,7 +42,7 @@ public class SqlNoteRepositoryTest {
         assertThat(actual.getId(), is(2L));
         assertThat(actual.getTitle(), is("title2"));
         assertThat(actual.getSqlTemplate(), is("sql2"));
-        assertThat(actual.getParameterNames(), is(contains(dateParameter("param1"), stringParameter("param2"))));
+        assertThat(actual.getParameters(), is(contains(dateParameter("param1"), stringParameter("param2"))));
     }
     
     @Test(expected=SqlNotFoundException.class)
@@ -57,22 +57,27 @@ public class SqlNoteRepositoryTest {
         List<SqlNote> actual = repository.findAll();
         
         // verify
-        assertThat(actual.size(), is(3));
+        assertThat(actual.size(), is(4));
         
         assertThat(actual.get(0).getId(), is(1L));
         assertThat(actual.get(0).getTitle(), is("title1"));
         assertThat(actual.get(0).getSqlTemplate(), is("sql1"));
-        assertThat(actual.get(0).getParameterNames(), is(empty()));
+        assertThat(actual.get(0).getParameters(), is(empty()));
 
         assertThat(actual.get(1).getId(), is(2L));
         assertThat(actual.get(1).getTitle(), is("title2"));
         assertThat(actual.get(1).getSqlTemplate(), is("sql2"));
-        assertThat(actual.get(1).getParameterNames(), is(contains(dateParameter("param1"), stringParameter("param2"))));
+        assertThat(actual.get(1).getParameters(), is(contains(dateParameter("param1"), stringParameter("param2"))));
 
         assertThat(actual.get(2).getId(), is(3L));
         assertThat(actual.get(2).getTitle(), is("title3"));
         assertThat(actual.get(2).getSqlTemplate(), is("sql3"));
-        assertThat(actual.get(2).getParameterNames(), is(contains(numberParameter("param3"))));
+        assertThat(actual.get(2).getParameters(), is(contains(numberParameter("param3"))));
+
+        assertThat(actual.get(3).getId(), is(90L));
+        assertThat(actual.get(3).getTitle(), is("title90"));
+        assertThat(actual.get(3).getSqlTemplate(), is("sql90"));
+        assertThat(actual.get(3).getParameters(), is(empty()));
     }
     
     @Test
@@ -81,7 +86,7 @@ public class SqlNoteRepositoryTest {
         SqlNote note = new SqlNote();
         note.setTitle("新規追加");
         note.setSqlTemplate("SQL Template");
-        note.setParameterNames(Arrays.asList(stringParameter("aaa"), numberParameter("bbb")));
+        note.setParameters(Arrays.asList(stringParameter("aaa"), numberParameter("bbb")));
         
         // exercise
         repository.register(note);
@@ -111,8 +116,28 @@ public class SqlNoteRepositoryTest {
         SqlNote note = repository.findById(2L);
         
         note.setTitle("タイトル更新");
-        note.setSqlTemplate("SQL更新");
-        note.setParameterNames(Arrays.asList(stringParameter("param1_update"), dateParameter("param2_update"), numberParameter("param3_update")));
+        note.setSqlTemplate("SQL更新 ${param1_update} ${param2_update} ${param3_update}");
+        note.setParameters(Arrays.asList(stringParameter("param1_update"), dateParameter("param2_update"), numberParameter("param3_update")));
+        
+        // exercise
+        repository.modify(note);
+        
+        // verify
+        IDataSet expected = dbTester.loadDataSet("SqlNoteRepositoryTest_更新_expected.yaml");
+        dbTester.verifyTable("SQL_NOTE", expected);
+        
+        ITable actualSqlParameters = dbTester.getConnection().createQueryTable("SQL_PARAMETERS", "SELECT * FROM SQL_PARAMETERS ORDER BY SQL_ID ASC, SORT_ORDER ASC");
+        ITable expectedSqlParameters = expected.getTable("SQL_PARAMETERS");
+        
+        Assertion.assertEquals(expectedSqlParameters, actualSqlParameters);
+    }
+    
+    @Test
+    public void 更新_パラメータが存在しないSQLを更新する() throws Exception {
+        // setup
+        SqlNote note = repository.findById(90L);
+        note.setSqlTemplate("${param1_update}");
+        note.setParameters(Arrays.asList(stringParameter("param1_update")));
         
         // exercise
         repository.modify(note);

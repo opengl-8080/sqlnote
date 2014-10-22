@@ -11,6 +11,10 @@ SQL_NOTE:
     ID: 3
     TITLE: title3
     SQL_TEMPLATE: sql3
+-
+    ID: 90
+    TITLE: title90
+    SQL_TEMPLATE: sql90
 
 SQL_PARAMETERS:
 -

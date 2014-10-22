@@ -1,8 +1,10 @@
 package sqlnote.rest
 
-import sqlnote.SqlNote;
-import sqlnote.db.SqlNoteRepository;
 import groovy.json.JsonSlurper
+import sqlnote.DataType
+import sqlnote.SqlNote
+import sqlnote.SqlParameter
+import sqlnote.db.SqlNoteRepository
 
 class PutSql {
     
@@ -14,7 +16,7 @@ class PutSql {
         
         note.title = json.title
         note.sqlTemplate = json.sql
-        note.parameterNames = json.parameterNames
+        note.parameters = json.parameters.collect {new SqlParameter(it.name, DataType.valueOf(it.type))}
         
         repository.modify(note)
     }

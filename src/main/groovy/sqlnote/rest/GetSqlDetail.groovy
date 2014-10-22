@@ -15,7 +15,7 @@ class GetSqlDetail {
             id note.id
             title note.title
             sql note.sqlTemplate
-            parameterNames note.parameterNames.collect {
+            parameters note.parameters.collect {
                 [
                     name: it.name,
                     type: it.dataType
