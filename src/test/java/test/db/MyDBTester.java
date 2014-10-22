@@ -5,7 +5,7 @@ import jp.classmethod.testing.database.YamlDataSet;
 
 import org.dbunit.dataset.IDataSet;
 
-import sqlnote.db.DatabaseAccess;
+import sqlnote.db.LocalDatabaseAccess;
 
 public class MyDBTester extends DbUnitTester {
     
@@ -22,7 +22,7 @@ public class MyDBTester extends DbUnitTester {
     private MyDBTester(JdbcDatabaseConnectionManager manager, Class<?> testClass) {
         super(manager);
         this.testClass = testClass;
-        DatabaseAccess.init("jdbc:hsqldb:file:testdb/sqlnote;shutdown=true");
+        LocalDatabaseAccess.init("jdbc:hsqldb:file:testdb/sqlnote;shutdown=true");
     }
 
     private static class RuskJdbcDatabaseConnectionManager extends JdbcDatabaseConnectionManager {

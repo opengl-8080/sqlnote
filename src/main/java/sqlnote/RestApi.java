@@ -8,7 +8,7 @@ import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import sqlnote.db.DatabaseAccess;
+import sqlnote.db.LocalDatabaseAccess;
 import sqlnote.rest.DeleteSql;
 import sqlnote.rest.ErrorMessageBuilder;
 import sqlnote.rest.GetAllSql;
@@ -23,7 +23,7 @@ public class RestApi {
         migrateDatabase();
         setPort(PORT);
         externalStaticFileLocation("src/main/webapp");
-        DatabaseAccess.init();
+        LocalDatabaseAccess.init();
         
         before(API_FILTER, (req, res) -> {
             res.type("application/json");
@@ -81,7 +81,7 @@ public class RestApi {
 
     private static void migrateDatabase() {
         Flyway flyway = new Flyway();
-        flyway.setDataSource(DatabaseAccess.URL, DatabaseAccess.USER, DatabaseAccess.PASS);
+        flyway.setDataSource(LocalDatabaseAccess.URL, LocalDatabaseAccess.USER, LocalDatabaseAccess.PASS);
         flyway.setPlaceholderPrefix("#{");
 //        flyway.clean();
         flyway.migrate();

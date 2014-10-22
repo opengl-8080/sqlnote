@@ -4,7 +4,7 @@ import groovy.sql.Sql
 
 import java.sql.ResultSet
 
-public class DatabaseAccess {
+public class LocalDatabaseAccess {
     private static Sql sql;
     public static final String URL = 'jdbc:hsqldb:file:db/sqlnote;shutdown=true'
     public static final String USER = 'SA'
