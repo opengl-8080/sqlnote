@@ -4,12 +4,12 @@ import groovy.json.JsonBuilder
 
 class SeeOtherResponseBuilder {
     
-    static String build(int cnt, String baseUrl) {
+    static String build(int cnt, String requestUrl, String queryString) {
         def json = new JsonBuilder()
         
         json {
             recordCount cnt
-            url "${baseUrl}&type=csv"
+            url "${requestUrl}?${queryString}&type=csv"
         }
         
         return json.toString()

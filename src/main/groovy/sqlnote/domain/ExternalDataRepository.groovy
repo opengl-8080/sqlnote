@@ -15,17 +15,17 @@ class ExternalDataRepository {
     void export(long sqlId, long dsId, Map<String, String> condition, ResponseWriter rw) {
         GString sqlGString = this.buildSqlGString(sqlId, condition)
         
-        rw.write {
-            ExternalDataSource.with(dsId) { ExternalDatabase ex, DatabaseAccess db ->
-                db.query(sqlGString) { ResultSet rs ->
-                    List<ColumnMetaData> metaDatas = ex.makeColumnMetaData(rs)
-                    
+        ExternalDataSource.with(dsId) { ExternalDatabase ex, DatabaseAccess db ->
+            db.query(sqlGString) { ResultSet rs ->
+                int recordCount = this.getRecordCount(rs)
+                if (1000 < recordCount) {
+                    throw new TooManyQueryDataException(recordCount)
+                }
+                
+                List<ColumnMetaData> metaDatas = ex.makeColumnMetaData(rs)
+                
+                rw.write {
                     rw.writeColumnMetaDatas(metaDatas)
-                    
-                    int recordCount = this.getRecordCount(rs)
-                    if (1000 < recordCount) {
-                        throw new TooManyQueryDataException(recordCount)
-                    }
                     
                     while (rs.next()) {
                         def data = this.convertToMap(metaDatas, rs)

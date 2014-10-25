@@ -163,17 +163,16 @@ public class RestApi {
             long sqlId = Long.parseLong(req.params("id"));
             long dsId = Long.parseLong(req.queryParams("dataSource"));
             Map<String, String[]> condition = req.queryMap("s").toMap();
-            
             OutputStream os = getOutputStream(res);
             
             try {
                 new QueryData().execute(sqlId, dsId, condition, os);
                 res.status(200);
+                return "";
             } catch (TooManyQueryDataException e) {
                 res.status(303);
-                SeeOtherResponseBuilder.build(e.getRecordCount(), req.url());
+                return SeeOtherResponseBuilder.build(e.getRecordCount(), req.url(), req.queryString());
             }
-            return "";
         });
     }
     
