@@ -9,6 +9,7 @@ import sqlnote.db.DatabaseAccess
 import sqlnote.db.ExternalDataSource
 import sqlnote.db.ExternalDatabase
 import sqlnote.db.SystemDataSource
+import sqlnote.rest.query.DefaultResponseWriter;
 
 class ExternalDataRepository {
     
@@ -18,14 +19,14 @@ class ExternalDataRepository {
         ExternalDataSource.with(dsId) { ExternalDatabase ex, DatabaseAccess db ->
             db.query(sqlGString) { ResultSet rs ->
                 int recordCount = this.getRecordCount(rs)
-                if (1000 < recordCount) {
+                if (!rw.canWrite(recordCount)) {
                     throw new TooManyQueryDataException(recordCount)
                 }
                 
                 List<ColumnMetaData> metaDatas = ex.makeColumnMetaData(rs)
                 
                 rw.write {
-                    rw.writeColumnMetaDatas(metaDatas)
+                    rw.writeColumnInfo(metaDatas)
                     
                     while (rs.next()) {
                         def data = this.convertToMap(metaDatas, rs)

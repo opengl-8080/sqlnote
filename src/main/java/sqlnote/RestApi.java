@@ -6,10 +6,12 @@ import static sqlnote.rest.UrlBuilder.*;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Date;
 import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.eclipse.jetty.io.RuntimeIOException;
 import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
@@ -22,6 +24,7 @@ import sqlnote.db.SystemDataSource;
 import sqlnote.domain.DataSourceConfigurationRepository;
 import sqlnote.domain.EntityNotFoundException;
 import sqlnote.domain.IllegalParameterException;
+import sqlnote.domain.ResponseWriter;
 import sqlnote.domain.TooManyQueryDataException;
 import sqlnote.domain.UnConnectableDatabaseException;
 import sqlnote.rest.ErrorMessageBuilder;
@@ -30,6 +33,8 @@ import sqlnote.rest.dbconfig.GetAllDataSource;
 import sqlnote.rest.dbconfig.PostDataSource;
 import sqlnote.rest.dbconfig.PutDataSource;
 import sqlnote.rest.dbconfig.VerifyDataSource;
+import sqlnote.rest.query.CsvResponseWriter;
+import sqlnote.rest.query.DefaultResponseWriter;
 import sqlnote.rest.query.QueryData;
 import sqlnote.rest.query.SeeOtherResponseBuilder;
 import sqlnote.rest.sql.DeleteSql;
@@ -37,6 +42,8 @@ import sqlnote.rest.sql.GetAllSql;
 import sqlnote.rest.sql.GetSqlDetail;
 import sqlnote.rest.sql.PostSql;
 import sqlnote.rest.sql.PutSql;
+
+
 
 
 public class RestApi {
@@ -162,18 +169,35 @@ public class RestApi {
         get(EXECUTE_SQL, (req, res) -> {
             long sqlId = Long.parseLong(req.params("id"));
             long dsId = Long.parseLong(req.queryParams("dataSource"));
-            Map<String, String[]> condition = req.queryMap("s").toMap();
-            OutputStream os = getOutputStream(res);
+            Map<String, String[]> queryMap = req.queryMap("s").toMap();
+            ResponseWriter rw = createResponseWriter(req, res);
+            
+            if (isCsvRequest(req)) {
+                setHeadersForCsvOutput(res);
+            }
             
             try {
-                new QueryData().execute(sqlId, dsId, condition, os);
+                new QueryData().execute(sqlId, dsId, queryMap, rw);
                 res.status(200);
                 return "";
             } catch (TooManyQueryDataException e) {
+                res.type("application/json");
                 res.status(303);
                 return SeeOtherResponseBuilder.build(e.getRecordCount(), req.url(), req.queryString());
             }
         });
+    }
+    
+    private static ResponseWriter createResponseWriter(Request req, Response res) {
+        if (isCsvRequest(req)) {
+            return new CsvResponseWriter(getOutputStream(res));
+        } else {
+            return new DefaultResponseWriter(getOutputStream(res));
+        }
+    }
+    
+    private static boolean isCsvRequest(Request req) {
+        return "csv".equals(req.queryParams("type"));
     }
     
     private static OutputStream getOutputStream(Response res) {
@@ -182,6 +206,12 @@ public class RestApi {
         } catch (IOException e) {
             throw new RuntimeIOException(e);
         }
+    }
+    
+    private static void setHeadersForCsvOutput(Response res) {
+        res.type("text/csv");
+        String s = DateFormatUtils.format(new Date(), "yyyyMMdd_HHmmss");
+        res.header("content-disposition", "attachment; filename='query_result_" + s + ".txt'");
     }
     
     private static void defineExceptionHandler() {
