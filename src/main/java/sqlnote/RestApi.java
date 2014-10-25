@@ -22,6 +22,7 @@ import sqlnote.db.SystemDataSource;
 import sqlnote.domain.DataSourceConfigurationRepository;
 import sqlnote.domain.EntityNotFoundException;
 import sqlnote.domain.IllegalParameterException;
+import sqlnote.domain.TooManyQueryDataException;
 import sqlnote.domain.UnConnectableDatabaseException;
 import sqlnote.rest.ErrorMessageBuilder;
 import sqlnote.rest.dbconfig.DeleteDataSource;
@@ -30,11 +31,13 @@ import sqlnote.rest.dbconfig.PostDataSource;
 import sqlnote.rest.dbconfig.PutDataSource;
 import sqlnote.rest.dbconfig.VerifyDataSource;
 import sqlnote.rest.query.QueryData;
+import sqlnote.rest.query.SeeOtherResponseBuilder;
 import sqlnote.rest.sql.DeleteSql;
 import sqlnote.rest.sql.GetAllSql;
 import sqlnote.rest.sql.GetSqlDetail;
 import sqlnote.rest.sql.PostSql;
 import sqlnote.rest.sql.PutSql;
+
 
 public class RestApi {
     private static final Logger logger = LoggerFactory.getLogger(RestApi.class);
@@ -163,8 +166,13 @@ public class RestApi {
             
             OutputStream os = getOutputStream(res);
             
-            new QueryData().execute(sqlId, dsId, condition, os);
-            res.status(200);
+            try {
+                new QueryData().execute(sqlId, dsId, condition, os);
+                res.status(200);
+            } catch (TooManyQueryDataException e) {
+                res.status(303);
+                SeeOtherResponseBuilder.build(e.getRecordCount(), req.url());
+            }
             return "";
         });
     }

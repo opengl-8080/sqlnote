@@ -23,7 +23,9 @@ class ExternalDataRepository {
                     rw.writeColumnMetaDatas(metaDatas)
                     
                     int recordCount = this.getRecordCount(rs)
-                    println "recordCount=${recordCount}"
+                    if (1000 < recordCount) {
+                        throw new TooManyQueryDataException(recordCount)
+                    }
                     
                     while (rs.next()) {
                         def data = this.convertToMap(metaDatas, rs)
@@ -39,7 +41,7 @@ class ExternalDataRepository {
         
         TemplateAnalyzer analyzer = new TemplateAnalyzer()
         analyzer.analyze(sql.sqlTemplate)
-        
+        analyzer.verify(condition)
         
         def values = analyzer.parameterNames.collect { sql.convert(it, condition.get(it)) } as Object[]
         def strings = analyzer.strings as String[]
