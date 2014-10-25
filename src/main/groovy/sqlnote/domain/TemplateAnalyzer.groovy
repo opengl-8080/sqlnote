@@ -1,6 +1,7 @@
 package sqlnote.domain;
 
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -20,5 +21,19 @@ class TemplateAnalyzer {
 
     public List<String> getStrings() {
         new ArrayList<>(this.strings)
+    }
+
+    public void verify(Map<String, String> parameter) {
+        parameter.each { key, value ->
+            if (!this.parameterNames.contains(key)) {
+                throw new IllegalParameterException("${key} は SQL で使用されていません。")
+            }
+        }
+        
+        this.parameterNames.each { name ->
+            if (!parameter.containsKey(name)) {
+                throw new IllegalParameterException("${name} はパラメータで宣言されていません。")
+            }
+        }
     }
 }

@@ -40,6 +40,7 @@ class ExternalDataRepository {
         TemplateAnalyzer analyzer = new TemplateAnalyzer()
         analyzer.analyze(sql.sqlTemplate)
         
+        
         def values = analyzer.parameterNames.collect { sql.convert(it, condition.get(it)) } as Object[]
         def strings = analyzer.strings as String[]
         

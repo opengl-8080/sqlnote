@@ -3,13 +3,18 @@ package sqlnote.domain;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.junit.Rule;
 import org.junit.Test;
-
-import sqlnote.domain.TemplateAnalyzer;
+import org.junit.rules.ExpectedException;
 
 public class TemplateAnalyzerTest {
+    
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
     
     @Test
     public void バインドパラメータ文字列の抽出() throws Exception {
@@ -39,5 +44,38 @@ public class TemplateAnalyzerTest {
         // verify
         List<String> strings = analyzer.getStrings();
         assertThat(strings, contains("a", "bc", "def"));
+    }
+    
+    @Test
+    public void 定義されていないパラメータが存在する場合_例外がスローされる() throws Exception {
+        // setup
+        exception.expect(IllegalParameterException.class);
+        exception.expectMessage("unknown は SQL で使用されていません。");
+        
+        TemplateAnalyzer analyzer = new TemplateAnalyzer();
+        analyzer.analyze("${param1}, ${param2}");
+        
+        Map<String, String> parameter = new HashMap<>();
+        parameter.put("param1", "value");
+        parameter.put("unknown", "value");
+        
+        // exercise
+        analyzer.verify(parameter);
+    }
+    
+    @Test
+    public void SQLで使用されているパラメータが存在しない_例外がスローされる() throws Exception {
+        // setup
+        exception.expect(IllegalParameterException.class);
+        exception.expectMessage("unuse はパラメータで宣言されていません。");
+        
+        TemplateAnalyzer analyzer = new TemplateAnalyzer();
+        analyzer.analyze("${param1}, ${unuse}");
+        
+        Map<String, String> parameter = new HashMap<>();
+        parameter.put("param1", "value");
+        
+        // exercise
+        analyzer.verify(parameter);
     }
 }

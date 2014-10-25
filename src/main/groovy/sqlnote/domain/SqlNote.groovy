@@ -77,10 +77,10 @@ class SqlNote {
         }
     }
 
-    public <T> T convert(String parameterName, String src) {
+    public <T> T convert(String parameterName, String value) {
         // パラメータの数がパフォーマンスに影響を与えるほど増えることは考えにくいので、この実装（線形探索）で様子見
         SqlParameter parameter = this.parameters.find {it.name == parameterName}
-        parameter.dataType.convert(parameterName, src)
+        parameter.dataType.convert(parameterName, value)
     }
     
     private SqlDate parsetToSqlDate(String text) {
