@@ -1,9 +1,10 @@
-package sqlnote.rest
+package sqlnote.rest.sql
 
 import groovy.json.JsonBuilder
 import sqlnote.db.SystemDataSource;
 import sqlnote.domain.SqlNote;
 import sqlnote.domain.SqlNoteRepository;
+import sqlnote.rest.UrlBuilder;
 
 class GetSqlDetail {
     

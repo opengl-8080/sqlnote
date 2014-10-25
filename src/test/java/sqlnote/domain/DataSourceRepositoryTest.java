@@ -23,23 +23,23 @@ public class DataSourceRepositoryTest {
     @Rule
     public MyDBTester dbTester = new MyDBTester(DataSourceRepositoryTest.class);
     
-    private DatabaseConfigurationRepository repository;
+    private DataSourceConfigurationRepository repository;
     
     @Before
     public void setup() {
         Connection con = SystemDataSource.getConnection();
         DatabaseAccess db = new DatabaseAccess(con);
-        repository = new DatabaseConfigurationRepository(db);
+        repository = new DataSourceConfigurationRepository(db);
     }
     
     @Test
     public void 全件検索() throws Exception {
         // exercise
-        List<DatabaseConfiguration> configurations = repository.findAll();
+        List<DataSourceConfiguration> configurations = repository.findAll();
         
         // verify
         for (long i=1; i<=3; i++) {
-            DatabaseConfiguration config = configurations.get((int)i - 1);
+            DataSourceConfiguration config = configurations.get((int)i - 1);
             
             assertThat(config.getId(), is(i));
             assertThat(config.getName(), is("db" + i));
@@ -53,7 +53,7 @@ public class DataSourceRepositoryTest {
     @Test
     public void 一件検索() throws Exception {
         // exercise
-        DatabaseConfiguration config = repository.findById(2L);
+        DataSourceConfiguration config = repository.findById(2L);
         
         // verify
         assertThat(config.getId(), is(2L));
@@ -67,7 +67,7 @@ public class DataSourceRepositoryTest {
     @Test
     public void 追加() throws Exception {
         // setup
-        DatabaseConfiguration config = new DatabaseConfiguration();
+        DataSourceConfiguration config = new DataSourceConfiguration();
         config.setName("db4");
         config.setDriver("driver4");
         config.setUrl("url4");
@@ -79,7 +79,7 @@ public class DataSourceRepositoryTest {
         
         // verify
         IDataSet expected = dbTester.loadDataSet("DataSourceRepositoryTest_追加_expected.yaml");
-        dbTester.verifyTable("DATABASE_CONFIGURATION", expected, "ID");
+        dbTester.verifyTable("DATA_SOURCE_CONFIGURATION", expected, "ID");
         
         assertThat(config.getId(), is(greaterThan(0L)));
     }
@@ -87,7 +87,7 @@ public class DataSourceRepositoryTest {
     @Test
     public void 更新() throws Exception {
         // setup
-        DatabaseConfiguration config = new DatabaseConfiguration();
+        DataSourceConfiguration config = new DataSourceConfiguration();
         config.setId(2L);
         config.setName("DB");
         config.setDriver("DRIVER");
@@ -100,7 +100,7 @@ public class DataSourceRepositoryTest {
         
         // verify
         IDataSet expected = dbTester.loadDataSet("DataSourceRepositoryTest_更新_expected.yaml");
-        dbTester.verifyTable("DATABASE_CONFIGURATION", expected);
+        dbTester.verifyTable("DATA_SOURCE_CONFIGURATION", expected);
     }
     
     @Test
@@ -110,6 +110,6 @@ public class DataSourceRepositoryTest {
         
         // verify
         IDataSet expected = dbTester.loadDataSet("DataSourceRepositoryTest_削除_expected.yaml");
-        dbTester.verifyTable("DATABASE_CONFIGURATION", expected);
+        dbTester.verifyTable("DATA_SOURCE_CONFIGURATION", expected);
     }
 }

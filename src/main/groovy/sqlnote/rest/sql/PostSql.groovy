@@ -1,4 +1,4 @@
-package sqlnote.rest
+package sqlnote.rest.sql
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

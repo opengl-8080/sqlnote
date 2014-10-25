@@ -10,29 +10,112 @@ import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import spark.Request;
+import spark.Response;
+import sqlnote.db.DataSourceCache;
 import sqlnote.db.SystemDataSource;
+import sqlnote.domain.DataSourceConfigurationRepository;
+import sqlnote.domain.EntityNotFoundException;
 import sqlnote.domain.IllegalParameterException;
-import sqlnote.domain.SqlNotFoundException;
-import sqlnote.rest.DeleteSql;
+import sqlnote.domain.UnConnectableDatabaseException;
 import sqlnote.rest.ErrorMessageBuilder;
-import sqlnote.rest.GetAllSql;
-import sqlnote.rest.GetSqlDetail;
-import sqlnote.rest.PostSql;
-import sqlnote.rest.PutSql;
+import sqlnote.rest.dbconfig.DeleteDataSource;
+import sqlnote.rest.dbconfig.GetAllDataSource;
+import sqlnote.rest.dbconfig.PostDataSource;
+import sqlnote.rest.dbconfig.PutDataSource;
+import sqlnote.rest.dbconfig.VerifyDataSource;
+import sqlnote.rest.sql.DeleteSql;
+import sqlnote.rest.sql.GetAllSql;
+import sqlnote.rest.sql.GetSqlDetail;
+import sqlnote.rest.sql.PostSql;
+import sqlnote.rest.sql.PutSql;
 
 public class RestApi {
     private static final Logger logger = LoggerFactory.getLogger(RestApi.class);
     
     public static void main(String[] args) {
         migrateDatabase(SystemDataSource.init());
+        loadDataSource();
         setPort(PORT);
-        externalStaticFileLocation("src/main/webapp");
+        staticFileLocation("/webapp");
         
+        defineSqlApi();
+        defineDatabaseConfigApi();
+
+        defineFilter();
+        defineExceptionHandler();
+    }
+
+    private static void migrateDatabase(DataSource ds) {
+        Flyway flyway = new Flyway();
+        flyway.setDataSource(ds);
+        flyway.setPlaceholderPrefix("#{");
+//        flyway.clean();
+        flyway.migrate();
+        
+        System.out.println("migrate test database");
+    }
+    
+    private static void loadDataSource() {
+        SystemDataSource.with(db -> {
+            new DataSourceConfigurationRepository(db).findAll().forEach(config -> {
+                DataSourceCache.put(config.getId(), config);
+            });
+        });
+    }
+    
+    private static void defineFilter() {
         before(API_FILTER, (req, res) -> {
             res.type("application/json");
             logger.debug("{} : {}", req.requestMethod(), req.pathInfo());
         });
         
+        after(API_FILTER, (req, res) -> {
+            logger.info("{} : {} - Status : {}", req.requestMethod(), req.pathInfo(), res.raw().getStatus());
+        });
+    }
+    
+    private static void defineDatabaseConfigApi() {
+        get(GET_ALL_DATASOURCE_PATH, (req, res) -> {
+            String response = new GetAllDataSource().execute();
+            res.status(200);
+            return response;
+        });
+        
+        post(POST_DATASOURCE_PATH, (req, res) -> {
+            new PostDataSource().execute(req.body());
+            res.status(201);
+            return "";
+        });
+        
+        delete(DELETE_DATASOURCE_PATH, (req, res) -> {
+            new DeleteDataSource().execute(getId(req));
+            res.status(204);
+            return "";
+        });
+        
+        put(PUT_DATASOURCE_PATH, (req, res) -> {
+            new PutDataSource().execute(getId(req), req.body());
+            res.status(200);
+            return "";
+        });
+        
+        get(VERIFY_DATASOURCE_PATH, (req, res) -> {
+            new VerifyDataSource().execute(getId(req));
+            return "";
+        });
+        
+        get(DUMP_DATA_SOURCE_CACHE, (req, res) -> {
+            DataSourceCache.dump();
+            return "";
+        });
+    }
+    
+    private static long getId(Request req) {
+        return Long.parseLong(req.params("id"));
+    }
+
+    private static void defineSqlApi() {
         get(GET_ALL_SQL_PATH, (req, res) -> {
             String response = new GetAllSql().execute(id -> buildSqlDetailUrl(id));
             res.status(200);
@@ -46,56 +129,50 @@ public class RestApi {
         });
         
         delete(DELETE_SQL_PATH, (req, res) -> {
-            new DeleteSql().execute(Long.parseLong(req.params("id")));
+            new DeleteSql().execute(getId(req));
             res.status(204);
             return "";
         });
         
         get(GET_SQL_DETAIL, (req, res) -> {
-            String response = new GetSqlDetail().execute(Long.parseLong(req.params("id")));
+            String response = new GetSqlDetail().execute(getId(req));
             res.status(200);
             return response;
         });
         
         put(PUT_SQL, (req, res) -> {
-            new PutSql().execute(Long.parseLong(req.params("id")), req.body());
+            new PutSql().execute(getId(req), req.body());
             res.status(200);
             return "";
         });
-        
-        after(API_FILTER, (req, res) -> {
-            logger.info("{} : {} - Status : {}", req.requestMethod(), req.pathInfo(), res.raw().getStatus());
-        });
-        
-        exception(SqlNotFoundException.class, (e, req, res) -> {
+    }
+    
+    private static void defineExceptionHandler() {
+        exception(EntityNotFoundException.class, (e, req, res) -> {
             res.status(404);
-            res.body(ErrorMessageBuilder.build("SQL が存在しません。削除されている可能性があります。"));
+            res.body(ErrorMessageBuilder.build(e.getMessage()));
             
-            logger.warn("{} : {} - Status : {} - SQL({}) is not found.", req.requestMethod(), req.pathInfo(), res.raw().getStatus(), ((SqlNotFoundException)e).getId());
+            logger.warn("{} : {} - Status : {} - SQL({}) is not found.", req.requestMethod(), req.pathInfo(), res.raw().getStatus(), ((EntityNotFoundException)e).getId());
         });
         
         exception(IllegalParameterException.class, (e, req, res) -> {
-            res.status(400);
-            res.body(ErrorMessageBuilder.build(e.getMessage()));
-            
-            logger.warn("{} : {} - Status : {} - {}", req.requestMethod(), req.pathInfo(), res.raw().getStatus(), e.getMessage());
+            handleError(400, e, req, res);
+        });
+        
+        exception(UnConnectableDatabaseException.class, (e, req, res) -> {
+            handleError(202, e, req, res);
         });
         
         exception(Exception.class, (e, req, res) -> {
-            res.status(500);
-            res.body(ErrorMessageBuilder.build(e.getMessage()));
-            
-            logger.error("{} : {} - Status : {} - {}", req.requestMethod(), req.pathInfo(), res.raw().getStatus(), e.getMessage());
+            logger.error("unknow error", e);
+            handleError(500, e, req, res);
         });
     }
-
-    private static void migrateDatabase(DataSource ds) {
-        Flyway flyway = new Flyway();
-        flyway.setDataSource(ds);
-        flyway.setPlaceholderPrefix("#{");
-//        flyway.clean();
-        flyway.migrate();
+    
+    private static void handleError(int status, Throwable e, Request req, Response res) {
+        res.status(status);
+        res.body(ErrorMessageBuilder.build(e.getMessage()));
         
-        System.out.println("migrate test database");
+        logger.error("{} : {} - Status : {} - {}", req.requestMethod(), req.pathInfo(), res.raw().getStatus(), e.getMessage());
     }
 }

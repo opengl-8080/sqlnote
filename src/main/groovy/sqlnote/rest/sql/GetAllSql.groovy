@@ -1,4 +1,4 @@
-package sqlnote.rest
+package sqlnote.rest.sql
 
 import java.util.function.Function;
 

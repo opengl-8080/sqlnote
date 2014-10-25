@@ -2,8 +2,8 @@ package sqlnote.rest;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
-
 import static sqlnote.rest.UrlBuilder.*;
+
 import org.junit.Test;
 
 public class UrlBuilderTest {
@@ -61,5 +61,40 @@ public class UrlBuilderTest {
     @Test
     public void buildExecuteSqlUrl() throws Exception {
         assertThat(UrlBuilder.buildExecuteSqlUrl(21), is(UrlBuilder.buildSqlDetailUrl(21) + "/result"));
+    }
+    
+    @Test
+    public void getAllDatasouce() throws Exception {
+        assertThat(UrlBuilder.GET_ALL_DATASOURCE_PATH, is(API_PATH + "/dataSource"));
+    }
+    
+    @Test
+    public void postDataSource() throws Exception {
+        assertThat(UrlBuilder.POST_DATASOURCE_PATH, is(GET_ALL_DATASOURCE_PATH));
+    }
+    
+    @Test
+    public void deleteDataSource() throws Exception {
+        assertThat(UrlBuilder.DELETE_DATASOURCE_PATH, is(GET_ALL_DATASOURCE_PATH + "/:id"));
+    }
+    
+    @Test
+    public void putDataSource() throws Exception {
+        assertThat(UrlBuilder.PUT_DATASOURCE_PATH, is(DELETE_DATASOURCE_PATH));
+    }
+    
+    @Test
+    public void verifyDataSource() throws Exception {
+        assertThat(UrlBuilder.VERIFY_DATASOURCE_PATH, is(DELETE_DATASOURCE_PATH + "/verify"));
+    }
+    
+    @Test
+    public void buildVerifyDataSourceUrl() throws Exception {
+        assertThat(UrlBuilder.buildVerifyDataSourceUrl(19L), is(GET_ALL_DATASOURCE_PATH + "/19/verify"));
+    }
+    
+    @Test
+    public void dumpDataSourceCache() throws Exception {
+        assertThat(UrlBuilder.DUMP_DATA_SOURCE_CACHE, is(GET_ALL_DATASOURCE_PATH + "/cache"));
     }
 }

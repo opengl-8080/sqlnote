@@ -240,7 +240,7 @@
 	"name": "テスト環境",
 	"driver": "org.hsqldb.jdbcDriver",
 	"url": "jdbc:hsqldb:file:testdb/sqlnote;shutdown=true",
-	"user": "username",
+	"userName": "username",
 	"password": "password"
 }
 ```
@@ -249,14 +249,20 @@
 |コード|説明|
 |:--|:--|
 |201|追加完了|
+|202|追加は完了したが、データベース接続に失敗している。|
 |400|入力データに誤りがある|
 
 ####400 Pattern
-- 入力された情報で DB コネクションを作成できない場合
-	- `データベースに接続できません（{0}）`
-	- パラメータには、スローされた SQLException のメッセージを設定
 - name が空の場合
 	- `名前は必ず指定してください。`
+
+###ResponseBody
+####202
+```json
+{
+	"message": "<SQLException の message>"
+}
+```
 
 *****************************************************************************************
 ##データベースの接続先を削除する
@@ -264,7 +270,7 @@
 `DELETE`
 
 ###Path
-`/api/database/{id}`
+`/api/dataSource/{id}`
 
 ###Status Code
 |コード|説明|
@@ -278,7 +284,7 @@
 `PUT`
 
 ###Path
-`/api/database/{id}`
+`/api/dataSource/{id}`
 
 ###Request Body
 ```json
@@ -295,13 +301,20 @@
 |コード|説明|
 |:--|:--|
 |200|更新完了|
+|202|追加は完了したが、データベース接続に失敗している。|
 |400|入力データに誤りがある|
 
 ####400 Pattern
-- 入力された情報で DB コネクションを作成できない場合
-	- `データベースに接続できません（{0}）`
 - name が空の場合
 	- `名前は必ず指定してください。`
+
+###ResponseBody
+####202
+```json
+{
+	"message": "<SQLException の message>"
+}
+```
 
 *****************************************************************************************
 ##データベースに接続できるか検証する
@@ -309,7 +322,7 @@
 `GET`
 
 ###Path
-`/api/database/{id}/verify`
+`/api/dataSource/{id}/verify`
 
 ###Status Code
 |コード|説明|
@@ -330,7 +343,7 @@
 `GET`
 
 ###Path
-`/api/database`
+`/api/dataSource`
 
 ###Status Code
 |コード|説明|
@@ -343,14 +356,14 @@
 	{
 		"id": 1,
 		"name": "テスト環境",
-		"url": "http://localhost:1234/sqlnote/api/database/1"
+		"verifyUrl": "http://localhost:1234/sqlnote/api/dataSource/1/verify"
 	},
 	{
 		"id": 2,
 		"name": "本番環境",
-		"url": "http://localhost:1234/sqlnote/api/database/2"
+		"verifyUrl": "http://localhost:1234/sqlnote/api/dataSource/2/verify"
 	},
-	
+	...
 ]
 ```
 
