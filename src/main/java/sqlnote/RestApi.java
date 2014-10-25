@@ -4,11 +4,13 @@ import static spark.Spark.*;
 import static spark.SparkBase.*;
 import static sqlnote.rest.UrlBuilder.*;
 
+import javax.sql.DataSource;
+
 import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import sqlnote.db.LocalDatabaseAccess;
+import sqlnote.db.SystemDataSource;
 import sqlnote.rest.DeleteSql;
 import sqlnote.rest.ErrorMessageBuilder;
 import sqlnote.rest.GetAllSql;
@@ -20,10 +22,9 @@ public class RestApi {
     private static final Logger logger = LoggerFactory.getLogger(RestApi.class);
     
     public static void main(String[] args) {
-        migrateDatabase();
+        migrateDatabase(SystemDataSource.init());
         setPort(PORT);
         externalStaticFileLocation("src/main/webapp");
-        LocalDatabaseAccess.init();
         
         before(API_FILTER, (req, res) -> {
             res.type("application/json");
@@ -77,11 +78,18 @@ public class RestApi {
             
             logger.warn("{} : {} - Status : {} - {}", req.requestMethod(), req.pathInfo(), res.raw().getStatus(), e.getMessage());
         });
+        
+        exception(Exception.class, (e, req, res) -> {
+            res.status(500);
+            res.body(ErrorMessageBuilder.build(e.getMessage()));
+            
+            logger.error("{} : {} - Status : {} - {}", req.requestMethod(), req.pathInfo(), res.raw().getStatus(), e.getMessage());
+        });
     }
 
-    private static void migrateDatabase() {
+    private static void migrateDatabase(DataSource ds) {
         Flyway flyway = new Flyway();
-        flyway.setDataSource(LocalDatabaseAccess.URL, LocalDatabaseAccess.USER, LocalDatabaseAccess.PASS);
+        flyway.setDataSource(ds);
         flyway.setPlaceholderPrefix("#{");
 //        flyway.clean();
         flyway.migrate();

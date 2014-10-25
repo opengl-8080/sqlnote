@@ -4,6 +4,7 @@ import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 import static test.db.TestHelper.*;
 
+import java.sql.Connection;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,8 +30,10 @@ public class SqlNoteRepositoryTest {
     private SqlNoteRepository repository;
     
     @Before
-    public void setup() {
-        repository = new SqlNoteRepository();
+    public void setup() throws Exception {
+        Connection con = SystemDataSource.getConnection();
+        DatabaseAccess db = new DatabaseAccess(con);
+        repository = new SqlNoteRepository(db);
     }
     
     @Test
@@ -118,26 +121,6 @@ public class SqlNoteRepositoryTest {
         note.setTitle("タイトル更新");
         note.setSqlTemplate("SQL更新 ${param1_update} ${param2_update} ${param3_update}");
         note.setParameters(Arrays.asList(stringParameter("param1_update"), dateParameter("param2_update"), numberParameter("param3_update")));
-        
-        // exercise
-        repository.modify(note);
-        
-        // verify
-        IDataSet expected = dbTester.loadDataSet("SqlNoteRepositoryTest_更新_expected.yaml");
-        dbTester.verifyTable("SQL_NOTE", expected);
-        
-        ITable actualSqlParameters = dbTester.getConnection().createQueryTable("SQL_PARAMETERS", "SELECT * FROM SQL_PARAMETERS ORDER BY SQL_ID ASC, SORT_ORDER ASC");
-        ITable expectedSqlParameters = expected.getTable("SQL_PARAMETERS");
-        
-        Assertion.assertEquals(expectedSqlParameters, actualSqlParameters);
-    }
-    
-    @Test
-    public void 更新_パラメータが存在しないSQLを更新する() throws Exception {
-        // setup
-        SqlNote note = repository.findById(90L);
-        note.setSqlTemplate("${param1_update}");
-        note.setParameters(Arrays.asList(stringParameter("param1_update")));
         
         // exercise
         repository.modify(note);

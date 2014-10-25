@@ -1,15 +1,22 @@
 package sqlnote.rest
 
-import com.sun.corba.se.spi.activation.Repository;
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 import sqlnote.db.SqlNoteRepository
+import sqlnote.db.SystemDataSource
 
 class DeleteSql {
+    private static final Logger logger = LoggerFactory.getLogger(DeleteSql.class)
     
     void execute(long id) {
-        SqlNoteRepository repository = new SqlNoteRepository()
-        
-        repository.findById(id) // if not found then throw exception
-        repository.remove(id)
+        SystemDataSource.withTransaction { db ->
+            SqlNoteRepository repository = new SqlNoteRepository(db)
+            
+            repository.findById(id) // if not found then throw exception
+            repository.remove(id)
+            
+            logger.info('delete sql id={}', id)
+        }
     }
 }

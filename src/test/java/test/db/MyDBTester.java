@@ -5,28 +5,28 @@ import jp.classmethod.testing.database.YamlDataSet;
 
 import org.dbunit.dataset.IDataSet;
 
-import sqlnote.db.LocalDatabaseAccess;
+import sqlnote.db.SystemDataSource;
 
 public class MyDBTester extends DbUnitTester {
     
     private final Class<?> testClass;
     
     public MyDBTester() {
-        this(new RuskJdbcDatabaseConnectionManager(), null);
+        this(new SqlNoteJdbcDatabaseConnectionManager(), null);
     }
 
     public MyDBTester(Class<?> testClass) {
-        this(new RuskJdbcDatabaseConnectionManager(), testClass);
+        this(new SqlNoteJdbcDatabaseConnectionManager(), testClass);
     }
     
     private MyDBTester(JdbcDatabaseConnectionManager manager, Class<?> testClass) {
         super(manager);
         this.testClass = testClass;
-        LocalDatabaseAccess.init("jdbc:hsqldb:file:testdb/sqlnote;shutdown=true");
+        SystemDataSource.init("jdbc:hsqldb:file:testdb/sqlnote;shutdown=true");
     }
 
-    private static class RuskJdbcDatabaseConnectionManager extends JdbcDatabaseConnectionManager {
-        RuskJdbcDatabaseConnectionManager() {
+    private static class SqlNoteJdbcDatabaseConnectionManager extends JdbcDatabaseConnectionManager {
+        SqlNoteJdbcDatabaseConnectionManager() {
             super("org.hsqldb.jdbcDriver", "jdbc:hsqldb:file:testdb/sqlnote;shutdown=true");
             super.username = "SA";
             super.password = "";
