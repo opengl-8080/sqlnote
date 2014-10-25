@@ -158,17 +158,7 @@
 `GET`
 
 ###Path
-`/api/sql/{id}/result`
-
-###Request Body
-```json
-{
-	"CODE": "AAA",
-	"AGE": 20
-}
-```
-
-- Search Parameters.
+`/api/sql/{id}/result?s[CODE]=AAA&s[AGE]=20&dataSource=1`
 
 ###Status Code
 |コード|説明|
@@ -176,14 +166,15 @@
 |200|正常終了|
 |303|検索結果が 1,000 件より多い|
 |400|入力データに誤りがある|
-|404|指定したIDのSQLが存在しない|
+|404|指定したIDのSQLまたはデータソースが存在しない|
 
 ####400 Pattern
 - パラメータの型が不正
 	- `{0} は {1} で指定してください。`
 	- 数値型に文字列
-	- 日付型のフォーマット不正（`yyyy-MM-dd'T'HH:mm:ss+HH:mm`）
-	- 日付型に空文字（未指定は null を渡す）
+	- 数値型が空文字
+	- 日付型のフォーマット不正（`yyyy-MM-dd HH:mm:ss` スラッシュ繋ぎ、時分秒省略可）
+	- 日付型に空文字
 - sql に存在しないパラメータが渡ってきた場合
 	- `{0} は SQL で使用されていません。`
 - sql で使用されているパラメータが渡ってきていない場合
@@ -222,7 +213,7 @@
 ```json
 {
 	"recordCount": 1500,
-	"url": "http://localhost:1234/sqlnote/api/sql/5/result?type=csv"
+	"url": "http://localhost:1234/sqlnote/api/sql/5/result?s[CODE]=AAA&s[AGE]=20&dataSource=1&type=csv"
 }
 ```
 
@@ -292,7 +283,7 @@
 	"name": "試験環境",
 	"driver": "org.hsqldb.jdbcDriver",
 	"url": "jdbc:hsqldb:file:testdb/sqlnote;shutdown=true",
-	"user": "username",
+	"userName": "username",
 	"password": "password"
 }
 ```

@@ -34,7 +34,6 @@ class SqlNoteRepository {
     private List<SqlParameter> queryParameterNames(long sqlId) {
         // テストケースではデータソースの設定が違う！
         this.db.collect("SELECT * FROM SQL_PARAMETERS WHERE SQL_ID=${sqlId} ORDER BY SORT_ORDER ASC") {
-            println "${it.NAME}, ${it.DATA_TYPE}"
             new SqlParameter(it.NAME, DataType.valueOf(it.DATA_TYPE))
         }
     }

@@ -4,8 +4,13 @@ import static spark.Spark.*;
 import static spark.SparkBase.*;
 import static sqlnote.rest.UrlBuilder.*;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Map;
+
 import javax.sql.DataSource;
 
+import org.eclipse.jetty.io.RuntimeIOException;
 import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +29,7 @@ import sqlnote.rest.dbconfig.GetAllDataSource;
 import sqlnote.rest.dbconfig.PostDataSource;
 import sqlnote.rest.dbconfig.PutDataSource;
 import sqlnote.rest.dbconfig.VerifyDataSource;
+import sqlnote.rest.query.QueryData;
 import sqlnote.rest.sql.DeleteSql;
 import sqlnote.rest.sql.GetAllSql;
 import sqlnote.rest.sql.GetSqlDetail;
@@ -40,6 +46,7 @@ public class RestApi {
         staticFileLocation("/webapp");
         
         defineSqlApi();
+        defineQueryApi();
         defineDatabaseConfigApi();
 
         defineFilter();
@@ -146,6 +153,28 @@ public class RestApi {
             res.status(200);
             return "";
         });
+    }
+
+    private static void defineQueryApi() {
+        get(EXECUTE_SQL, (req, res) -> {
+            long sqlId = Long.parseLong(req.params("id"));
+            long dsId = Long.parseLong(req.queryParams("dataSource"));
+            Map<String, String[]> condition = req.queryMap("s").toMap();
+            
+            OutputStream os = getOutputStream(res);
+            
+            new QueryData().execute(sqlId, dsId, condition, os);
+            res.status(200);
+            return "";
+        });
+    }
+    
+    private static OutputStream getOutputStream(Response res) {
+        try {
+            return res.raw().getOutputStream();
+        } catch (IOException e) {
+            throw new RuntimeIOException(e);
+        }
     }
     
     private static void defineExceptionHandler() {

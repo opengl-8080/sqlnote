@@ -1,6 +1,16 @@
 package sqlnote.domain
 
+import java.sql.Date as SqlDate
+import java.text.ParseException
+
+import org.apache.commons.lang3.StringUtils
+import org.apache.commons.lang3.time.DateUtils
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
 class SqlNote {
+    private static final Logger logger = LoggerFactory.getLogger(SqlNote.class)
+    
     Long id
     String title = '新規SQL'
     String sqlTemplate = '-- SQL を入力してください'
@@ -65,5 +75,16 @@ class SqlNote {
                 }
             }
         }
+    }
+
+    public <T> T convert(String parameterName, String src) {
+        // パラメータの数がパフォーマンスに影響を与えるほど増えることは考えにくいので、この実装（線形探索）で様子見
+        SqlParameter parameter = this.parameters.find {it.name == parameterName}
+        parameter.dataType.convert(parameterName, src)
+    }
+    
+    private SqlDate parsetToSqlDate(String text) {
+        Date date = DateUtils.parseDate(src, 'yyyy-MM-dd', 'yyyy/MM/dd', 'yyyy-MM-dd HH:mm:ss', 'yyyy/MM/dd HH:mm:ss')
+        return new SqlDate(date.time)
     }
 }
