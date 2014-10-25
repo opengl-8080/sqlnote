@@ -102,6 +102,7 @@ public class RestApi {
         
         get(VERIFY_DATASOURCE_PATH, (req, res) -> {
             new VerifyDataSource().execute(getId(req));
+            res.status(200);
             return "";
         });
         
