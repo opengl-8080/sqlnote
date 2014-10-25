@@ -1,4 +1,4 @@
-package sqlnote.db;
+package sqlnote.domain;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
@@ -17,7 +17,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import sqlnote.domain.SqlNoteRepository;
+import sqlnote.db.DatabaseAccess;
+import sqlnote.db.SystemDataSource;
 import test.db.MyDBTester;
 
 @Fixture(resources="SqlNoteRepositoryTest.yaml")

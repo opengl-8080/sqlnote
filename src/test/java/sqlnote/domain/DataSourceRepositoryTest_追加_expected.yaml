@@ -1,0 +1,29 @@
+DATABASE_CONFIGURATION:
+-
+    ID: 1
+    NAME: db1
+    DRIVER: driver1
+    URL: url1
+    USER_NAME: username1
+    PASSWORD: password1
+-
+    ID: 2
+    NAME: db2
+    DRIVER: driver2
+    URL: url2
+    USER_NAME: username2
+    PASSWORD: password2
+-
+    ID: 3
+    NAME: db3
+    DRIVER: driver3
+    URL: url3
+    USER_NAME: username3
+    PASSWORD: password3
+-
+    ID: 4
+    NAME: db4
+    DRIVER: driver4
+    URL: url4
+    USER_NAME: username4
+    PASSWORD: password4
