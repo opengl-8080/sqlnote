@@ -6,3 +6,4 @@ testdb/
 .classpath
 build/
 db/
+jdbc_driver/*
