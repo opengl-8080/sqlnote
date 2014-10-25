@@ -1,6 +1,6 @@
 package sqlnote.rest
 
-import sqlnote.db.SqlNoteRepository;
+import sqlnote.domain.SqlNoteRepository;
 
 class ExecuteSql {
     

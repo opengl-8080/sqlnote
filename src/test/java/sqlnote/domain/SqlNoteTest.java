@@ -1,4 +1,4 @@
-package sqlnote;
+package sqlnote.domain;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
@@ -11,6 +11,10 @@ import java.util.List;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import sqlnote.domain.IllegalParameterException;
+import sqlnote.domain.SqlNote;
+import sqlnote.domain.SqlParameter;
 
 public class SqlNoteTest {
     

@@ -1,4 +1,4 @@
-package sqlnote
+package sqlnote.domain
 
 class IllegalParameterException extends Exception {
     

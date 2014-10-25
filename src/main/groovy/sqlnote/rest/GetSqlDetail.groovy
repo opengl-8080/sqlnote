@@ -1,9 +1,9 @@
 package sqlnote.rest
 
 import groovy.json.JsonBuilder
-import sqlnote.SqlNote
-import sqlnote.db.SqlNoteRepository
 import sqlnote.db.SystemDataSource;
+import sqlnote.domain.SqlNote;
+import sqlnote.domain.SqlNoteRepository;
 
 class GetSqlDetail {
     

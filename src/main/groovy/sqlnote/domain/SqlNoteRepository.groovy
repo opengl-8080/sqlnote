@@ -1,9 +1,6 @@
-package sqlnote.db
+package sqlnote.domain
 
-import sqlnote.DataType;
-import sqlnote.SqlNotFoundException
-import sqlnote.SqlNote
-import sqlnote.SqlParameter
+import sqlnote.db.DatabaseAccess;
 
 class SqlNoteRepository {
     

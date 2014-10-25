@@ -17,8 +17,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import sqlnote.SqlNotFoundException;
-import sqlnote.SqlNote;
+import sqlnote.domain.SqlNoteRepository;
 import test.db.MyDBTester;
 
 @Fixture(resources="SqlNoteRepositoryTest.yaml")

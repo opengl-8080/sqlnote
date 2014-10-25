@@ -1,4 +1,4 @@
-package sqlnote;
+package sqlnote.domain;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import sqlnote.TemplateAnalyzer;
+import sqlnote.domain.TemplateAnalyzer;
 
 public class TemplateAnalyzerTest {
     

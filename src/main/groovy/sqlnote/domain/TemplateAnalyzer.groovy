@@ -1,4 +1,4 @@
-package sqlnote;
+package sqlnote.domain;
 
 import java.util.List;
 import java.util.regex.Matcher

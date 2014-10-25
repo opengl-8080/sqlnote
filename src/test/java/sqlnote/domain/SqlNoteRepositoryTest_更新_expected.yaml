@@ -1,0 +1,39 @@
+SQL_NOTE:
+-
+    ID: 1
+    TITLE: title1
+    SQL_TEMPLATE: sql1
+-
+    ID: 2
+    TITLE: タイトル更新
+    SQL_TEMPLATE: SQL更新 ${param1_update} ${param2_update} ${param3_update}
+-
+    ID: 3
+    TITLE: title3
+    SQL_TEMPLATE: sql3
+-
+    ID: 90
+    TITLE: title90
+    SQL_TEMPLATE: sql90
+
+SQL_PARAMETERS:
+-
+    SQL_ID: 2
+    NAME: param1_update
+    DATA_TYPE: STRING
+    SORT_ORDER: 1
+-
+    SQL_ID: 2
+    NAME: param2_update
+    DATA_TYPE: DATE
+    SORT_ORDER: 2
+-
+    SQL_ID: 2
+    NAME: param3_update
+    DATA_TYPE: NUMBER
+    SORT_ORDER: 3
+-
+    SQL_ID: 3
+    NAME: param3
+    DATA_TYPE: NUMBER
+    SORT_ORDER: 1   

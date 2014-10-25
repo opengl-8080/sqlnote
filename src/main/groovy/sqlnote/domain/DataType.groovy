@@ -1,4 +1,4 @@
-package sqlnote
+package sqlnote.domain
 
 enum DataType {
     STRING,

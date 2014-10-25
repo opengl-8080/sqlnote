@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sqlnote.db.SystemDataSource;
+import sqlnote.domain.IllegalParameterException;
+import sqlnote.domain.SqlNotFoundException;
 import sqlnote.rest.DeleteSql;
 import sqlnote.rest.ErrorMessageBuilder;
 import sqlnote.rest.GetAllSql;

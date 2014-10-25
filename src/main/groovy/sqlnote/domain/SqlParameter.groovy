@@ -1,4 +1,4 @@
-package sqlnote
+package sqlnote.domain
 
 import org.apache.commons.lang3.builder.HashCodeBuilder
 
