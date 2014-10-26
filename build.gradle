@@ -38,6 +38,10 @@ dependencies {
     testCompile 'jp.classmethod.testing:cmtest-db:0.4'
 }
 
+startScripts {
+    defaultJvmOpts = ['-Dfile.encoding=UTF-8']
+}
+
 eclipse {
     project {
         name = 'SQLNote'
