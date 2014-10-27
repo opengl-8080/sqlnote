@@ -14,16 +14,15 @@ class GetAllSql {
         
         SystemDataSource.withTransaction { db ->
             List<SqlNote> list = new SqlNoteRepository(db).findAll()
-            
             json(list.collect { sqlNote ->
-                json {
-                    id sqlNote.id
-                    title sqlNote.title
-                    url urlBuilder.apply(sqlNote.id)
-                }
+                return [
+                    id: sqlNote.id,
+                    title: sqlNote.title,
+                    url: urlBuilder.apply(sqlNote.id)
+                ]
             })
         }
         
-        json.toString()
+        return json.toString()
     }
 }

@@ -12,8 +12,8 @@ class SqlNote {
     private static final Logger logger = LoggerFactory.getLogger(SqlNote.class)
     
     Long id
-    String title = '新規SQL'
-    String sqlTemplate = '-- SQL を入力してください'
+    String title = 'New SQL'
+    String sqlTemplate = '-- Enter a SQL'
     List<SqlParameter> parameters
     
     void setTitle(title) {
@@ -86,5 +86,10 @@ class SqlNote {
     private SqlDate parsetToSqlDate(String text) {
         Date date = DateUtils.parseDate(src, 'yyyy-MM-dd', 'yyyy/MM/dd', 'yyyy-MM-dd HH:mm:ss', 'yyyy/MM/dd HH:mm:ss')
         return new SqlDate(date.time)
+    }
+
+    @Override
+    public String toString() {
+        return "SqlNote [id=" + id + ", title=" + title + ", sqlTemplate=" + sqlTemplate + ", parameters=" + parameters + "]";
     }
 }

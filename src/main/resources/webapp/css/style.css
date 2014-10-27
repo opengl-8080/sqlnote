@@ -1,0 +1,11 @@
+@charset "UTF-8";
+
+.CodeMirror {
+  font-size: 15pt;
+  height: 500px;
+  border: 1px solid #ccc;
+}
+
+.cursor {
+  cursor: pointer;
+}

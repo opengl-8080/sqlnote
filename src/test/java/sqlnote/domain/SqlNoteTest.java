@@ -188,7 +188,7 @@ public class SqlNoteTest {
         SqlNote note = new SqlNote();
         
         // verify
-        assertThat(note.getTitle(), is("新規SQL"));
+        assertThat(note.getTitle(), is("New SQL"));
     }
     
     @Test
@@ -197,7 +197,7 @@ public class SqlNoteTest {
         SqlNote note = new SqlNote();
         
         // verify
-        assertThat(note.getSqlTemplate(), is("-- SQL を入力してください"));
+        assertThat(note.getSqlTemplate(), is("-- Enter a SQL"));
     }
     
     @Test

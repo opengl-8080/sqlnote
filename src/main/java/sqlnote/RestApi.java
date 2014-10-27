@@ -53,7 +53,8 @@ public class RestApi {
         migrateDatabase(SystemDataSource.init());
         loadDataSource();
         setPort(PORT);
-        staticFileLocation("/webapp");
+//        staticFileLocation("/webapp");
+        externalStaticFileLocation("src/main/resources/webapp");
         
         defineSqlApi();
         defineQueryApi();
