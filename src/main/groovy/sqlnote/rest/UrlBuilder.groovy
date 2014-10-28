@@ -18,6 +18,7 @@ class UrlBuilder {
     public static final String GET_ALL_DATASOURCE_PATH = "${API_PATH}/dataSource";
     public static final String POST_DATASOURCE_PATH = GET_ALL_DATASOURCE_PATH;
     public static final String DELETE_DATASOURCE_PATH = GET_ALL_DATASOURCE_PATH + "/:id";
+    public static final String GET_DATASOURCE_DETAIL_PATH = DELETE_DATASOURCE_PATH;
     public static final String PUT_DATASOURCE_PATH = DELETE_DATASOURCE_PATH;
     public static final String VERIFY_DATASOURCE_PATH = DELETE_DATASOURCE_PATH + "/verify";
     public static final String DUMP_DATA_SOURCE_CACHE = GET_ALL_DATASOURCE_PATH + "/cache";

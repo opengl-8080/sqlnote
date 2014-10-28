@@ -30,6 +30,7 @@ import sqlnote.domain.UnConnectableDatabaseException;
 import sqlnote.rest.ErrorMessageBuilder;
 import sqlnote.rest.dbconfig.DeleteDataSource;
 import sqlnote.rest.dbconfig.GetAllDataSource;
+import sqlnote.rest.dbconfig.GetDataSourceDetail;
 import sqlnote.rest.dbconfig.PostDataSource;
 import sqlnote.rest.dbconfig.PutDataSource;
 import sqlnote.rest.dbconfig.VerifyDataSource;
@@ -85,7 +86,7 @@ public class RestApi {
     private static void defineFilter() {
         before(API_FILTER, (req, res) -> {
             res.type("application/json");
-            logger.debug("{} : {}", req.requestMethod(), req.pathInfo());
+            logger.debug("{} : {}?{}", req.requestMethod(), req.pathInfo(), req.queryString());
         });
         
         after(API_FILTER, (req, res) -> {
@@ -96,6 +97,11 @@ public class RestApi {
     private static void defineDatabaseConfigApi() {
         get(GET_ALL_DATASOURCE_PATH, (req, res) -> {
             String response = new GetAllDataSource().execute();
+            res.status(200);
+            return response;
+        });
+        get(GET_DATASOURCE_DETAIL_PATH, (req, res) -> {
+            String response = new GetDataSourceDetail().execute(getId(req));
             res.status(200);
             return response;
         });

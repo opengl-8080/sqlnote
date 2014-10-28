@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html ng-app="sqlnote">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <base href="../../" />
+    <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="js/jqueryui/jquery-ui.min.css" />
+    <link rel="stylesheet" href="js/codemirror/codemirror.css" />
+    <link rel="stylesheet" href="js/toastr/toastr.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body ng-controller="DataSourceController as dsMain">
+    <div class="container">
+      <h1>DataSource Configuration</h1>
+      <hr>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-4">
+          <div class="form-group" ng-controller="InitCreateDataSourceController">
+            <button class="btn btn-primary btn-block" ng-click="initCreateDataSource()">
+              <span class="glyphicon glyphicon-hdd"></span>
+              New DataSource
+            </button>
+          </div>
+          
+          <div class="list-group cursor" ng-controller="DataSourceListController">
+            <a class="list-group-item" ng-repeat="ds in dsMain.dataSources" ng-click="initModifyDataSource(ds)">
+              {{ds.name}}
+              <span class="pull-right glyphicon glyphicon-chevron-right"></span>
+            </a>
+          </div>
+        </div>
+        
+        <div class="col-xs-8" ng-show="dsMain.ds" ng-controller="DataSourceMaintenanceController">
+          <div class="form-group">
+            <label for="name" class="control-label h4">Name</label>
+            <input id="name" class="form-control input-lg" type="text" ng-model="dsMain.ds.name" />
+          </div>
+          
+          <div class="form-group">
+            <label for="driver" class="control-label h4">JDBC Driver</label>
+            <input id="driver" class="form-control input-lg" type="text" ng-model="dsMain.ds.driver" />
+          </div>
+          
+          <div class="form-group">
+            <label for="url" class="control-label h4">URL</label>
+            <input id="url" class="form-control input-lg" type="text" ng-model="dsMain.ds.url" />
+          </div>
+          
+          <div class="form-group">
+            <label for="user" class="control-label h4">User Name</label>
+            <input id="user" class="form-control input-lg" type="text" ng-model="dsMain.ds.userName" />
+          </div>
+          
+          <div class="form-group">
+            <label for="pass" class="control-label h4">Password</label>
+            <input id="pass" class="form-control input-lg" type="password" ng-model="dsMain.ds.password" />
+          </div>
+          
+          <div ng-show="dsMain.isUpdate" class="form-group">
+            <button class="btn btn-warning btn-lg" ng-click="verifyDataSource()">
+              <span class="glyphicon glyphicon-sort"></span>
+              Verify
+            </button>
+            <button class="btn btn-success btn-lg" ng-click="saveDataSource()">
+              <span class="glyphicon glyphicon-floppy-disk"></span>
+              Save
+            </button>
+            <button class="btn btn-danger btn-sm pull-right" ng-click="deleteDataSource()">
+              <span class="glyphicon glyphicon-trash"></span>
+              Delete
+            </button>
+          </div>
+          
+          <div ng-show="dsMain.isCreate" class="form-group">
+            <button class="btn btn-primary btn-lg pull-right" ng-click="createDataSource()">
+              <span class="glyphicon glyphicon-hd"></span>
+              Create
+            </button>
+            <div class="clearfix"></div>
+          </div>
+          
+          <div class="form-group">
+            <span class="error">{{dsMain.errorMessage}}</span>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    
+    <script src="js/jquery/jquery.min.js"></script>
+    <script src="js/underscorejs/underscore-min.js"></script>
+    <script src="js/angularjs/angular.min.js"></script>
+    <script src="css/bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/toastr/toastr.min.js"></script>
+    <script src="js/app/app.js"></script>
+  </body>
+</html>

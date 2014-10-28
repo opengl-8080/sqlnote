@@ -10,11 +10,20 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body ng-controller="MainController as main">
-  
     <div class="ui-layout-west">
       <div>
+        <div class="form-group">
+          <a class="btn btn-default btn-block" href="page/dataSource.html">
+            <span class="glyphicon glyphicon-hdd"></span>
+            DataSource
+          </a>
+        </div>
+        
         <div class="form-group" ng-controller="AddSqlController">
-          <button class="btn btn-primary btn-block" ng-click="addSql()">Create SQL</button>
+          <button class="btn btn-primary btn-block" ng-click="addSql()">
+            <span class="glyphicon glyphicon-file"></span>
+            Create SQL
+          </button>
         </div>
         
         <div class="form-group">
@@ -31,6 +40,7 @@
         <div class="list-group cursor" ng-controller="SqlSelectionListController">
           <a class="list-group-item" ng-repeat="sql in main.sqls | filter:{title:main.sqlFilter} | orderBy:'title'" ng-click="selectSql(sql)">
             {{sql.title}}
+            <span class="pull-right glyphicon glyphicon-chevron-right"></span>
           </a>
         </div>
       </div>
@@ -40,11 +50,23 @@
       <div class="input-group" ng-show="main.sql" ng-controller="SaveSqlController">
         <input type="text" class="form-control input-lg" ng-model="main.sql.title" />
         <span class="input-group-btn">
-          <button class="btn btn-success btn-lg" ng-click="saveSql()">Save</button>
+          <button class="btn btn-success btn-lg" ng-click="saveSql()">
+            <span class="glyphicon glyphicon-floppy-disk"></span>
+            Save
+          </button>
         </span>
       </div>
       
       <hr>
+      
+      <div class="form-group" ng-show="main.sql" ng-controller="ExecuteSqlController">
+        <button class="btn btn-default pull-right" ng-click="executeSql()">
+          <span class="glyphicon glyphicon-flash"></span>
+          Execute
+        </button>
+        
+        <div class="clearfix"></div>
+      </div>
       
       <div ng-controller="EditorController">
         <textarea id="editor"></textarea>
@@ -53,17 +75,21 @@
       <hr>
       
       <div ng-controller="DeleteSqlController">
-        <button class="btn btn-danger pull-right" ng-show="main.sql" ng-click="deleteSql()">Delete</button>
+        <button class="btn btn-danger pull-right" ng-show="main.sql" ng-click="deleteSql()">
+          <span class="glyphicon glyphicon-trash"></span>
+          Delete
+        </button>
       </div>
     </div>
     
-    <div class="ui-layout-east">
+    <div class="ui-layout-east" ng-controller="ParameterController">
       <div class="h4">
         Parameters
         <hr>
       </div>
       
       <div class="form-horizontal" ng-repeat="param in main.sql.parameters" ng-init="idPrefix = 'param-' + $index">
+        
         <div class="form-group" ng-init="nameId = idPrefix + '-name'">
           <label for="{{nameId}}" class="col-xs-3 control-label">Name</label>
           <div class="col-xs-9">
@@ -85,18 +111,42 @@
         <div class="form-group" ng-init="valueId = idPrefix + '-value'">
           <label for="{{valueId}}" class="col-xs-3 control-label">Value</label>
           <div class="col-xs-9">
-            <input id="{{valueId}}" type="text" class="form-control input-sm" />
+            <input id="{{valueId}}" type="text" class="form-control input-sm" ng-model="param.value" />
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <div class="col-xs-12">
+            <button class="btn btn-danger btn-sm pull-right" ng-click="removeParameter($index)">
+              <span class="glyphicon glyphicon-minus-sign"></span>
+              Remove
+            </button>
           </div>
         </div>
         
         <hr>
       </div>
+      
+      <button ng-show="main.sql" class="btn btn-primary pull-right" ng-click="addParameter()">
+        <span class="glyphicon glyphicon-plus-sign"></span>
+        Add
+      </button>
     </div>
     
     <div class="ui-layout-south">
-      south
+      <table class="table table-bordered table-striped table-hover" ng-show="main.queryResult">
+        <thead>
+          <tr>
+            <th ng-repeat="col in main.queryResult.metaData">{{col.name}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="row in main.queryResult.data">
+            <td ng-repeat="col in main.queryResult.metaData">{{row[col.name]}}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    
     <script src="js/jquery/jquery.min.js"></script>
     <script src="js/jqueryui/jquery-ui.min.js"></script>
     <script src="js/ullayout/jquery.layout.min.js"></script>
@@ -107,7 +157,6 @@
     <script src="js/codemirror/codemirror.js"></script>
     <script src="js/codemirror/sql.js"></script>
     <script src="js/toastr/toastr.min.js"></script>
-<!--     <script src="js/script.js"></script> -->
     <script src="js/app/app.js"></script>
   </body>
 </html>

@@ -8,6 +8,10 @@ class SqlParameter {
     DataType dataType
     
     def SqlParameter(String name, DataType dataType) {
+        if (!name) {
+            throw new IllegalParameterException('パラメータ名は必ず指定してください。')
+        }
+        
         this.name = name
         this.dataType = dataType
     }

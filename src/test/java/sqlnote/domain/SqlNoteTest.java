@@ -20,7 +20,8 @@ public class SqlNoteTest {
     
     @Rule
     public ExpectedException exception = ExpectedException.none();
-
+    
+    
     
     @Test
     public void 文字列型パラメータの型変換() throws Exception {
