@@ -7,3 +7,4 @@ testdb/
 build/
 db/
 jdbc_driver/*
+!jdbc_driver/readme.txt
