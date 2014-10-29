@@ -9,7 +9,8 @@ import javax.sql.DataSource
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-import sqlnote.domain.DataSourceConfiguration;
+import sqlnote.domain.DataSourceCacheNotFoundException
+import sqlnote.domain.DataSourceConfiguration
 import sqlnote.domain.UnConnectableDatabaseException
 
 class DataSourceCache {
@@ -27,7 +28,9 @@ class DataSourceCache {
     }
     
     static DataSource get(Long key) {
-        this.dataSourceCache.get(key)
+        def ds = this.dataSourceCache.get(key)
+        if (ds == null) throw new DataSourceCacheNotFoundException(key)
+        return ds
     }
     
     synchronized static void remove(Long key) {

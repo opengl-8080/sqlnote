@@ -19,6 +19,15 @@
           </a>
         </div>
         
+        <div class="form-group" ng-controller="SelectDataSourceController">
+          <select class="form-control"
+                   ng-model="main.selectedDataSourceId"
+                   ng-options="ds.id as ds.name for ds in main.dataSources">
+          </select>
+        </div>
+        
+        <hr>
+        
         <div class="form-group" ng-controller="AddSqlController">
           <button class="btn btn-primary btn-block" ng-click="addSql()">
             <span class="glyphicon glyphicon-file"></span>
@@ -60,6 +69,7 @@
       <hr>
       
       <div class="form-group" ng-show="main.sql" ng-controller="ExecuteSqlController">
+        
         <button class="btn btn-default pull-right" ng-click="executeSql()">
           <span class="glyphicon glyphicon-flash"></span>
           Execute
@@ -152,7 +162,8 @@
     <script src="js/ullayout/jquery.layout.min.js"></script>
     <script src="js/underscorejs/underscore-min.js"></script>
     <script src="js/angularjs/angular.min.js"></script>
-    <script src="js/angularjs/angular-route.min.js"></script>
+    <script src="js/angularjs/angular-cookies.min.js"></script>
+    <script src="js/angularjs/angularLocalStorage.js"></script>
     <script src="css/bootstrap/js/bootstrap.min.js"></script>
     <script src="js/codemirror/codemirror.js"></script>
     <script src="js/codemirror/sql.js"></script>

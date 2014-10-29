@@ -1,5 +1,5 @@
 angular
-.module('sqlnote', [])
+.module('sqlnote', ['angularLocalStorage', 'ngCookies'])
 .controller('MainController', function($scope) {
     toastr.options = {
         "positionClass": "toast-bottom-right"
@@ -99,7 +99,38 @@ angular
             });
     };
 })
-.controller('ParameterController', function($scope) {
+.controller('ParameterController', function($scope, storage) {
+    var bindedParameters = [];
+    
+    $scope.$watch('main.sql', function() {
+        if ($scope.main.sql) {
+            _.each(bindedParameters, function(param, i) {
+                storage.unbind($scope, bindName(i), storeName($scope, param));
+            });
+            
+            bindedParameters = [];
+            
+            _.each($scope.main.sql.parameters, function(param, i) {
+                storage.bind($scope, bindName(i), {
+                    defaultValue: '',
+                    storeName: storeName($scope, param)
+                });
+                
+                bindedParameters.push(param);
+            });
+        } else {
+            bindedParameters = [];
+        }
+    });
+    
+    function bindName(i) {
+        return 'main.sql.parameters[' + i + '].value';
+    }
+    
+    function storeName($scope, param) {
+        return 'sql.parameters.' + $scope.main.sql.id + '.' + param.name;
+    }
+    
     $scope.addParameter = function() {
         $scope.main.sql.parameters.push({
             name: '',
@@ -114,14 +145,23 @@ angular
 .controller('ExecuteSqlController', function($scope, sqlResource) {
     $scope.executeSql = function() {
         sqlResource
-            .executeSql($scope.main.sql)
+            .executeSql($scope.main.sql, $scope.main.selectedDataSourceId)
             .then(function(response) {
                 $scope.main.queryResult = response.data;
             });
     };
 })
-.controller('DataSourceController', function($scope) {
+.controller('SelectDataSourceController', function($scope, dataSourceResource, storage) {
+    storage.bind($scope, 'main.selectedDataSourceId');
     
+    dataSourceResource
+        .getAllDataSources()
+        .then(function(response) {
+            $scope.main.dataSources = response.data;
+        });
+})
+.controller('DataSourceController', function($scope) {
+    // no implementation?
 })
 .controller('DataSourceListController', function($scope, dataSourceResource) {
     dataSourceResource
@@ -248,12 +288,12 @@ angular
         return $http.put('/sqlnote/api/sql/' + sql.id, sql).error(handlerError);
     }
     
-    this.executeSql = function(sql) {
+    this.executeSql = function(sql, dataSourceId) {
         var params = _.reduce(sql.parameters, function(p, parameter) {
             p.s[parameter.name] = parameter.value;
             return p;
         }, {
-            dataSource: 1,
+            dataSource: dataSourceId,
             s: {}
         });
         
