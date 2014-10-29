@@ -1,10 +1,10 @@
 /bin/
-testdb/
+/testdb/
 .project
 .settings/
 .gradle/
 .classpath
-build/
-db/
-jdbc_driver/*
-!jdbc_driver/readme.txt
+/build/
+/db/
+/jdbc_driver/*
+!/jdbc_driver/readme.txt
