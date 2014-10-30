@@ -3,6 +3,7 @@ package sqlnote.db
 import groovy.sql.Sql
 
 import java.sql.Connection
+import java.sql.ResultSet;
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -13,6 +14,7 @@ class DatabaseAccess {
     
     public DatabaseAccess(Connection connection) {
         this.sql = new Sql(connection);
+        this.sql.resultSetType = ResultSet.TYPE_SCROLL_INSENSITIVE
     }
     
     Long insertSingle(sqlText) {
