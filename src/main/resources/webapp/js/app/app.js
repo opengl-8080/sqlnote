@@ -10,6 +10,7 @@ angular
         spacing_closed: 20,
         spacing_open: 8,
         east__size: 300,
+        west__size: 350,
         south__size: 250,
         togglerLength_closed: '100%',
         enableCursorHotkey: false
