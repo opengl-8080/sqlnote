@@ -1,7 +1,5 @@
 package sqlnote.rest.dbconfig
 
-import org.dbunit.database.DatabaseConnection;
-
 import groovy.json.JsonBuilder
 import sqlnote.db.SystemDataSource
 import sqlnote.domain.DataSourceConfiguration;
