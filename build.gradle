@@ -39,7 +39,7 @@ dependencies {
 }
 
 startScripts {
-    defaultJvmOpts = ['-Dfile.encoding=UTF-8']
+    defaultJvmOpts = ['-Dfile.encoding=UTF-8', '-Dsqlnote.release=true', '-Dsqlnote.log.level=INFO']
 }
 
 eclipse {

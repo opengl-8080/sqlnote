@@ -21,7 +21,7 @@
   </appender>
   
   <logger name="sqlnote">
-    <level value ="TRACE" />
+    <level value ="${sqlnote.log.level}" />
   </logger>
   
   <root>

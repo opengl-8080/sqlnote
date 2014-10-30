@@ -54,8 +54,15 @@ public class RestApi {
         migrateDatabase(SystemDataSource.init());
         loadDataSource();
         setPort(PORT);
-//        staticFileLocation("/webapp");
-        externalStaticFileLocation("src/main/resources/webapp");
+        
+        boolean isRelease = Boolean.valueOf(System.getProperty("sqlnote.release"));
+        if (isRelease) {
+            logger.info("Release Mode");
+            staticFileLocation("/webapp");
+        } else {
+            logger.debug("Develop Mode");
+            externalStaticFileLocation("src/main/resources/webapp");
+        }
         
         defineSqlApi();
         defineQueryApi();
