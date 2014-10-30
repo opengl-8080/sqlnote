@@ -99,38 +99,7 @@ angular
             });
     };
 })
-.controller('ParameterController', function($scope, storage) {
-    var bindedParameters = [];
-    
-    $scope.$watch('main.sql', function() {
-        if ($scope.main.sql) {
-            _.each(bindedParameters, function(param, i) {
-                storage.unbind($scope, bindName(i), storeName($scope, param));
-            });
-            
-            bindedParameters = [];
-            
-            _.each($scope.main.sql.parameters, function(param, i) {
-                storage.bind($scope, bindName(i), {
-                    defaultValue: '',
-                    storeName: storeName($scope, param)
-                });
-                
-                bindedParameters.push(param);
-            });
-        } else {
-            bindedParameters = [];
-        }
-    });
-    
-    function bindName(i) {
-        return 'main.sql.parameters[' + i + '].value';
-    }
-    
-    function storeName($scope, param) {
-        return 'sql.parameters.' + $scope.main.sql.id + '.' + param.name;
-    }
-    
+.controller('ParameterController', function($scope) {
     $scope.addParameter = function() {
         $scope.main.sql.parameters.push({
             name: '',
