@@ -477,25 +477,27 @@ angular
                         .bootstrapTable({
                             columns: columns,
                             data: queryReulst.data,
-                            height: $scope.main.resultPaneHeight
+                            height: $scope.main.resultPaneHeight - 30
                         });
             });
             
             // $watch で main.resultPaneHeight を監視しようとしたが、動作しなかったので仕方なく関数で連携するようにした
             $scope.main.resizeResultTable = function(height) {
-                $element.bootstrapTable('resetView', {height: height});
+                $element.bootstrapTable('resetView', {height: height - 30});
             };
         }
     };
 })
 .directive('snLayout', function($log) {
     var DEFAULT_RESULT_PANE_HEIGHT = 250;
+    var TOGGLE_MAX_HEIGHT = 900;
     
     return {
         link: function($scope, $element, $attr) {
-            $scope.main.resultPaneHeight = DEFAULT_RESULT_PANE_HEIGHT - 30;
+            // レイアウト生成後は、指定した値より 22pixel 小さくなったのでこの設定
+            $scope.main.resultPaneHeight = DEFAULT_RESULT_PANE_HEIGHT - 22;
             
-            $element.layout({
+            var layout = $element.layout({
                 applyDefaultStyles: true,
                 spacing_closed: 20,
                 spacing_open: 8,
@@ -508,8 +510,22 @@ angular
                     var height = $element.find('.ui-layout-south').height();
                     $scope.main.resultPaneHeight = height;
                     $scope.main.resizeResultTable(height);
-                }
+                },
+                south__animatePaneSizing: true
             });
+            
+            $scope.toggleResultPane = function() {
+                var size;
+                
+                if ($scope.resultPaneIsMaxHeight) {
+                    size = DEFAULT_RESULT_PANE_HEIGHT;
+                } else {
+                    size = TOGGLE_MAX_HEIGHT;
+                }
+                
+                layout.sizePane('south', size);
+                $scope.resultPaneIsMaxHeight = !$scope.resultPaneIsMaxHeight;
+            }
         }
     };
 })

@@ -176,6 +176,11 @@
     </div>
     
     <div class="ui-layout-south">
+      <button class="btn btn-default btn-block btn-xs" ng-click="toggleResultPane()">
+        <span ng-show="resultPaneIsMaxHeight" class="glyphicon glyphicon-chevron-down"></span>
+        <span ng-show="!resultPaneIsMaxHeight" class="glyphicon glyphicon-chevron-up"></span>
+      </button>
+      
       <table sn-table ng-show="main.queryReulst">
       </table>
     </div>
