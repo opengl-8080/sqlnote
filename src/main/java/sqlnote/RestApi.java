@@ -43,9 +43,8 @@ import sqlnote.rest.sql.GetAllSql;
 import sqlnote.rest.sql.GetSqlDetail;
 import sqlnote.rest.sql.PostSql;
 import sqlnote.rest.sql.PutSql;
-
-
-
+import sqlnote.rest.system.GetSystemConfiguration;
+import sqlnote.rest.system.PutSystemConfiguration;
 
 public class RestApi {
     private static final Logger logger = LoggerFactory.getLogger(RestApi.class);
@@ -67,6 +66,7 @@ public class RestApi {
         defineSqlApi();
         defineQueryApi();
         defineDatabaseConfigApi();
+        defineSystemConfigApi();
 
         defineFilter();
         defineExceptionHandler();
@@ -199,6 +199,20 @@ public class RestApi {
                 res.status(303);
                 return SeeOtherResponseBuilder.build(e.getRecordCount(), req.url(), req.queryString());
             }
+        });
+    }
+    
+    private static void defineSystemConfigApi() {
+        get(GET_SYSTEM_CONFIGURATION, (req, res) -> {
+            String response = new GetSystemConfiguration().execute();
+            res.status(200);
+            return response;
+        });
+        
+        put(PUT_SYSTEM_CONFIGURATION, (req, res) -> {
+            new PutSystemConfiguration().execute(req.body());
+            res.status(200);
+            return "";
         });
     }
     

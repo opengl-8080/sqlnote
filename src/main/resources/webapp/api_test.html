@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <style>
+      #body {
+        width: 300px;
+        height: 700px;
+        float: left;
+        margin-right: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="form">
+      <select id="method">
+        <option value="GET">GET</option>
+        <option value="PUT">PUT</option>
+        <option value="POST">POST</option>
+        <option value="DELETE">DELETE</option>
+      </select>
+      <br>
+      /sqlnote/api/ <input type="text" id="path" />
+      <input type="submit" value="send" />
+      
+      <hr>
+      
+      <textarea id="body"></textarea>
+      
+      <pre id="response">
+      </pre>
+    </form>
+    
+    <script src="js/jquery/jquery.min.js"></script>
+    <script src="js/app/api_test.js"></script>
+  </body>
+</html>
