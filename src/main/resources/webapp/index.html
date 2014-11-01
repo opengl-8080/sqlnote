@@ -42,7 +42,14 @@
             <span class="input-group-addon">
               <span class="glyphicon glyphicon-search"></span>
             </span>
+            
             <input type="text" class="form-control" ng-model="main.sqlFilter" />
+            
+            <span class="input-group-btn">
+              <button class="btn btn-default" ng-click="main.sqlFilter = ''">
+                <span class="glyphicon glyphicon-remove"></span>
+              </button>
+            </span>
           </div>
         </div>
         
