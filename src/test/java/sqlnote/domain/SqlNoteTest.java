@@ -76,6 +76,19 @@ public class SqlNoteTest {
     }
     
     @Test
+    public void 数値型パラメータに数値以外の文字列を渡した場合は例外がスローされること() throws Exception {
+        // setup
+        exception.expect(IllegalParameterException.class);
+        exception.expectMessage("ccc は数値で指定してください。");
+        
+        SqlNote note = new SqlNote();
+        note.setParameters(parameters(stringParameter("aaa"), dateParameter("bbb"), numberParameter("ccc")));
+        
+        // exercise
+        note.convert("ccc", "@@@");
+    }
+    
+    @Test
     public void 日付型パラメータの型変換_年月日ハイフン繋ぎ() throws Exception {
         // setup
         SqlNote note = new SqlNote();

@@ -18,9 +18,18 @@ enum DataType {
     NUMBER{
         <T> T convert(String parameterName, String src) {
             if (StringUtils.isEmpty(src)) {
-                throw new IllegalParameterException("${parameterName} は数値で指定してください。")
+                this.throwException(parameterName);
             }
-            return new BigDecimal(src)
+            
+            try {
+                return new BigDecimal(src)
+            } catch (NumberFormatException e) {
+                this.throwException(parameterName);
+            }
+        }
+        
+        private void throwException(name) {
+            throw new IllegalParameterException("${name} は数値で指定してください。")
         }
     },
 
