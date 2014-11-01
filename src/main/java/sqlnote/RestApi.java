@@ -79,7 +79,7 @@ public class RestApi {
 //        flyway.clean();
         flyway.migrate();
         
-        System.out.println("migrate test database");
+        System.out.println("migrate database");
     }
     
     private static void loadDataSource() {
