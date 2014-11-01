@@ -13,6 +13,10 @@
     <title>AgileSQL</title>
   </head>
   <body ng-controller="MainController as main" sn-layout>
+    <div class="ui-layout-north" ng-controller="MemoController as memo">
+      <textarea id="memo" class="form-control" ng-model="memo.text" placeholder="Enter any memo"></textarea>
+    </div>
+    
     <div class="ui-layout-west">
       <div>
         <div class="form-group">

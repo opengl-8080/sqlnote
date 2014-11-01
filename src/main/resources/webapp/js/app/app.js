@@ -5,6 +5,9 @@ angular
         "positionClass": "toast-bottom-right"
     };
 })
+.controller('MemoController', function($scope, storage) {
+    storage.bind($scope, 'memo.text');
+})
 .controller('SqlSelectionListController', function($scope, sqlResource, parameterStorageService) {
     sqlResource
         .getAllSqls()
@@ -499,19 +502,25 @@ angular
             
             var layout = $element.layout({
                 applyDefaultStyles: true,
+                enableCursorHotkey: false,
                 spacing_closed: 20,
                 spacing_open: 8,
-                east__size: 300,
-                west__size: 350,
-                south__size: DEFAULT_RESULT_PANE_HEIGHT,
                 togglerLength_closed: '100%',
-                enableCursorHotkey: false,
+                north__initClosed: true,
+                north__spacing_closed: 10,
+                north__size: 100,
+                north__maxSize: 100,
+                north__minSize: 100,
+                north__togglerLength_open: '100%',
+                south__size: DEFAULT_RESULT_PANE_HEIGHT,
                 south__onresize: function() {
                     var height = $element.find('.ui-layout-south').height();
                     $scope.main.resultPaneHeight = height;
                     $scope.main.resizeResultTable(height);
                 },
-                south__animatePaneSizing: true
+                south__animatePaneSizing: true,
+                east__size: 300,
+                west__size: 350
             });
             
             $scope.toggleResultPane = function() {

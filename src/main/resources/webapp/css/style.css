@@ -14,3 +14,7 @@
   color: red;
 }
 
+#memo {
+  resize: none;
+  height: 70px;
+}
