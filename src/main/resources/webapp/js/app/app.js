@@ -1,6 +1,6 @@
 angular
 .module('sqlnote', ['angularLocalStorage', 'ngCookies'])
-.controller('MainController', function($scope) {
+.controller('MainController', function($scope, $log) {
     toastr.options = {
         "positionClass": "toast-bottom-right"
     };
@@ -23,6 +23,7 @@ angular
                 $scope.main.sql = sql;
                 
                 parameterStorageService.load($scope);
+                $scope.main.change = false;
             });
     };
 })
@@ -120,6 +121,14 @@ angular
         lineWrapping: false
     });
     
+    jsEditor.on('change', function() {
+        if(!$scope.$$phase) {
+            $scope.$apply(function () {
+                $scope.main.change = true;
+            });
+        }
+    });
+    
     $scope.$watch('main.sql', function() {
         if ($scope.main.sql) {
             jsEditor.setValue($scope.main.sql.sql);
@@ -158,6 +167,7 @@ angular
         sqlResource
             .putSql(sql)
             .then(function() {
+                $scope.main.change = false;
                 return sqlResource.getAllSqls();
             })
             .then(function(response) {
@@ -172,10 +182,14 @@ angular
             name: '',
             type: 'STRING'
         });
+        
+        $scope.main.change = true;
     };
     
     $scope.removeParameter = function($index) {
         $scope.main.sql.parameters.splice($index, 1);
+        
+        $scope.main.change = true;
     };
 })
 .controller('ExecuteSqlController', function($scope, sqlResource, loading) {

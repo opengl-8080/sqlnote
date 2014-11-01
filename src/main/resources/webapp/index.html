@@ -77,9 +77,9 @@
     
     <div class="ui-layout-center">
       <div class="input-group" ng-show="main.sql" ng-controller="SaveSqlController">
-        <input type="text" class="form-control input-lg" ng-model="main.sql.title" />
+        <input type="text" class="form-control input-lg" ng-model="main.sql.title" ng-change="main.change = true" />
         <span class="input-group-btn">
-          <button class="btn btn-success btn-lg" ng-click="saveSql()">
+          <button class="btn btn-success btn-lg" ng-click="saveSql()" ng-disabled="!main.change">
             <span class="glyphicon glyphicon-floppy-disk"></span>
             Save
           </button>
@@ -89,15 +89,19 @@
       <hr>
       
       <div class="form-group" ng-show="main.sql" ng-controller="ExecuteSqlController">
-        <div class="col-xs-2 col-xs-offset-8">
-          <button class="btn btn-default btn-block" ng-click="exportCsv()">
+        <div class="col-xs-8">
+          <p ng-show="main.change" class="text-danger form-control-static">※内容が変更されました。保存してから実行してください。</p>
+        </div>
+        
+        <div class="col-xs-2">
+          <button class="btn btn-default btn-block" ng-click="exportCsv()" ng-disabled="main.change">
             <span class="glyphicon glyphicon-file"></span>
             CSV
           </button>
         </div>
         
         <div class="col-xs-2">
-          <button class="btn btn-default btn-block" ng-click="executeSql()">
+          <button class="btn btn-default btn-block" ng-click="executeSql()" ng-disabled="main.change">
             <span class="glyphicon glyphicon-flash"></span>
             Execute
           </button>
@@ -107,7 +111,7 @@
       </div>
       
       <div ng-controller="EditorController">
-        <textarea id="editor"></textarea>
+        <textarea id="editor" ></textarea>
       </div>
       
       <hr>
@@ -131,14 +135,14 @@
         <div class="form-group" ng-init="nameId = idPrefix + '-name'">
           <label for="{{nameId}}" class="col-xs-3 control-label">Name</label>
           <div class="col-xs-9">
-            <input id="{{nameId}}" type="text" class="form-control input-sm" ng-model="param.name" />
+            <input id="{{nameId}}" type="text" class="form-control input-sm" ng-model="param.name" ng-change="main.change = true" />
           </div>
         </div>
         
         <div class="form-group" ng-init="typeId = idPrefix + '-type'">
           <label for="{{typeId}}" class="col-xs-3 control-label">Type</label>
           <div class="col-xs-9">
-            <select id="{{typeId}}" class="form-control input-sm" ng-model="param.type">
+            <select id="{{typeId}}" class="form-control input-sm" ng-model="param.type" ng-change="main.change = true">
               <option value="STRING">String</option>
               <option value="NUMBER">Number</option>
               <option value="DATE">Date</option>
