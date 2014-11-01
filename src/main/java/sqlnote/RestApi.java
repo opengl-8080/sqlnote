@@ -25,7 +25,6 @@ import sqlnote.domain.DataSourceConfigurationRepository;
 import sqlnote.domain.EntityNotFoundException;
 import sqlnote.domain.IllegalParameterException;
 import sqlnote.domain.ResponseWriter;
-import sqlnote.domain.TooManyQueryDataException;
 import sqlnote.domain.UnConnectableDatabaseException;
 import sqlnote.rest.ErrorMessageBuilder;
 import sqlnote.rest.dbconfig.DeleteDataSource;
@@ -37,7 +36,6 @@ import sqlnote.rest.dbconfig.VerifyDataSource;
 import sqlnote.rest.query.CsvResponseWriter;
 import sqlnote.rest.query.DefaultResponseWriter;
 import sqlnote.rest.query.QueryData;
-import sqlnote.rest.query.SeeOtherResponseBuilder;
 import sqlnote.rest.sql.DeleteSql;
 import sqlnote.rest.sql.GetAllSql;
 import sqlnote.rest.sql.GetSqlDetail;
@@ -190,15 +188,9 @@ public class RestApi {
                 setHeadersForCsvOutput(res);
             }
             
-            try {
-                new QueryData().execute(sqlId, dsId, queryMap, rw);
-                res.status(200);
-                return "";
-            } catch (TooManyQueryDataException e) {
-                res.type("application/json");
-                res.status(303);
-                return SeeOtherResponseBuilder.build(e.getRecordCount(), req.url(), req.queryString());
-            }
+            new QueryData().execute(sqlId, dsId, queryMap, rw);
+            res.status(200);
+            return "";
         });
     }
     

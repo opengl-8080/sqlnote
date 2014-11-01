@@ -2,15 +2,29 @@ package sqlnote.rest.query
 
 import groovy.json.JsonBuilder
 import sqlnote.db.ColumnMetaData
+import sqlnote.db.SystemDataSource
 import sqlnote.domain.ResponseWriter
+import sqlnote.domain.SystemConfigurationRepository
 
 class DefaultResponseWriter implements ResponseWriter {
     
     BufferedWriter bw
     private int dataRowCount = 0
+    private long maxRowNum
     
     def DefaultResponseWriter(OutputStream os) {
         this.bw = new BufferedWriter(new OutputStreamWriter(os))
+        this.maxRowNum = this.loadMaxRowNum()
+    }
+    
+    private long loadMaxRowNum() {
+        long maxRowNum
+        
+        SystemDataSource.with { db ->
+            maxRowNum = new SystemConfigurationRepository(db).find().maxRowNum
+        }
+        
+        return maxRowNum
     }
     
     @Override
@@ -56,7 +70,7 @@ class DefaultResponseWriter implements ResponseWriter {
     }
 
     @Override
-    public boolean canWrite(int recordCount) {
-        return recordCount <= 1000
+    public boolean canWrite() {
+        return this.dataRowCount < this.maxRowNum
     }
 }

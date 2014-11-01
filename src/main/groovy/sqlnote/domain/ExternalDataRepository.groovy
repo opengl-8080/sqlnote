@@ -18,17 +18,12 @@ class ExternalDataRepository {
         
         ExternalDataSource.with(dsId) { ExternalDatabase ex, DatabaseAccess db ->
             db.query(sqlGString) { ResultSet rs ->
-                int recordCount = this.getRecordCount(rs)
-                if (!rw.canWrite(recordCount)) {
-                    throw new TooManyQueryDataException(recordCount)
-                }
-                
                 List<ColumnMetaData> metaDatas = ex.makeColumnMetaData(rs)
                 
                 rw.write {
                     rw.writeColumnInfo(metaDatas)
                     
-                    while (rs.next()) {
+                    while (rs.next() && rw.canWrite()) {
                         def data = this.convertToMap(metaDatas, rs)
                         rw.appendDataRow(data)
                     }
@@ -68,13 +63,5 @@ class ExternalDataRepository {
         }
         
         return data
-    }
-    
-    private int getRecordCount(ResultSet rs) {
-        rs.last()
-        int recordCount = rs.row
-        rs.beforeFirst()
-        
-        return recordCount
     }
 }

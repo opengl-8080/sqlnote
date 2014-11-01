@@ -18,8 +18,8 @@ class CsvResponseWriter implements ResponseWriter {
     }
 
     @Override
-    public boolean canWrite(int recordCount) {
-        return recordCount < Long.MAX_VALUE
+    public boolean canWrite() {
+        return true;
     }
 
     @Override
