@@ -16,20 +16,97 @@ angular
         enableCursorHotkey: false
     });
 })
-.controller('SqlSelectionListController', function($scope, sqlResource) {
+.controller('SqlSelectionListController', function($scope, sqlResource, parameterStorageService) {
     sqlResource
         .getAllSqls()
         .success(function(sqls) {
             $scope.main.sqls = sqls;
+            
+            parameterStorageService.removeDeletedSqlParameter(sqls);
         });
     
     $scope.selectSql = function(sql) {
         sqlResource
             .getSqlDetail(sql.id)
             .success(function(sql) {
+                parameterStorageService.save($scope.main.sql);
+                
                 $scope.main.sql = sql;
+                
+                parameterStorageService.load($scope);
             });
     };
+})
+.service('parameterStorageService', function($window, storage) {
+    this.save = function(sql) {
+        if (sql) {
+            var key = toKey(sql.id);
+            
+            storage.remove(key);
+            
+            var values = _.map(sql.parameters, function(param) {
+                return param.value;
+            });
+            
+            storage.set(key, values);
+        }
+    };
+    
+    this.load = function($scope) {
+        var storedValues = storage.get(toKey($scope.main.sql.id));
+        
+        if (!storedValues) {
+            return;
+        }
+        
+        _.each($scope.main.sql.parameters, function(nouse, i) {
+            var value = storedValues[i] || '';
+            $scope.main.sql.parameters[i].value = value;
+        });
+    };
+    
+    this.removeDeletedSqlParameter = function(sqls) {
+        var ids = buildIdHashSet(sqls);
+        
+        forEachParameterKeys(function(key) {
+            var id = getSqlId(key);
+            
+            if (!(id in ids)) {
+                storage.remove(key);
+            }
+        });
+    };
+    
+    function buildIdHashSet(sqls) {
+        return _.reduce(sqls, function(memo, sql) {
+            memo[sql.id] = 0;
+            return memo;
+        }, {});
+    }
+    
+    function forEachParameterKeys(callback) {
+        var locatStorage = $window.localStorage;
+        
+        for (var i=0; i<localStorage.length; i++) {
+            var key = locatStorage.key(i);
+            
+            if (isParameterKey(key)) {
+                callback(key);
+            }
+        }
+    }
+    
+    function toKey(id) {
+        return 'sql_' + id + '.parameters';
+    }
+    
+    function getSqlId(key) {
+        return key.replace(/^sql_|\.parameters$/g, '') - 0;
+    }
+    
+    function isParameterKey(key) {
+        return key.match(/^sql_\d+\.parameters$/);
+    }
 })
 .controller('AddSqlController', function($scope, sqlResource, $log) {
     $scope.addSql = function() {
