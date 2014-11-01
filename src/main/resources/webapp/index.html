@@ -89,11 +89,19 @@
       <hr>
       
       <div class="form-group" ng-show="main.sql" ng-controller="ExecuteSqlController">
+        <div class="col-xs-2 col-xs-offset-8">
+          <button class="btn btn-default btn-block" ng-click="exportCsv()">
+            <span class="glyphicon glyphicon-file"></span>
+            CSV
+          </button>
+        </div>
         
-        <button class="btn btn-default pull-right" ng-click="executeSql()">
-          <span class="glyphicon glyphicon-flash"></span>
-          Execute
-        </button>
+        <div class="col-xs-2">
+          <button class="btn btn-default btn-block" ng-click="executeSql()">
+            <span class="glyphicon glyphicon-flash"></span>
+            Execute
+          </button>
+        </div>
         
         <div class="clearfix"></div>
       </div>

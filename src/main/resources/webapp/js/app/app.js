@@ -195,6 +195,12 @@ angular
                 loading.hide();
             });
     };
+    
+    $scope.exportCsv = function() {
+        if (confirm('検索結果を全て CSV に出力します。\nよろしいですか？')) {
+            sqlResource.exportCsv($scope.main.sql, $scope.main.selectedDataSourceId);
+        }
+    };
 })
 .controller('SelectDataSourceController', function($scope, dataSourceResource, storage) {
     storage.bind($scope, 'main.selectedDataSourceId');
@@ -328,7 +334,7 @@ angular
         maxRowNum: '表に出力する件数の上限値を指定します。\nここで指定した件数以上の検索結果を取得したい場合は CSV 出力を選択してください。'
     };
 })
-.service('sqlResource', function($http, $log, $filter) {
+.service('sqlResource', function($http, $log) {
     this.getAllSqls = function() {
         $log.debug('sqlResource getAllSqls');
         return $http.get('/sqlnote/api/sql').error(handlerError);
@@ -353,6 +359,21 @@ angular
     }
     
     this.executeSql = function(sql, dataSourceId) {
+        var params = buildExecuteParameter(sql, dataSourceId);
+        
+        return $http
+                    .get('/sqlnote/api/sql/' + sql.id + '/result?' + $.param(params))
+                    .error(handlerError);
+    }
+    
+    this.exportCsv = function(sql, dataSourceId) {
+        var params = buildExecuteParameter(sql, dataSourceId);
+        params.type = 'csv';
+
+        window.location.href = '/sqlnote/api/sql/' + sql.id + '/result?' + $.param(params);
+    }
+    
+    function buildExecuteParameter(sql, dataSourceId) {
         var params = _.reduce(sql.parameters, function(p, parameter) {
             p.s[parameter.name] = parameter.value;
             return p;
@@ -361,31 +382,8 @@ angular
             s: {}
         });
         
-        var that = this;
-        
-        return $http
-                    .get('/sqlnote/api/sql/' + sql.id + '/result?' + $.param(params))
-                    .error(function(response, status) {
-                        if (status === 303) {
-                            that.downloadCsv(response);
-                        } else {
-                            handlerError(response);
-                        }
-                    });
+        return params;
     }
-    
-    var numberFilter = $filter('number');
-    
-    this.downloadCsv = function(response) {
-        var cnt = numberFilter(response.recordCount);
-        var msg = '検索結果： ' + cnt + ' 件\n'
-                 + '件数が多いので CSV でダウンロードします。\n'
-                 + 'よろしいですか？'
-        
-        if (confirm(msg)) {
-            window.location.href = response.url;
-        }
-    };
     
     function handlerError(response) {
         alert(response.message || 'エラーが発生しました。');
