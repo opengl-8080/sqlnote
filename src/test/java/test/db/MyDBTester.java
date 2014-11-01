@@ -1,10 +1,13 @@
 package test.db;
+import java.sql.Connection;
+
 import jp.classmethod.testing.database.DbUnitTester;
 import jp.classmethod.testing.database.JdbcDatabaseConnectionManager;
 import jp.classmethod.testing.database.YamlDataSet;
 
 import org.dbunit.dataset.IDataSet;
 
+import sqlnote.db.DatabaseAccess;
 import sqlnote.db.SystemDataSource;
 
 public class MyDBTester extends DbUnitTester {
@@ -31,6 +34,11 @@ public class MyDBTester extends DbUnitTester {
             super.username = "SA";
             super.password = "";
         }
+    }
+    
+    public DatabaseAccess getDatabaseAccess() {
+        Connection con = SystemDataSource.getConnection();
+        return new DatabaseAccess(con);
     }
     
     /**

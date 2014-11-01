@@ -4,7 +4,6 @@ import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 import static test.db.TestHelper.*;
 
-import java.sql.Connection;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,8 +16,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import sqlnote.db.DatabaseAccess;
-import sqlnote.db.SystemDataSource;
 import test.db.MyDBTester;
 
 @Fixture(resources="SqlNoteRepositoryTest.yaml")
@@ -31,9 +28,7 @@ public class SqlNoteRepositoryTest {
     
     @Before
     public void setup() throws Exception {
-        Connection con = SystemDataSource.getConnection();
-        DatabaseAccess db = new DatabaseAccess(con);
-        repository = new SqlNoteRepository(db);
+        repository = new SqlNoteRepository(dbTester.getDatabaseAccess());
     }
     
     @Test

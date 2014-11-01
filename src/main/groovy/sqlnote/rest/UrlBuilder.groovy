@@ -2,6 +2,8 @@ package sqlnote.rest
 
 import static sqlnote.rest.UrlBuilder.*;
 
+import org.hsqldb.persist.LobManager.GET_LOB_PART;
+
 class UrlBuilder {
     
     public static final int PORT = 48123
@@ -22,7 +24,9 @@ class UrlBuilder {
     public static final String PUT_DATASOURCE_PATH = DELETE_DATASOURCE_PATH;
     public static final String VERIFY_DATASOURCE_PATH = DELETE_DATASOURCE_PATH + "/verify";
     public static final String DUMP_DATA_SOURCE_CACHE = GET_ALL_DATASOURCE_PATH + "/cache";
-
+    public static final String GET_SYSTEM_CONFIGURATION = "${API_PATH}/config";
+    public static final String PUT_SYSTEM_CONFIGURATION = GET_SYSTEM_CONFIGURATION;
+    
     public static String buildSqlDetailUrl(long id) {
         "${URL_BASE}${GET_ALL_SQL_PATH}/${id}"
     }

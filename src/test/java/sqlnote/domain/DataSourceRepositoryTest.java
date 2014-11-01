@@ -3,7 +3,6 @@ package sqlnote.domain;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
-import java.sql.Connection;
 import java.util.List;
 
 import jp.classmethod.testing.database.Fixture;
@@ -13,8 +12,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import sqlnote.db.DatabaseAccess;
-import sqlnote.db.SystemDataSource;
 import test.db.MyDBTester;
 
 @Fixture(resources="DataSourceRepositoryTest.yaml")
@@ -27,9 +24,7 @@ public class DataSourceRepositoryTest {
     
     @Before
     public void setup() {
-        Connection con = SystemDataSource.getConnection();
-        DatabaseAccess db = new DatabaseAccess(con);
-        repository = new DataSourceConfigurationRepository(db);
+        repository = new DataSourceConfigurationRepository(dbTester.getDatabaseAccess());
     }
     
     @Test
