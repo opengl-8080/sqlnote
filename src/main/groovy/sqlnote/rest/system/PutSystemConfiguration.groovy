@@ -13,8 +13,7 @@ class PutSystemConfiguration {
         SystemDataSource.withTransaction { db ->
             def repo = new SystemConfigurationRepository(db)
             
-            SystemConfiguration config = new SystemConfiguration()
-            config.maxRowNum = json.maxRowNum
+            SystemConfiguration config = new SystemConfigParser().parse(json)
             
             repo.modify(config)
         }

@@ -37,7 +37,7 @@ public class SystemConfigurationRepositoryTest {
     public void 更新() throws Exception {
         // setup
         SystemConfiguration config = new SystemConfiguration();
-        config.setMaxRowNum(250);
+        config.setMaxRowNum(250L);
         
         // exercise
         repostitory.modify(config);
