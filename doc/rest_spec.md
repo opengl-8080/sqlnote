@@ -160,13 +160,19 @@
 `GET`
 
 ###Path
-`/api/sql/{id}/result?s[CODE]=AAA&s[AGE]=20&dataSource=1`
+`/api/sql/{id}/result`
+
+###Query Parameter
+|パラメータ名|型|説明|例|
+|:--|:--|:--|:--|
+|s|Map|パラメータ名ごとのパラメータ値|s[CODE]=AAA&s[AGE]=12|
+|dataSource|int|検索対象のデータソースID|dataSource=1|
+|type|string|出力形式。現在は csv のみ。|type=csv|
 
 ###Status Code
 |コード|説明|
 |:--|:--|
 |200|正常終了|
-|303|検索結果が 1,000 件より多い|
 |400|入力データに誤りがある|
 |404|指定したIDのSQLまたはデータソースが存在しない|
 
@@ -211,15 +217,7 @@
 }
 ```
 
-####303 See Other
-```json
-{
-	"recordCount": 1500,
-	"url": "http://localhost:1234/sqlnote/api/sql/5/result?s[CODE]=AAA&s[AGE]=20&dataSource=1&type=csv"
-}
-```
-
-#####CSV Format
+####CSV Format
 ```csv
 CODE<TAB>NAME<TAB>DATE
 aaa<TAB>bbb<TAB>2012-01-01T12:01:01+0900
