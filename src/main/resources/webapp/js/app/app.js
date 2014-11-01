@@ -189,12 +189,17 @@ angular
         $scope.main.sql.parameters.splice($index, 1);
     };
 })
-.controller('ExecuteSqlController', function($scope, sqlResource) {
+.controller('ExecuteSqlController', function($scope, sqlResource, loading) {
     $scope.executeSql = function() {
+        loading.show();
+        
         sqlResource
             .executeSql($scope.main.sql, $scope.main.selectedDataSourceId)
             .then(function(response) {
                 $scope.main.queryResult = response.data;
+            })
+            .finally(function() {
+                loading.hide();
             });
     };
 })
@@ -402,6 +407,15 @@ angular
     function handlerError(response) {
         alert(response.message || 'エラーが発生しました。');
     }
+})
+.service('loading', function() {
+    this.show = function() {
+        $.blockUI();
+    };
+    
+    this.hide = function() {
+        $.unblockUI();
+    };
 })
 .filter('dataType', function($log) {
     return function(type) {
