@@ -13,7 +13,7 @@ class SystemConfigParser {
         this.verify(param)
         
         SystemConfiguration config = new SystemConfiguration()
-        config.maxRowNum = param.maxRowNum
+        config.maxRowNum = param.maxRowNum as long
         
         return config
     }

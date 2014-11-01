@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html ng-app="sqlnote">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <base href="../../" />
+    <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="js/toastr/toastr.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    
+    <title>System Configuration - AgileSQL</title>
+  </head>
+  <body ng-controller="SystemConfigurationController as cfMain">
+    <div class="container">
+      <h1>System Configuration</h1>
+      <hr>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-6 col-xs-offset-3">
+          <div class="form-group">
+            <label for="maxRowNum" class="control-label">最大出力件数</label>
+            <input id="maxRowNum" type="text" class="form-control" ng-model="cfMain.config.maxRowNum" />
+          </div>
+          
+          <div class="form-group">
+            <button class="btn btn-success btn-lg pull-right" ng-click="save()">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <script src="js/jquery/jquery.min.js"></script>
+    <script src="js/underscorejs/underscore-min.js"></script>
+    <script src="js/angularjs/angular.min.js"></script>
+    <script src="js/angularjs/angular-cookies.min.js"></script>
+    <script src="js/angularjs/angularLocalStorage.js"></script>
+    <script src="css/bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/toastr/toastr.min.js"></script>
+    <script src="js/app/app.js"></script>
+  </body>
+</html>

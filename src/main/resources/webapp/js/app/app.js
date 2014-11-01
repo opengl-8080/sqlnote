@@ -309,6 +309,21 @@ angular
             });
     };
 })
+.controller('SystemConfigurationController', function($scope, systemConfigurationResource) {
+    systemConfigurationResource
+        .get()
+        .success(function(data) {
+            $scope.cfMain.config = data;
+        });
+    
+    $scope.save = function() {
+        systemConfigurationResource
+            .save($scope.cfMain.config)
+            .success(function() {
+                toastr.info('Save System Configuration');
+            });
+    };
+})
 .service('sqlResource', function($http, $log, $filter) {
     this.getAllSqls = function() {
         $log.debug('sqlResource getAllSqls');
@@ -395,6 +410,19 @@ angular
     
     this.deleteDataSource = function(id) {
         return $http.delete('/sqlnote/api/dataSource/' + id).error(handlerError);
+    };
+    
+    function handlerError(response) {
+        alert(response.message || 'エラーが発生しました。');
+    }
+})
+.service('systemConfigurationResource', function($http) {
+    this.get = function() {
+        return $http.get('/sqlnote/api/config').error(handlerError);
+    };
+    
+    this.save = function(config) {
+        return $http.put('/sqlnote/api/config', config).error(handlerError);
     };
     
     function handlerError(response) {

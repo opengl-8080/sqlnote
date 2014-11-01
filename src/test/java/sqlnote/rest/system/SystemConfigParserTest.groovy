@@ -79,7 +79,7 @@ public class SystemConfigParserTest {
     @Test
     void エラーがなければSystemConfigurationに変換できる() {
         // setup
-        def param = [maxRowNum: 543]
+        def param = [maxRowNum: '543']
         
         // exercise
         SystemConfiguration config = parser.parse(param)

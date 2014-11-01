@@ -16,18 +16,30 @@
     <div class="ui-layout-west">
       <div>
         <div class="form-group">
-          <a class="btn btn-default btn-block" href="page/dataSource.html">
-            <span class="glyphicon glyphicon-hdd"></span>
-            DataSource
-          </a>
+          <button class="btn btn-link" ng-click="showConfiguration = !showConfiguration">configuration</button>
         </div>
-        
-        <div class="form-group" ng-controller="SelectDataSourceController">
-          <select class="form-control"
-                   ng-model="main.selectedDataSourceId"
-                   ng-options="ds.id as ds.name for ds in main.dataSources">
-          </select>
-        </div>        
+        <div ng-show="showConfiguration">
+          <div class="form-group">
+            <a class="btn btn-default btn-block" href="page/systemConfiguration.html">
+              <span class="glyphicon glyphicon-wrench"></span>
+              System Configuration
+            </a>
+          </div>
+          
+          <div class="form-group">
+            <a class="btn btn-default btn-block" href="page/dataSource.html">
+              <span class="glyphicon glyphicon-hdd"></span>
+              DataSource
+            </a>
+          </div>
+          
+          <div class="form-group" ng-controller="SelectDataSourceController">
+            <select class="form-control"
+                     ng-model="main.selectedDataSourceId"
+                     ng-options="ds.id as ds.name for ds in main.dataSources">
+            </select>
+          </div>
+        </div>
         <hr>
         
         <div class="form-group" ng-controller="AddSqlController">
