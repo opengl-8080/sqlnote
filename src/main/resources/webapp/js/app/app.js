@@ -323,6 +323,10 @@ angular
                 toastr.info('Save System Configuration');
             });
     };
+    
+    $scope.cfMain.desc = {
+        maxRowNum: '表に出力する件数の上限値を指定します。\nここで指定した件数以上の検索結果を取得したい場合は CSV 出力を選択してください。'
+    };
 })
 .service('sqlResource', function($http, $log, $filter) {
     this.getAllSqls = function() {
