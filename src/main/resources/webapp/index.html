@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/bootstrap_table/bootstrap-table.min.css" />
     <link rel="stylesheet" href="js/jqueryui/jquery-ui.min.css" />
     <link rel="stylesheet" href="js/codemirror/codemirror.css" />
     <link rel="stylesheet" href="js/toastr/toastr.min.css" />
@@ -11,7 +12,7 @@
     
     <title>AgileSQL</title>
   </head>
-  <body ng-controller="MainController as main">
+  <body ng-controller="MainController as main" sn-layout>
     <div class="ui-layout-west">
       <div>
         <div class="form-group">
@@ -26,8 +27,7 @@
                    ng-model="main.selectedDataSourceId"
                    ng-options="ds.id as ds.name for ds in main.dataSources">
           </select>
-        </div>
-        
+        </div>        
         <hr>
         
         <div class="form-group" ng-controller="AddSqlController">
@@ -152,19 +152,10 @@
     </div>
     
     <div class="ui-layout-south">
-      <table class="table table-bordered table-striped table-hover" ng-show="main.queryResult">
-        <thead>
-          <tr>
-            <th ng-repeat="col in main.queryResult.metaData">{{col.name}}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="row in main.queryResult.data">
-            <td ng-repeat="col in main.queryResult.metaData">{{row[col.name]}}</td>
-          </tr>
-        </tbody>
+      <table sn-table ng-show="main.queryReulst">
       </table>
     </div>
+    
     <script src="js/jquery/jquery.min.js"></script>
     <script src="js/jqueryui/jquery-ui.min.js"></script>
     <script src="js/ullayout/jquery.layout.min.js"></script>
@@ -173,6 +164,7 @@
     <script src="js/angularjs/angular-cookies.min.js"></script>
     <script src="js/angularjs/angularLocalStorage.js"></script>
     <script src="css/bootstrap/js/bootstrap.min.js"></script>
+    <script src="css/bootstrap_table/bootstrap-table.min.js"></script>
     <script src="js/codemirror/codemirror.js"></script>
     <script src="js/codemirror/sql.js"></script>
     <script src="js/toastr/toastr.min.js"></script>

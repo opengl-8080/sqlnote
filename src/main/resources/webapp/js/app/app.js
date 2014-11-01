@@ -4,17 +4,6 @@ angular
     toastr.options = {
         "positionClass": "toast-bottom-right"
     };
-    
-    $('body').layout({
-        applyDefaultStyles: true,
-        spacing_closed: 20,
-        spacing_open: 8,
-        east__size: 300,
-        west__size: 350,
-        south__size: 250,
-        togglerLength_closed: '100%',
-        enableCursorHotkey: false
-    });
 })
 .controller('SqlSelectionListController', function($scope, sqlResource, parameterStorageService) {
     sqlResource
@@ -197,6 +186,10 @@ angular
             .executeSql($scope.main.sql, $scope.main.selectedDataSourceId)
             .then(function(response) {
                 $scope.main.queryResult = response.data;
+                
+                var columns = _.map(response.data.metaData, function(col) {
+                    return {field: col.name, title: col.name};
+                });
             })
             .finally(function() {
                 loading.hide();
@@ -415,6 +408,65 @@ angular
     
     this.hide = function() {
         $.unblockUI();
+    };
+})
+.directive('snTable', function($log) {
+    return {
+        link: function($scope, $element, $attr) {
+            $element.bootstrapTable();
+            
+            $scope.$watch('main.queryResult', function() {
+                var queryReulst = $scope.main.queryResult;
+                
+                if (!queryReulst) {
+                    return;
+                }
+                
+                var columns = _.map(queryReulst.metaData, function(col) {
+                    return {
+                        field: col.name,
+                        title: col.name
+                    }
+                });
+                
+                $element.bootstrapTable('destroy')
+                        .bootstrapTable({
+                            columns: columns,
+                            data: queryReulst.data,
+                            height: $scope.main.resultPaneHeight
+                        });
+            });
+            
+            // $watch で main.resultPaneHeight を監視しようとしたが、動作しなかったので仕方なく関数で連携するようにした
+            $scope.main.resizeResultTable = function(height) {
+                $element.bootstrapTable('resetView', {height: height});
+            };
+        }
+    };
+})
+.directive('snLayout', function($log) {
+    var DEFAULT_RESULT_PANE_HEIGHT = 250;
+    
+    return {
+        link: function($scope, $element, $attr) {
+            $scope.main.resultPaneHeight = DEFAULT_RESULT_PANE_HEIGHT - 30;
+            
+            $element.layout({
+                applyDefaultStyles: true,
+                spacing_closed: 20,
+                spacing_open: 8,
+                east__size: 300,
+                west__size: 350,
+                south__size: DEFAULT_RESULT_PANE_HEIGHT,
+                togglerLength_closed: '100%',
+                enableCursorHotkey: false,
+                south__onresize: function() {
+                    var height = $element.find('.ui-layout-south').height();
+                    $scope.main.resultPaneHeight = height;
+                    $scope.main.resizeResultTable(height);
+                }
+            });
+        }
     };
 })
 .filter('dataType', function($log) {
