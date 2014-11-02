@@ -17,24 +17,10 @@ class ExternalDataSource {
         
         try {
             con.setReadOnly(true)
-            closure(buildExternalDatabase(con), new DatabaseAccess(con))
+            closure(new ExternalDatabase(), new DatabaseAccess(con))
         } finally {
             con.close()
             logger.trace('close database connection')
-        }
-    }
-    
-    private static ExternalDatabase buildExternalDatabase(Connection con) {
-        def dbName = con.metaData.databaseProductName
-        
-        if (dbName == 'Oracle') {
-            return new OracleDatabase()
-        } else if (dbName == 'MySQL') {
-            return new MySQLDatabase()
-        } else if (dbName.contains('HSQL')) {
-            return new HsqlDatabase();
-        } else {
-            throw new UnSupportedDatabaseException(dbName)
         }
     }
 }
