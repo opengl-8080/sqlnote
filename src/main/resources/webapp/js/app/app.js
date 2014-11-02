@@ -510,6 +510,8 @@ angular
                 }
                 
                 var columns = _.map(queryReulst.metaData, function(col) {
+                    $log.debug('type=' + col.type);
+                    
                     var formatter = stringFormatter;
                     
                     if (col.type === 'date') {

@@ -47,7 +47,7 @@ import sqlnote.rest.system.PutSystemConfiguration;
 
 
 public class RestApi {
-    private static final Logger logger = LoggerFactory.getLogger(RestApi.class);
+    private static Logger logger;
     
     public static void main(String[] args) {
         migrateDatabase(SystemDataSource.init());
@@ -56,12 +56,16 @@ public class RestApi {
         
         boolean isRelease = Boolean.valueOf(System.getProperty("sqlnote.release"));
         if (isRelease) {
-            logger.info("Release Mode");
+            System.out.println("Release Mode");
             staticFileLocation("/webapp");
+            System.setProperty("sqlnote.log.level", "INFO");
         } else {
-            logger.debug("Develop Mode");
+            System.out.println("Develop Mode");
             externalStaticFileLocation("src/main/resources/webapp");
+            System.setProperty("sqlnote.log.level", "TRACE");
         }
+        
+        logger = LoggerFactory.getLogger(RestApi.class);
         
         defineSqlApi();
         defineQueryApi();
