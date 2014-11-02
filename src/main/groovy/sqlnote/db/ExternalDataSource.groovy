@@ -31,6 +31,8 @@ class ExternalDataSource {
             return new OracleDatabase()
         } else if (dbName == 'MySQL') {
             return new MySQLDatabase()
+        } else if (dbName.contains('HSQL')) {
+            return new HsqlDatabase();
         } else {
             throw new UnSupportedDatabaseException(dbName)
         }
