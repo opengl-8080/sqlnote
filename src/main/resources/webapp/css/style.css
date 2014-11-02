@@ -18,3 +18,7 @@
   resize: none;
   height: 70px;
 }
+
+.break-all {
+  word-break: break-all;
+}

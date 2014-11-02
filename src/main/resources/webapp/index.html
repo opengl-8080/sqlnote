@@ -20,12 +20,12 @@
     <div class="ui-layout-west">
       <div>
         <div class="form-group">
-          <button class="btn btn-link" ng-click="showConfiguration = !showConfiguration">configuration</button>
+          <button class="btn btn-link" ng-click="showConfiguration = !showConfiguration">Configuration</button>
         </div>
         <div ng-show="showConfiguration">
           <div class="form-group">
             <a class="btn btn-default btn-block" href="page/systemConfiguration.html">
-              <span class="glyphicon glyphicon-wrench"></span>
+              <span class="glyphicon glyphicon-cog"></span>
               System Configuration
             </a>
           </div>
@@ -72,7 +72,7 @@
         <hr>
         
         <div class="list-group cursor" ng-controller="SqlSelectionListController">
-          <a class="list-group-item" ng-repeat="sql in main.sqls | filter:{title:main.sqlFilter} | orderBy:'title'" ng-click="selectSql(sql)">
+          <a class="list-group-item break-all" ng-repeat="sql in main.sqls | filter:{title:main.sqlFilter} | orderBy:'title'" ng-click="selectSql(sql)">
             {{sql.title}}
           </a>
         </div>
@@ -93,13 +93,20 @@
       <hr>
       
       <div class="form-group" ng-show="main.sql" ng-controller="ExecuteSqlController">
-        <div class="col-xs-8">
+        <div class="col-xs-6">
           <p ng-show="main.change" class="text-danger form-control-static">※内容が変更されました。保存してから実行してください。</p>
         </div>
         
         <div class="col-xs-2">
-          <button class="btn btn-default btn-block" ng-click="exportCsv()" ng-disabled="main.change">
+          <button class="btn btn-default btn-block" ng-click="copySql()" ng-disabled="main.change">
             <span class="glyphicon glyphicon-file"></span>
+            Copy
+          </button>
+        </div>
+        
+        <div class="col-xs-2">
+          <button class="btn btn-default btn-block" ng-click="exportCsv()" ng-disabled="main.change">
+            <span class="glyphicon glyphicon-download-alt"></span>
             CSV
           </button>
         </div>

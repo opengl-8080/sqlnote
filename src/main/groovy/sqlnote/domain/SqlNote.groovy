@@ -8,7 +8,7 @@ import org.apache.commons.lang3.time.DateUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-class SqlNote {
+class SqlNote implements Cloneable {
     private static final Logger logger = LoggerFactory.getLogger(SqlNote.class)
     
     Long id
@@ -91,5 +91,15 @@ class SqlNote {
     @Override
     public String toString() {
         return "SqlNote [id=" + id + ", title=" + title + ", sqlTemplate=" + sqlTemplate + ", parameters=" + parameters + "]";
+    }
+
+    public SqlNote copy() {
+        SqlNote cp = super.clone()
+        
+        cp.id = null
+        cp.title += ' - Copy'
+        cp.parameters = new ArrayList(cp.parameters)
+        
+        return cp
     }
 }

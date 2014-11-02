@@ -325,4 +325,24 @@ public class SqlNoteTest {
         // exercise
         note.verify();
     }
+    
+    @Test
+    public void コピーメソッド() throws Exception {
+        // setup
+        SqlNote original = new SqlNote();
+        original.setId(100L);
+        original.setSqlTemplate("sql template");
+        original.setTitle("sql title");
+        original.setParameters(Arrays.asList(stringParameter("p1"), numberParameter("p2")));
+        
+        // exercise
+        SqlNote copy = original.copy();
+        
+        // verify
+        assertThat(copy.getId(), is(nullValue()));
+        assertThat(copy.getSqlTemplate(), is(original.getSqlTemplate()));
+        assertThat(copy.getTitle(), is(original.getTitle() + " - Copy"));
+        assertThat(copy.getParameters(), is(original.getParameters()));
+        assertThat(copy.getParameters(), is(not(sameInstance(original.getParameters()))));
+    }
 }

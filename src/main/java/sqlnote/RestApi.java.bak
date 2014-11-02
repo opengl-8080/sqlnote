@@ -171,13 +171,7 @@ public class RestApi {
             return response;
         });
         
-        put(PUT_SQL, (req, res) -> {
-            new PutSql().execute(getId(req), req.body());
-            res.status(200);
-            return "";
-        });
-        
-        post(COPY_SQL, (req, res) -> {
+        put(COPY_SQL, (req, res) -> {
             new CopySql().execute(getId(req));
             res.status(201);
             return "";

@@ -218,6 +218,18 @@ angular
             sqlResource.exportCsv($scope.main.sql, $scope.main.selectedDataSourceId);
         }
     };
+    
+    $scope.copySql = function() {
+        sqlResource
+            .copySql($scope.main.sql.id)
+            .then(function() {
+                return sqlResource.getAllSqls();
+            })
+            .then(function(response) {
+                $scope.main.sqls = response.data;
+                toastr.info('Copy SQL');
+            });
+    };
 })
 .controller('SelectDataSourceController', function($scope, dataSourceResource, storage) {
     storage.bind($scope, 'main.selectedDataSourceId');
@@ -382,6 +394,12 @@ angular
                     .get('/sqlnote/api/sql/' + sql.id + '/result?' + $.param(params))
                     .error(handlerError);
     }
+    
+    this.copySql = function(srcSqlId) {
+        return $http
+                    .post('/sqlnote/api/sql/' + srcSqlId)
+                    .error(handlerError);
+    };
     
     this.exportCsv = function(sql, dataSourceId) {
         var params = buildExecuteParameter(sql, dataSourceId);
