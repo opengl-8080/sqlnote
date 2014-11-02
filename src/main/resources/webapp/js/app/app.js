@@ -1,5 +1,8 @@
 angular
 .module('sqlnote', ['angularLocalStorage', 'ngCookies'])
+.config(function($logProvider) {
+    $logProvider.debugEnabled(false);
+})
 .controller('MainController', function($scope, $log) {
     toastr.options = {
         "positionClass": "toast-bottom-right"
