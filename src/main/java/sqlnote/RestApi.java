@@ -4,18 +4,23 @@ import static spark.Spark.*;
 import static spark.SparkBase.*;
 import static sqlnote.rest.UrlBuilder.*;
 
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.Map;
 
+
 import javax.sql.DataSource;
 
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.eclipse.jetty.io.RuntimeIOException;
 import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 import spark.Request;
 import spark.Response;
@@ -44,6 +49,7 @@ import sqlnote.rest.sql.PostSql;
 import sqlnote.rest.sql.PutSql;
 import sqlnote.rest.system.GetSystemConfiguration;
 import sqlnote.rest.system.PutSystemConfiguration;
+
 
 public class RestApi {
     private static final Logger logger = LoggerFactory.getLogger(RestApi.class);
@@ -92,7 +98,11 @@ public class RestApi {
     private static void defineFilter() {
         before(API_FILTER, (req, res) -> {
             res.type("application/json");
-            logger.debug("{} : {}?{}", req.requestMethod(), req.pathInfo(), req.queryString());
+            
+            if (logger.isDebugEnabled()) {
+                String queryString = req.queryString() == null ? "" : "?" + req.queryString();
+                logger.debug("{} : {}{}", req.requestMethod(), req.pathInfo(), queryString);
+            }
         });
         
         after(API_FILTER, (req, res) -> {
