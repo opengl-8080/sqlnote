@@ -145,6 +145,8 @@ angular
     $scope.$watch('main.sql', function() {
         if ($scope.main.sql) {
             jsEditor.setValue($scope.main.sql.sql);
+        } else {
+            jsEditor.setValue('');
         }
     });
     
