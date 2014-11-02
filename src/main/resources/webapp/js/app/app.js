@@ -523,7 +523,8 @@ angular
                     return {
                         field: col.name,
                         title: col.name,
-                        formatter: formatter
+                        formatter: formatter,
+                        align: 'center'
                     }
                 });
                 
@@ -543,24 +544,30 @@ angular
     };
     
     function stringFormatter(value) {
-        return value === null ? nullValue : value;
+        return leftAlign(value === null ? nullValue : value);
     }
     
     function dateFormatter(value) {
-        if (value === null) {
-            return nullValue;
-        } else {
+        var d = nullValue;
+        
+        if (value !== null) {
             var date = new Date(value);
-            return dateFilter(date, 'yyyy/MM/dd HH:mm:ss');
+            d = dateFilter(date, 'yyyy/MM/dd HH:mm:ss');
         }
+        
+        return rightAlign(d);
     }
     
     function numberFormatter(value) {
-        if (value === null) {
-            return nullValue;
-        } else {
-            return numberFilter(value);
-        }
+        return rightAlign(value === null ? nullValue : numberFilter(value));
+    }
+    
+    function rightAlign(value) {
+        return '<div class="text-right">' + value + '</div>';
+    }
+    
+    function leftAlign(value) {
+        return '<div class="text-left">' + value + '</div>';
     }
 })
 .directive('snLayout', function($log) {
