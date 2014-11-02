@@ -20,15 +20,30 @@ class SystemDataSource {
     private static DataSource SYSTEM_DATASOURCE;
     
     static DataSource init() {
-        init(URL)
+        init(resolveUrl())
     }
     
     synchronized static DataSource init(url) {
         if (!SYSTEM_DATASOURCE) {
-            SYSTEM_DATASOURCE = DataSourceUtil.build(DRIVER, url ?: URL, USER, PASS)
+            SYSTEM_DATASOURCE = DataSourceUtil.build(DRIVER, url ?: resolveUrl(), USER, PASS)
         }
         
         SYSTEM_DATASOURCE
+    }
+    
+    static String resolveUrl() {
+        def sqlNoteHome = System.getenv('SQLNOTE_HOME')
+        def dbFile
+        
+        if (sqlNoteHome) {
+            dbFile = new File(sqlNoteHome, 'db/sqlnote')
+        } else {
+            dbFile = new File(System.getProperty('user.home'), '.sqlnote/db/sqlnote')
+        }
+        
+        logger.info("database dir = {}", dbFile.absolutePath)
+        
+        return "jdbc:hsqldb:file:${dbFile.absolutePath};shutdown=true"
     }
     
     static Connection getConnection() {

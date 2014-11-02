@@ -4,23 +4,18 @@ import static spark.Spark.*;
 import static spark.SparkBase.*;
 import static sqlnote.rest.UrlBuilder.*;
 
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.Map;
 
-
 import javax.sql.DataSource;
 
-
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.eclipse.jetty.io.RuntimeIOException;
 import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 import spark.Request;
 import spark.Response;
