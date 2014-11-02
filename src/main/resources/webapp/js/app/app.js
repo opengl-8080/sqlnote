@@ -489,7 +489,12 @@ angular
         $.unblockUI();
     };
 })
-.directive('snTable', function($log) {
+.directive('snTable', function($log, $filter) {
+    
+    var numberFilter = $filter('number');
+    var dateFilter = $filter('date');
+    var nullValue = '<span class="nullValue">null</span>';
+    
     return {
         link: function($scope, $element, $attr) {
             $element.bootstrapTable();
@@ -502,9 +507,18 @@ angular
                 }
                 
                 var columns = _.map(queryReulst.metaData, function(col) {
+                    var formatter = stringFormatter;
+                    
+                    if (col.type === 'date') {
+                        formatter = dateFormatter;
+                    } else if (col.type === 'number') {
+                        formatter = numberFormatter;
+                    }
+                    
                     return {
                         field: col.name,
-                        title: col.name
+                        title: col.name,
+                        formatter: formatter
                     }
                 });
                 
@@ -522,6 +536,27 @@ angular
             };
         }
     };
+    
+    function stringFormatter(value) {
+        return value === null ? nullValue : value;
+    }
+    
+    function dateFormatter(value) {
+        if (value === null) {
+            return nullValue;
+        } else {
+            var date = new Date(value);
+            return dateFilter(date, 'yyyy/MM/dd HH:mm:ss');
+        }
+    }
+    
+    function numberFormatter(value) {
+        if (value === null) {
+            return nullValue;
+        } else {
+            return numberFilter(value);
+        }
+    }
 })
 .directive('snLayout', function($log) {
     var DEFAULT_RESULT_PANE_HEIGHT = 250;
