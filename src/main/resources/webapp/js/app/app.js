@@ -571,7 +571,7 @@ angular
     }
 })
 .directive('snLayout', function($log) {
-    var DEFAULT_RESULT_PANE_HEIGHT = 250;
+    var DEFAULT_RESULT_PANE_HEIGHT = 220;
     var TOGGLE_MAX_HEIGHT = 900;
     
     return {
