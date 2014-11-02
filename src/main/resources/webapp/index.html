@@ -106,7 +106,7 @@
         
         <div class="col-xs-2">
           <button class="btn btn-default btn-block" ng-click="exportCsv()" ng-disabled="main.change">
-            <span class="glyphicon glyphicon-download-alt"></span>
+            <span class="glyphiconglyphicon-download-alt"></span>
             CSV
           </button>
         </div>
@@ -123,15 +123,103 @@
       
       <div ng-controller="EditorController">
         <textarea id="editor" ></textarea>
+        <a href="" class="small" data-toggle="modal" data-target="#shortcut-dialog">
+          <span class="glyphicon glyphicon-question-sign"></span>
+          Shortcut Key
+        </a>
       </div>
       
       <hr>
       
       <div ng-controller="DeleteSqlController">
+        
         <button class="btn btn-danger pull-right" ng-show="main.sql" ng-click="deleteSql()">
           <span class="glyphicon glyphicon-trash"></span>
           Delete
         </button>
+      </div>
+    </div>
+    
+    <div class="modal fade" id="shortcut-dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">Editor Shortcut Key</h4>
+          </div>
+          <div class="modal-body">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th class="text-center">Action</th>
+                  <th class="text-center">Key</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>全選択</td>
+                  <td>Ctrl + A</td>
+                </tr>
+                <tr>
+                  <td>選択行削除</td>
+                  <td>Ctrl + D</td>
+                </tr>
+                <tr>
+                  <td>元に戻す</td>
+                  <td>Ctrl + Z</td>
+                </tr>
+                <tr>
+                  <td>やり直し</td>
+                  <td>Ctrl + Y</td>
+                </tr>
+                <tr>
+                  <td>選択状態を元に戻す</td>
+                  <td>Ctrl + U</td>
+                </tr>
+                <tr>
+                  <td>選択状態をやり直す</td>
+                  <td>Alt + U</td>
+                </tr>
+                <tr>
+                  <td>行頭に移動する</td>
+                  <td>Alt + Left</td>
+                </tr>
+                <tr>
+                  <td>行の最初の文字の前に移動する</td>
+                  <td>Home</td>
+                </tr>
+                <tr>
+                  <td>１単語右に移動する</td>
+                  <td>Ctrl + Right</td>
+                </tr>
+                <tr>
+                  <td>１単語左に移動する</td>
+                  <td>Ctrl + Left</td>
+                </tr>
+                <tr>
+                  <td>１単語右を削除する</td>
+                  <td>Ctrl + Delete</td>
+                </tr>
+                <tr>
+                  <td>１単語左を削除する</td>
+                  <td>Ctrl + Backspace</td>
+                </tr>
+                <tr>
+                  <td>選択行のインデントレベルを１つ上げる</td>
+                  <td>Ctrl + ]</td>
+                </tr>
+                <tr>
+                  <td>選択行のインデントレベルを１つ下げる</td>
+                  <td>Ctrl + [</td>
+                </tr>
+                <tr>
+                  <td>矩形選択</td>
+                  <td>Alt + Drag</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
     
@@ -207,8 +295,12 @@
     <script src="css/bootstrap_table/bootstrap-table.min.js"></script>
     <script src="js/codemirror/codemirror.js"></script>
     <script src="js/codemirror/sql.js"></script>
+    <script src="js/codemirror/addon/edit/closebrackets.js"></script>
+    <script src="js/codemirror/addon/edit/matchbrackets.js"></script>
+    <script src="js/codemirror/addon/selection/active-line.js"></script>
     <script src="js/toastr/toastr.min.js"></script>
     <script src="js/blockui/jquery.blockUI.js"></script>
     <script src="js/app/app.js"></script>
+    
   </body>
 </html>

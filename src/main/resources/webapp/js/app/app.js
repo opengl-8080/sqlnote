@@ -117,11 +117,18 @@ angular
     };
 })
 .controller('EditorController', function($scope, $log) {
+    
+    var p = set('minus exists inner outer left right all any current default else for grant group intersect of revoke row rows smallint start then to trigger unique user whenever with');
+    
+    $.extend(true, CodeMirror.mimeModes['text/x-sql'].keywords, p);
+    
     var jsEditor = CodeMirror.fromTextArea(document.getElementById('editor'), {
-        mode: "sql",
+        mode: "text/x-sql",
         lineNumbers: true,
-        indentUnit: 4,
-        lineWrapping: false
+        styleActiveLine: true,
+        autoCloseBrackets: true,
+        matchBrackets: true,
+        indentUnit: 4
     });
     
     jsEditor.on('change', function() {
@@ -141,6 +148,13 @@ angular
     $scope.main.getSqlEditorValue = function() {
         return jsEditor.getValue();
     };
+    
+    // copy from codemirror/sql.js
+    function set(str) {
+        var obj = {}, words = str.split(" ");
+        for (var i = 0; i < words.length; ++i) obj[words[i]] = true;
+        return obj;
+    }
 })
 .controller('DeleteSqlController', function($scope, sqlResource) {
     $scope.deleteSql = function() {

@@ -22,3 +22,15 @@
 .break-all {
   word-break: break-all;
 }
+
+div.CodeMirror span.CodeMirror-matchingbracket {
+  color: chocolate;
+  font-weight: bold;
+}
+
+.cm-s-default .cm-keyword {
+  font-weight: bold;
+}
+.cm-s-default .cm-atom {
+  font-weight: bold;
+}
