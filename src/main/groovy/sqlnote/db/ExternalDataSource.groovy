@@ -17,7 +17,7 @@ class ExternalDataSource {
         
         try {
             con.setReadOnly(true)
-            closure(new ExternalDatabase(), new DatabaseAccess(con))
+            closure(new DatabaseAccess(con))
         } finally {
             con.close()
             logger.trace('close database connection')

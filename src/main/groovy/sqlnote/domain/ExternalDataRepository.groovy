@@ -7,18 +7,16 @@ import org.codehaus.groovy.runtime.GStringImpl
 import sqlnote.db.ColumnMetaData
 import sqlnote.db.DatabaseAccess
 import sqlnote.db.ExternalDataSource
-import sqlnote.db.ExternalDatabase
 import sqlnote.db.SystemDataSource
-import sqlnote.rest.query.DefaultResponseWriter;
 
 class ExternalDataRepository {
     
     void export(long sqlId, long dsId, Map<String, String> condition, ResponseWriter rw) {
         GString sqlGString = this.buildSqlGString(sqlId, condition)
         
-        ExternalDataSource.with(dsId) { ExternalDatabase ex, DatabaseAccess db ->
+        ExternalDataSource.with(dsId) { DatabaseAccess db ->
             db.query(sqlGString) { ResultSet rs ->
-                List<ColumnMetaData> metaDatas = ex.makeColumnMetaData(rs)
+                List<ColumnMetaData> metaDatas = ColumnMetaData.makeColumnMetaData(rs)
                 
                 rw.write {
                     rw.writeColumnInfo(metaDatas)
