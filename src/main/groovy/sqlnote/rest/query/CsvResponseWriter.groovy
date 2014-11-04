@@ -6,7 +6,7 @@ import java.io.OutputStream;
 import java.util.List;
 
 import sqlnote.db.ColumnMetaData;
-import sqlnote.domain.ResponseWriter;
+import sqlnote.domain.query.ResponseWriter;
 
 class CsvResponseWriter implements ResponseWriter {
 

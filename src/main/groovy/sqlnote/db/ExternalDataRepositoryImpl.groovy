@@ -5,8 +5,8 @@ import java.sql.ResultSet
 import org.codehaus.groovy.runtime.GStringImpl
 
 import sqlnote.RepositoryFactory
-import sqlnote.domain.ExternalDataRepository
-import sqlnote.domain.ResponseWriter
+import sqlnote.domain.query.ExternalDataRepository;
+import sqlnote.domain.query.ResponseWriter;
 import sqlnote.domain.sql.SqlNote;
 import sqlnote.domain.sql.TemplateAnalyzer;
 

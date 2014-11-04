@@ -1,4 +1,5 @@
-package sqlnote.domain
+package sqlnote.domain.query
+
 
 interface ExternalDataRepository {
     

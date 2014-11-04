@@ -4,7 +4,7 @@ import groovy.json.JsonBuilder
 import sqlnote.RepositoryFactory
 import sqlnote.db.ColumnMetaData
 import sqlnote.db.SystemDataSource
-import sqlnote.domain.ResponseWriter
+import sqlnote.domain.query.ResponseWriter;
 
 class DefaultResponseWriter implements ResponseWriter {
     

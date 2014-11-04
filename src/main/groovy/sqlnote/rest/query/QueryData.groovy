@@ -1,7 +1,7 @@
 package sqlnote.rest.query
 
 import sqlnote.RepositoryFactory
-import sqlnote.domain.ResponseWriter
+import sqlnote.domain.query.ResponseWriter;
 
 class QueryData {
     

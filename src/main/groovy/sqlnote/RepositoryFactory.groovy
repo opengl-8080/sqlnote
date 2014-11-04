@@ -6,8 +6,8 @@ import sqlnote.db.ExternalDataRepositoryImpl
 import sqlnote.db.SqlNoteRepositoryImpl
 import sqlnote.db.SystemConfigurationRepositoryImpl;
 import sqlnote.domain.DataSourceConfigurationRepository
-import sqlnote.domain.ExternalDataRepository
 import sqlnote.domain.SystemConfigurationRepository
+import sqlnote.domain.query.ExternalDataRepository;
 import sqlnote.domain.sql.SqlNoteRepository;
 
 class RepositoryFactory {

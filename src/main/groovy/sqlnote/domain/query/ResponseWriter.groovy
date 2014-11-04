@@ -1,4 +1,4 @@
-package sqlnote.domain;import sqlnote.db.ColumnMetaData
+package sqlnote.domain.query;import sqlnote.db.ColumnMetaData
 
 public interface ResponseWriter {
     
