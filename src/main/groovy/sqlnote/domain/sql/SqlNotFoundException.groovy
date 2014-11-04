@@ -1,4 +1,6 @@
-package sqlnote.domain
+package sqlnote.domain.sql
+
+import sqlnote.domain.EntityNotFoundException;
 
 class SqlNotFoundException extends EntityNotFoundException {
     

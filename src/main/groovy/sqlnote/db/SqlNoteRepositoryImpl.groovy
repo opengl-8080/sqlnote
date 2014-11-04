@@ -1,10 +1,10 @@
 package sqlnote.db
 
-import sqlnote.domain.DataType;
-import sqlnote.domain.SqlNotFoundException;
-import sqlnote.domain.SqlNote;
-import sqlnote.domain.SqlNoteRepository;
-import sqlnote.domain.SqlParameter;
+import sqlnote.domain.sql.DataType;
+import sqlnote.domain.sql.SqlNotFoundException;
+import sqlnote.domain.sql.SqlNote;
+import sqlnote.domain.sql.SqlNoteRepository;
+import sqlnote.domain.sql.SqlParameter;
 
 class SqlNoteRepositoryImpl implements SqlNoteRepository {
     

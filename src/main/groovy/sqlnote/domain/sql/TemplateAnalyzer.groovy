@@ -1,9 +1,11 @@
-package sqlnote.domain;
+package sqlnote.domain.sql;
 
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher
 import java.util.regex.Pattern
+
+import sqlnote.domain.IllegalParameterException;
 
 class TemplateAnalyzer {
     private static final Pattern PARAMETER_PATTERN = ~/\$\{[^\$\{]+?\}/

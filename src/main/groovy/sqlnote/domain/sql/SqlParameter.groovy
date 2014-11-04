@@ -1,6 +1,8 @@
-package sqlnote.domain
+package sqlnote.domain.sql
 
 import org.apache.commons.lang3.builder.HashCodeBuilder
+
+import sqlnote.domain.IllegalParameterException;
 
 class SqlParameter {
     

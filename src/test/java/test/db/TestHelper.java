@@ -1,7 +1,7 @@
 package test.db;
 
-import sqlnote.domain.DataType;
-import sqlnote.domain.SqlParameter;
+import sqlnote.domain.sql.DataType;
+import sqlnote.domain.sql.SqlParameter;
 
 public class TestHelper {
     

@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory
 
 import sqlnote.RepositoryFactory
 import sqlnote.db.SystemDataSource
-import sqlnote.domain.SqlNote
+import sqlnote.domain.sql.SqlNote;
 
 class PostSql {
     private static final Logger logger = LoggerFactory.getLogger(PostSql.class)

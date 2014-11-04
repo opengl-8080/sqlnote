@@ -6,7 +6,7 @@ import java.util.function.Function
 
 import sqlnote.RepositoryFactory
 import sqlnote.db.SystemDataSource
-import sqlnote.domain.SqlNote
+import sqlnote.domain.sql.SqlNote;
 
 class GetAllSql {
     

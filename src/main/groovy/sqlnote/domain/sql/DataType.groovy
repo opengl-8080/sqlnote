@@ -1,4 +1,4 @@
-package sqlnote.domain
+package sqlnote.domain.sql
 
 import java.sql.Date as SqlDate
 import java.text.ParseException
@@ -7,6 +7,8 @@ import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.time.DateUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+
+import sqlnote.domain.IllegalParameterException;
 
 enum DataType {
     STRING {

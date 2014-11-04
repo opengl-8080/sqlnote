@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory
 
 import sqlnote.RepositoryFactory
 import sqlnote.db.SystemDataSource
-import sqlnote.domain.DataType
-import sqlnote.domain.SqlNote
-import sqlnote.domain.SqlParameter
+import sqlnote.domain.sql.DataType;
+import sqlnote.domain.sql.SqlNote;
+import sqlnote.domain.sql.SqlParameter;
 
 class PutSql {
     private static final Logger logger = LoggerFactory.getLogger(PutSql.class)

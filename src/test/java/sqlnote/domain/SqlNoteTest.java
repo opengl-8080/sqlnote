@@ -16,6 +16,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import sqlnote.domain.sql.SqlNote;
+import sqlnote.domain.sql.SqlParameter;
+
 public class SqlNoteTest {
     
     @Rule

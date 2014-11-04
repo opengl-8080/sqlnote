@@ -17,8 +17,8 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import sqlnote.db.SqlNoteRepositoryImpl;
-import sqlnote.domain.SqlNotFoundException;
-import sqlnote.domain.SqlNote;
+import sqlnote.domain.sql.SqlNotFoundException;
+import sqlnote.domain.sql.SqlNote;
 import test.db.MyDBTester;
 import test.db.TestConnectionProvider;
 
