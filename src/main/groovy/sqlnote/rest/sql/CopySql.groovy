@@ -1,17 +1,17 @@
 package sqlnote.rest.sql
 
+import sqlnote.RepositoryFactory
 import sqlnote.db.SystemDataSource
-import sqlnote.domain.SqlNoteRepository
 
 class CopySql {
     
     void execute(long id) {
         SystemDataSource.withTransaction { db ->
-            def repo = new SqlNoteRepository(db)
+            def repository = RepositoryFactory.getSqlNoteRepository(db)
             
-            def note = repo.findById(id)
+            def note = repository.findById(id)
             
-            repo.register(note.copy())
+            repository.register(note.copy())
         }
     }
 }

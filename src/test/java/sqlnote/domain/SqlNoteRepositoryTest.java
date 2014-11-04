@@ -16,6 +16,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import sqlnote.db.SqlNoteRepositoryImpl;
 import test.db.MyDBTester;
 import test.db.TestConnectionProvider;
 
@@ -27,11 +28,11 @@ public class SqlNoteRepositoryTest {
     @Rule
     public TestConnectionProvider con = new TestConnectionProvider();
     
-    private SqlNoteRepository repository;
+    private SqlNoteRepositoryImpl repository;
     
     @Before
     public void setup() throws Exception {
-        repository = new SqlNoteRepository(con.getDatabaseAccess());
+        repository = new SqlNoteRepositoryImpl(con.getDatabaseAccess());
     }
     
     @Test

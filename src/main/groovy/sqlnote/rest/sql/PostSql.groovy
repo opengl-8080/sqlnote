@@ -3,9 +3,9 @@ package sqlnote.rest.sql
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
+import sqlnote.RepositoryFactory
 import sqlnote.db.SystemDataSource
-import sqlnote.domain.SqlNote;
-import sqlnote.domain.SqlNoteRepository;
+import sqlnote.domain.SqlNote
 
 class PostSql {
     private static final Logger logger = LoggerFactory.getLogger(PostSql.class)
@@ -13,7 +13,7 @@ class PostSql {
     void execute() {
         SystemDataSource.withTransaction { db ->
             SqlNote note = new SqlNote()
-            new SqlNoteRepository(db).register(note)
+            RepositoryFactory.getSqlNoteRepository(db).register(note)
             
             logger.info('post sql')
         }

@@ -4,11 +4,11 @@ import java.sql.ResultSet
 
 import org.codehaus.groovy.runtime.GStringImpl
 
-import sqlnote.domain.ExternalDataRepository;
-import sqlnote.domain.ResponseWriter;
-import sqlnote.domain.SqlNote;
-import sqlnote.domain.SqlNoteRepository;
-import sqlnote.domain.TemplateAnalyzer;
+import sqlnote.RepositoryFactory
+import sqlnote.domain.ExternalDataRepository
+import sqlnote.domain.ResponseWriter
+import sqlnote.domain.SqlNote
+import sqlnote.domain.TemplateAnalyzer
 
 class ExternalDataRepositoryImpl implements ExternalDataRepository {
     
@@ -49,7 +49,7 @@ class ExternalDataRepositoryImpl implements ExternalDataRepository {
         SqlNote sql
         
         SystemDataSource.with { db ->
-            sql = new SqlNoteRepository(db).findById(sqlId)
+            sql = RepositoryFactory.getSqlNoteRepository(db).findById(sqlId)
         }
         
         return sql

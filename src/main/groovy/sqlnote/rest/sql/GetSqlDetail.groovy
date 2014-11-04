@@ -1,10 +1,10 @@
 package sqlnote.rest.sql
 
 import groovy.json.JsonBuilder
-import sqlnote.db.SystemDataSource;
-import sqlnote.domain.SqlNote;
-import sqlnote.domain.SqlNoteRepository;
-import sqlnote.rest.UrlBuilder;
+import sqlnote.RepositoryFactory
+import sqlnote.db.SystemDataSource
+import sqlnote.domain.SqlNote
+import sqlnote.rest.UrlBuilder
 
 class GetSqlDetail {
     
@@ -12,7 +12,7 @@ class GetSqlDetail {
         def json = new JsonBuilder()
         
         SystemDataSource.withTransaction { db ->
-            SqlNote note = new SqlNoteRepository(db).findById(sqlId)
+            SqlNote note = RepositoryFactory.getSqlNoteRepository(db).findById(sqlId)
             
             json {
                 id note.id

@@ -1,11 +1,12 @@
 package sqlnote.rest.sql
 
-import java.util.function.Function;
+import groovy.json.JsonBuilder
 
-import groovy.json.JsonBuilder;
-import sqlnote.db.SystemDataSource;
-import sqlnote.domain.SqlNote;
-import sqlnote.domain.SqlNoteRepository;
+import java.util.function.Function
+
+import sqlnote.RepositoryFactory
+import sqlnote.db.SystemDataSource
+import sqlnote.domain.SqlNote
 
 class GetAllSql {
     
@@ -13,7 +14,7 @@ class GetAllSql {
         JsonBuilder json = new JsonBuilder()
         
         SystemDataSource.withTransaction { db ->
-            List<SqlNote> list = new SqlNoteRepository(db).findAll()
+            List<SqlNote> list = RepositoryFactory.getSqlNoteRepository(db).findAll()
             json(list.collect { sqlNote ->
                 return [
                     id: sqlNote.id,
