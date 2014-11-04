@@ -1,4 +1,4 @@
-package sqlnote.domain;
+package sqlnote.db;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
@@ -17,14 +17,16 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import sqlnote.db.SqlNoteRepositoryImpl;
+import sqlnote.domain.SqlNotFoundException;
+import sqlnote.domain.SqlNote;
 import test.db.MyDBTester;
 import test.db.TestConnectionProvider;
 
-@Fixture(resources="SqlNoteRepositoryTest.yaml")
-public class SqlNoteRepositoryTest {
+@Fixture(resources="SqlNoteRepositoryImplTest.yaml")
+public class SqlNoteRepositoryImplTest {
     
     @Rule
-    public MyDBTester dbTester = new MyDBTester(SqlNoteRepositoryTest.class);
+    public MyDBTester dbTester = new MyDBTester(SqlNoteRepositoryImplTest.class);
     @Rule
     public TestConnectionProvider con = new TestConnectionProvider();
     
@@ -94,7 +96,7 @@ public class SqlNoteRepositoryTest {
         repository.register(note);
         
         // verify
-        IDataSet expected = dbTester.loadDataSet("SqlNoteRepositoryTest_追加_expected.yaml");
+        IDataSet expected = dbTester.loadDataSet("SqlNoteRepositoryImplTest_追加_expected.yaml");
         dbTester.verifyTable("SQL_NOTE", expected, "ID");
         dbTester.verifyTable("SQL_PARAMETERS", expected, "SQL_ID");
         
@@ -107,7 +109,7 @@ public class SqlNoteRepositoryTest {
         repository.remove(2L);
         
         // verify
-        IDataSet expected = dbTester.loadDataSet("SqlNoteRepositoryTest_削除_expected.yaml");
+        IDataSet expected = dbTester.loadDataSet("SqlNoteRepositoryImplTest_削除_expected.yaml");
         dbTester.verifyTable("SQL_NOTE", expected);
         dbTester.verifyTable("SQL_PARAMETERS", expected);
     }
@@ -125,7 +127,7 @@ public class SqlNoteRepositoryTest {
         repository.modify(note);
         
         // verify
-        IDataSet expected = dbTester.loadDataSet("SqlNoteRepositoryTest_更新_expected.yaml");
+        IDataSet expected = dbTester.loadDataSet("SqlNoteRepositoryImplTest_更新_expected.yaml");
         dbTester.verifyTable("SQL_NOTE", expected);
         
         ITable actualSqlParameters = dbTester.getConnection().createQueryTable("SQL_PARAMETERS", "SELECT * FROM SQL_PARAMETERS ORDER BY SQL_ID ASC, SORT_ORDER ASC");
