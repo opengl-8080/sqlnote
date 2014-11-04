@@ -1,8 +1,5 @@
 package sqlnote.domain;import sqlnote.db.ColumnMetaData
 
-
-
-
 public interface ResponseWriter {
     
     boolean canWrite()
