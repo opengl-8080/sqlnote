@@ -1,9 +1,9 @@
 package sqlnote.rest.dbconfig
 
 import groovy.json.JsonBuilder
+import sqlnote.db.DataSourceConfigurationRepositoryImpl;
 import sqlnote.db.SystemDataSource
 import sqlnote.domain.DataSourceConfiguration;
-import sqlnote.domain.DataSourceConfigurationRepository
 import sqlnote.rest.UrlBuilder
 
 class GetDataSourceDetail {
@@ -12,7 +12,7 @@ class GetDataSourceDetail {
         def json = new JsonBuilder()
         
         SystemDataSource.with {db ->
-            def repo = new DataSourceConfigurationRepository(db)
+            def repo = new DataSourceConfigurationRepositoryImpl(db)
             
             DataSourceConfiguration conf = repo.findById(dsId)
             

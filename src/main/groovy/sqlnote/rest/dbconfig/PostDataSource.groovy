@@ -9,11 +9,11 @@ import javax.sql.DataSource
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
+import sqlnote.db.DataSourceConfigurationRepositoryImpl;
 import sqlnote.db.DataSourceUtil
 import sqlnote.db.DataSourceCache
 import sqlnote.db.SystemDataSource
 import sqlnote.domain.DataSourceConfiguration
-import sqlnote.domain.DataSourceConfigurationRepository
 import sqlnote.domain.UnConnectableDatabaseException
 
 class PostDataSource {
@@ -43,7 +43,7 @@ class PostDataSource {
 
     private void saveDataSource(DataSourceConfiguration config) {
         SystemDataSource.withTransaction { db ->
-            new DataSourceConfigurationRepository(db).register(config)
+            new DataSourceConfigurationRepositoryImpl(db).register(config)
             DataSourceCache.put(config.id, config)
         }
     }

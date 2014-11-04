@@ -1,4 +1,4 @@
-package sqlnote.domain;
+package sqlnote.db;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
@@ -12,19 +12,21 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import sqlnote.db.DataSourceConfigurationRepositoryImpl;
+import sqlnote.domain.DataSourceConfiguration;
 import test.db.MyDBTester;
 
-@Fixture(resources="DataSourceRepositoryTest.yaml")
-public class DataSourceRepositoryTest {
+@Fixture(resources="DataSourceConfigurationRepositoryImplTest.yaml")
+public class DataSourceConfigurationRepositoryImplTest {
 
     @Rule
-    public MyDBTester dbTester = new MyDBTester(DataSourceRepositoryTest.class);
+    public MyDBTester dbTester = new MyDBTester(DataSourceConfigurationRepositoryImplTest.class);
     
-    private DataSourceConfigurationRepository repository;
+    private DataSourceConfigurationRepositoryImpl repository;
     
     @Before
     public void setup() {
-        repository = new DataSourceConfigurationRepository(dbTester.getDatabaseAccess());
+        repository = new DataSourceConfigurationRepositoryImpl(dbTester.getDatabaseAccess());
     }
     
     @Test
@@ -73,7 +75,7 @@ public class DataSourceRepositoryTest {
         repository.register(config);
         
         // verify
-        IDataSet expected = dbTester.loadDataSet("DataSourceRepositoryTest_追加_expected.yaml");
+        IDataSet expected = dbTester.loadDataSet("DataSourceConfigurationRepositoryImplTest_追加_expected.yaml");
         dbTester.verifyTable("DATA_SOURCE_CONFIGURATION", expected, "ID");
         
         assertThat(config.getId(), is(greaterThan(0L)));
@@ -94,7 +96,7 @@ public class DataSourceRepositoryTest {
         repository.modify(config);
         
         // verify
-        IDataSet expected = dbTester.loadDataSet("DataSourceRepositoryTest_更新_expected.yaml");
+        IDataSet expected = dbTester.loadDataSet("DataSourceConfigurationRepositoryImplTest_更新_expected.yaml");
         dbTester.verifyTable("DATA_SOURCE_CONFIGURATION", expected);
     }
     
@@ -104,7 +106,7 @@ public class DataSourceRepositoryTest {
         repository.remove(2L);
         
         // verify
-        IDataSet expected = dbTester.loadDataSet("DataSourceRepositoryTest_削除_expected.yaml");
+        IDataSet expected = dbTester.loadDataSet("DataSourceConfigurationRepositoryImplTest_削除_expected.yaml");
         dbTester.verifyTable("DATA_SOURCE_CONFIGURATION", expected);
     }
 }

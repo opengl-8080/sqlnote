@@ -21,7 +21,6 @@ import spark.Request;
 import spark.Response;
 import sqlnote.db.DataSourceCache;
 import sqlnote.db.SystemDataSource;
-import sqlnote.domain.DataSourceConfigurationRepository;
 import sqlnote.domain.EntityNotFoundException;
 import sqlnote.domain.IllegalParameterException;
 import sqlnote.domain.ResponseWriter;
@@ -88,9 +87,12 @@ public class RestApi {
     
     private static void loadDataSource() {
         SystemDataSource.with(db -> {
-            new DataSourceConfigurationRepository(db).findAll().forEach(config -> {
-                DataSourceCache.put(config.getId(), config);
-            });
+            RepositoryFactory
+                .getDataSourceConfigurationRepository(db)
+                .findAll()
+                .forEach(config -> {
+                    DataSourceCache.put(config.getId(), config);
+                });
         });
     }
     

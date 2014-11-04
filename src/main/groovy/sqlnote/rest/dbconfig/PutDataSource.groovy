@@ -8,10 +8,10 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 import sqlnote.db.DataSourceCache
+import sqlnote.db.DataSourceConfigurationRepositoryImpl;
 import sqlnote.db.DataSourceUtil
 import sqlnote.db.SystemDataSource
 import sqlnote.domain.DataSourceConfiguration
-import sqlnote.domain.DataSourceConfigurationRepository
 
 class PutDataSource {
     private static final Logger logger = LoggerFactory.getLogger(PutDataSource.class)
@@ -20,7 +20,7 @@ class PutDataSource {
         def json = new JsonSlurper().parseText(requestBody)
         
         SystemDataSource.withTransaction { db ->
-            def repo = new DataSourceConfigurationRepository(db)
+            def repo = new DataSourceConfigurationRepositoryImpl(db)
             
             DataSourceConfiguration config = repo.findById(configId)
             
