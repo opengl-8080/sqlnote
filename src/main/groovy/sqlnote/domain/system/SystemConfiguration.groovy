@@ -1,4 +1,4 @@
-package sqlnote.domain
+package sqlnote.domain.system
 
 class SystemConfiguration {
 

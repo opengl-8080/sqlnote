@@ -1,7 +1,7 @@
 package sqlnote.db
 
-import sqlnote.domain.SystemConfiguration;
-import sqlnote.domain.SystemConfigurationRepository;
+import sqlnote.domain.system.SystemConfiguration;
+import sqlnote.domain.system.SystemConfigurationRepository;
 
 class SystemConfigurationRepositoryImpl implements SystemConfigurationRepository {
 

@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import sqlnote.domain.SystemConfiguration;
+import sqlnote.domain.system.SystemConfiguration;
 import test.db.MyDBTester;
 import test.db.TestConnectionProvider;
 

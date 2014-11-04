@@ -2,12 +2,13 @@ package sqlnote.rest.system;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import sqlnote.domain.IllegalParameterException;
-import sqlnote.domain.SystemConfiguration;
+import sqlnote.domain.system.SystemConfiguration;
 
 public class SystemConfigParserTest {
     

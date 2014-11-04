@@ -5,7 +5,7 @@ import java.text.NumberFormat
 import org.apache.commons.lang3.StringUtils;
 
 import sqlnote.domain.IllegalParameterException
-import sqlnote.domain.SystemConfiguration;
+import sqlnote.domain.system.SystemConfiguration;
 
 class SystemConfigParser {
     
