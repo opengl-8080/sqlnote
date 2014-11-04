@@ -7,6 +7,8 @@ import sqlnote.db.SqlNoteRepositoryImpl
 import sqlnote.domain.DataSourceConfigurationRepository
 import sqlnote.domain.ExternalDataRepository
 import sqlnote.domain.SqlNoteRepository
+import sqlnote.domain.SystemConfigurationRepository
+import sqlnote.domain.SystemConfigurationRepositoryImpl
 
 class RepositoryFactory {
     
@@ -20,5 +22,9 @@ class RepositoryFactory {
     
     static SqlNoteRepository getSqlNoteRepository(DatabaseAccess db) {
         return new SqlNoteRepositoryImpl(db);
+    }
+    
+    static SystemConfigurationRepository getSystemConfigurationRepository(DatabaseAccess db) {
+        return new SystemConfigurationRepositoryImpl(db)
     }
 }

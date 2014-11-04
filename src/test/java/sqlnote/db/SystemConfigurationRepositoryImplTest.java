@@ -1,4 +1,4 @@
-package sqlnote.domain;
+package sqlnote.db;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
@@ -9,22 +9,24 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import sqlnote.domain.SystemConfiguration;
+import sqlnote.domain.SystemConfigurationRepositoryImpl;
 import test.db.MyDBTester;
 import test.db.TestConnectionProvider;
 
-@Fixture(resources="SystemConfigurationRepositoryTest.yaml")
-public class SystemConfigurationRepositoryTest {
+@Fixture(resources="SystemConfigurationRepositoryImplTest.yaml")
+public class SystemConfigurationRepositoryImplTest {
 
     @Rule
-    public MyDBTester dbTester = new MyDBTester(SystemConfigurationRepositoryTest.class);
+    public MyDBTester dbTester = new MyDBTester(SystemConfigurationRepositoryImplTest.class);
     @Rule
     public TestConnectionProvider con = new TestConnectionProvider();
     
-    private SystemConfigurationRepository repostitory;
+    private SystemConfigurationRepositoryImpl repostitory;
     
     @Before
     public void setup() {
-        repostitory = new SystemConfigurationRepository(con.getDatabaseAccess());
+        repostitory = new SystemConfigurationRepositoryImpl(con.getDatabaseAccess());
     }
     
     @Test
@@ -46,7 +48,7 @@ public class SystemConfigurationRepositoryTest {
         repostitory.modify(config);
         
         // verify
-        IDataSet expected = dbTester.loadDataSet("SystemConfigurationRepositoryTest_更新_expected.yaml");
+        IDataSet expected = dbTester.loadDataSet("SystemConfigurationRepositoryImplTest_更新_expected.yaml");
         dbTester.verifyTable("SYSTEM_CONFIGURATION", expected);
     }
 }

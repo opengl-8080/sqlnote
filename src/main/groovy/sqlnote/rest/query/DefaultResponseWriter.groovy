@@ -1,10 +1,10 @@
 package sqlnote.rest.query
 
 import groovy.json.JsonBuilder
+import sqlnote.RepositoryFactory
 import sqlnote.db.ColumnMetaData
 import sqlnote.db.SystemDataSource
 import sqlnote.domain.ResponseWriter
-import sqlnote.domain.SystemConfigurationRepository
 
 class DefaultResponseWriter implements ResponseWriter {
     
@@ -21,7 +21,7 @@ class DefaultResponseWriter implements ResponseWriter {
         long maxRowNum
         
         SystemDataSource.with { db ->
-            maxRowNum = new SystemConfigurationRepository(db).find().maxRowNum
+            maxRowNum = RepositoryFactory.getSystemConfigurationRepository(db).find().maxRowNum
         }
         
         return maxRowNum
