@@ -2,19 +2,13 @@ package sqlnote.rest.dbconfig
 
 import groovy.json.JsonSlurper
 
-import java.sql.SQLException
-
-import javax.sql.DataSource
-
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-import sqlnote.db.DataSourceConfigurationRepositoryImpl;
-import sqlnote.db.DataSourceUtil
+import sqlnote.RepositoryFactory
 import sqlnote.db.DataSourceCache
 import sqlnote.db.SystemDataSource
 import sqlnote.domain.DataSourceConfiguration
-import sqlnote.domain.UnConnectableDatabaseException
 
 class PostDataSource {
     private static final Logger logger = LoggerFactory.getLogger(PostDataSource.class)
@@ -43,7 +37,7 @@ class PostDataSource {
 
     private void saveDataSource(DataSourceConfiguration config) {
         SystemDataSource.withTransaction { db ->
-            new DataSourceConfigurationRepositoryImpl(db).register(config)
+            RepositoryFactory.getDataSourceConfigurationRepository(db).register(config)
             DataSourceCache.put(config.id, config)
         }
     }

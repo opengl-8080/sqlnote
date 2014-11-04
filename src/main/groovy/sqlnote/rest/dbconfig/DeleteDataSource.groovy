@@ -1,13 +1,10 @@
 package sqlnote.rest.dbconfig
 
-import javax.sql.DataSource
-
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
+import sqlnote.RepositoryFactory
 import sqlnote.db.DataSourceCache
-import sqlnote.db.DataSourceConfigurationRepositoryImpl;
-import sqlnote.db.DataSourceUtil
 import sqlnote.db.SystemDataSource
 
 class DeleteDataSource {
@@ -15,7 +12,7 @@ class DeleteDataSource {
     
     void execute(long id) {
         SystemDataSource.withTransaction { db ->
-            new DataSourceConfigurationRepositoryImpl(db).with {
+            RepositoryFactory.getDataSourceConfigurationRepository(db).with {
                 findById(id) // if not found throw exception
                 remove(id)
             }

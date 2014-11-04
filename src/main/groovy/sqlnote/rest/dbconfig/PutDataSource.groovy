@@ -2,14 +2,11 @@ package sqlnote.rest.dbconfig
 
 import groovy.json.JsonSlurper
 
-import javax.sql.DataSource
-
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
+import sqlnote.RepositoryFactory
 import sqlnote.db.DataSourceCache
-import sqlnote.db.DataSourceConfigurationRepositoryImpl;
-import sqlnote.db.DataSourceUtil
 import sqlnote.db.SystemDataSource
 import sqlnote.domain.DataSourceConfiguration
 
@@ -20,7 +17,7 @@ class PutDataSource {
         def json = new JsonSlurper().parseText(requestBody)
         
         SystemDataSource.withTransaction { db ->
-            def repo = new DataSourceConfigurationRepositoryImpl(db)
+            def repo = RepositoryFactory.getDataSourceConfigurationRepository(db)
             
             DataSourceConfiguration config = repo.findById(configId)
             
