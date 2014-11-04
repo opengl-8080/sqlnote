@@ -10,18 +10,21 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import test.db.MyDBTester;
+import test.db.TestConnectionProvider;
 
 @Fixture(resources="SystemConfigurationRepositoryTest.yaml")
 public class SystemConfigurationRepositoryTest {
 
     @Rule
     public MyDBTester dbTester = new MyDBTester(SystemConfigurationRepositoryTest.class);
+    @Rule
+    public TestConnectionProvider con = new TestConnectionProvider();
     
     private SystemConfigurationRepository repostitory;
     
     @Before
     public void setup() {
-        repostitory = new SystemConfigurationRepository(dbTester.getDatabaseAccess());
+        repostitory = new SystemConfigurationRepository(con.getDatabaseAccess());
     }
     
     @Test

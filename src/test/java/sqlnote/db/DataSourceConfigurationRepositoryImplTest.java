@@ -15,18 +15,21 @@ import org.junit.Test;
 import sqlnote.db.DataSourceConfigurationRepositoryImpl;
 import sqlnote.domain.DataSourceConfiguration;
 import test.db.MyDBTester;
+import test.db.TestConnectionProvider;
 
 @Fixture(resources="DataSourceConfigurationRepositoryImplTest.yaml")
 public class DataSourceConfigurationRepositoryImplTest {
 
     @Rule
     public MyDBTester dbTester = new MyDBTester(DataSourceConfigurationRepositoryImplTest.class);
+    @Rule
+    public TestConnectionProvider con = new TestConnectionProvider();
     
     private DataSourceConfigurationRepositoryImpl repository;
     
     @Before
     public void setup() {
-        repository = new DataSourceConfigurationRepositoryImpl(dbTester.getDatabaseAccess());
+        repository = new DataSourceConfigurationRepositoryImpl(con.getDatabaseAccess());
     }
     
     @Test

@@ -17,18 +17,21 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import test.db.MyDBTester;
+import test.db.TestConnectionProvider;
 
 @Fixture(resources="SqlNoteRepositoryTest.yaml")
 public class SqlNoteRepositoryTest {
     
     @Rule
     public MyDBTester dbTester = new MyDBTester(SqlNoteRepositoryTest.class);
+    @Rule
+    public TestConnectionProvider con = new TestConnectionProvider();
     
     private SqlNoteRepository repository;
     
     @Before
     public void setup() throws Exception {
-        repository = new SqlNoteRepository(dbTester.getDatabaseAccess());
+        repository = new SqlNoteRepository(con.getDatabaseAccess());
     }
     
     @Test

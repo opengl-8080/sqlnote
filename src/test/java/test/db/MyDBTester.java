@@ -1,14 +1,9 @@
 package test.db;
-import java.sql.Connection;
-
 import jp.classmethod.testing.database.DbUnitTester;
 import jp.classmethod.testing.database.JdbcDatabaseConnectionManager;
 import jp.classmethod.testing.database.YamlDataSet;
 
 import org.dbunit.dataset.IDataSet;
-
-import sqlnote.db.DatabaseAccess;
-import sqlnote.db.SystemDataSource;
 
 public class MyDBTester extends DbUnitTester {
     
@@ -25,7 +20,6 @@ public class MyDBTester extends DbUnitTester {
     private MyDBTester(JdbcDatabaseConnectionManager manager, Class<?> testClass) {
         super(manager);
         this.testClass = testClass;
-        SystemDataSource.init("jdbc:hsqldb:file:testdb/sqlnote;shutdown=true");
     }
 
     private static class SqlNoteJdbcDatabaseConnectionManager extends JdbcDatabaseConnectionManager {
@@ -34,11 +28,6 @@ public class MyDBTester extends DbUnitTester {
             super.username = "SA";
             super.password = "";
         }
-    }
-    
-    public DatabaseAccess getDatabaseAccess() {
-        Connection con = SystemDataSource.getConnection();
-        return new DatabaseAccess(con);
     }
     
     /**
