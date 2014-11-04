@@ -496,7 +496,6 @@ angular
 })
 .directive('snTable', function($log, $filter) {
     
-    var numberFilter = $filter('number');
     var dateFilter = $filter('date');
     var nullValue = '<span class="nullValue">null</span>';
     
@@ -561,7 +560,7 @@ angular
     }
     
     function numberFormatter(value) {
-        return rightAlign(value === null ? nullValue : numberFilter(value));
+        return rightAlign(value === null ? nullValue : value);
     }
     
     function rightAlign(value) {
