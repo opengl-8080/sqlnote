@@ -1,4 +1,6 @@
-package sqlnote.domain
+package sqlnote.db
+
+import sqlnote.domain.EntityNotFoundException;
 
 class DataSourceConfigurationNotFoundException extends EntityNotFoundException {
     

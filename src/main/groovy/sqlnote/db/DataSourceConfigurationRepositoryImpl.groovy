@@ -3,7 +3,6 @@ package sqlnote.db
 import java.util.List;
 
 import sqlnote.domain.DataSourceConfiguration;
-import sqlnote.domain.DataSourceConfigurationNotFoundException;
 import sqlnote.domain.DataSourceConfigurationRepository;
 
 class DataSourceConfigurationRepositoryImpl implements DataSourceConfigurationRepository {
