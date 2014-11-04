@@ -10,7 +10,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import sqlnote.domain.SystemConfiguration;
-import sqlnote.domain.SystemConfigurationRepositoryImpl;
 import test.db.MyDBTester;
 import test.db.TestConnectionProvider;
 
