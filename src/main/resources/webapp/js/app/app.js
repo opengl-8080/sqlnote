@@ -251,12 +251,18 @@ angular
     };
 })
 .controller('SelectDataSourceController', function($scope, dataSourceResource, storage) {
-    storage.bind($scope, 'main.selectedDataSourceId');
-    
     dataSourceResource
         .getAllDataSources()
         .then(function(response) {
             $scope.main.dataSources = response.data;
+            
+            var defaults;
+            
+            if ($scope.main.dataSources) {
+                defaults = $scope.main.dataSources[0].id;
+            }
+            
+            storage.bind($scope, 'main.selectedDataSourceId', {defaultValue: defaults});
         });
 })
 .controller('DataSourceController', function($scope) {
