@@ -37,13 +37,18 @@
             </a>
           </div>
           
-          <div class="form-group" ng-controller="SelectDataSourceController">
-            <select class="form-control"
-                     ng-model="main.selectedDataSourceId"
-                     ng-options="ds.id as ds.name for ds in main.dataSources">
-            </select>
-          </div>
+          <hr>
         </div>
+        
+        <div class="form-group" ng-controller="SelectDataSourceController">
+          <label for="dataSourceSelector" class="control-label">DataSource</label>
+          <select id="dataSourceSelector"
+                   class="form-control"
+                   ng-model="main.selectedDataSourceId"
+                   ng-options="ds.id as ds.name for ds in main.dataSources">
+          </select>
+        </div>
+        
         <hr>
         
         <div class="form-group" ng-controller="AddSqlController">
