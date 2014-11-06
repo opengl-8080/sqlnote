@@ -11,6 +11,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.eclipse.jetty.io.RuntimeIOException;
 import org.flywaydb.core.Flyway;
@@ -198,7 +199,7 @@ public class RestApi {
     private static void defineQueryApi() {
         get(EXECUTE_SQL, (req, res) -> {
             long sqlId = Long.parseLong(req.params("id"));
-            long dsId = Long.parseLong(req.queryParams("dataSource"));
+            long dsId = getDataSourceId(req);
             Map<String, String[]> queryMap = req.queryMap("s").toMap();
             ResponseWriter rw = createResponseWriter(req, res);
             
@@ -210,6 +211,16 @@ public class RestApi {
             res.status(200);
             return "";
         });
+    }
+    
+    private static long getDataSourceId(Request req) {
+        String dataSourceId = req.queryParams("dataSource");
+        
+        if (StringUtils.isBlank(dataSourceId)) {
+            throw new IllegalParameterException("データソースが指定されていません。");
+        }
+        
+        return Long.parseLong(dataSourceId);
     }
     
     private static void defineSystemConfigApi() {
