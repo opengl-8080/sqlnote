@@ -79,7 +79,7 @@
         <div class="list-group cursor" ng-controller="SqlSelectionListController">
           <a class="list-group-item break-all"
              ng-class="{'list-group-item-info': (sql.id === main.sql.id)}"
-             ng-repeat="sql in main.sqls | filter:{title:main.sqlFilter} | orderBy:'title'"
+             ng-repeat="sql in main.sqls | filter:filterSql | orderBy:'title'"
              ng-click="selectSql(sql)">
             {{sql.title}}
           </a>

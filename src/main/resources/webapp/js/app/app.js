@@ -32,6 +32,20 @@ angular
                 $scope.main.change = false;
             });
     };
+    
+    $scope.filterSql = function(sql) {
+        var filter = $scope.main.sqlFilter;
+        
+        if (filter) {
+            var filters = filter.replace(/ +/g, ' ').split(' ');
+            
+            return _.all(filters, function(filter) {
+                return sql.title.indexOf(filter) !== -1;
+            });
+        } else {
+            return true;
+        }
+    };
 })
 .service('parameterStorageService', function($window, storage) {
     this.save = function(sql) {
