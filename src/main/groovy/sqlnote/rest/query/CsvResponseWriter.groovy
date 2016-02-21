@@ -39,6 +39,14 @@ class CsvResponseWriter implements ResponseWriter {
 
     @Override
     public void appendDataRow(rowData) {
-        bw.println this.metaDatas.collect { rowData[it.name] }.join("\t")
+        bw.println this.metaDatas.collect { columnDef -> 
+            def value = rowData[columnDef.name]
+            
+            if (value == null) {
+                return ''
+            } else {
+                return value
+            }
+        }.join("\t")
     }
 }
